@@ -399,9 +399,9 @@
     <div class="glass glass-blue" style="padding: 24px;">
       <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
         <span style="font-size:1.6em;">🖥</span>
-        <h3 style="font-size: 0.95em; color: var(--blue); margin:0;">The Operations Dashboard</h3>
+        <h3 style="font-size: 1.1em; color: var(--blue); margin:0;">Agent Local Setup + Testing</h3>
       </div>
-      <ul style="font-size: 0.62em; color: var(--r-main-color); margin: 0; padding-left: 18px;">
+      <ul style="font-size: 0.72em; color: var(--r-main-color); margin: 0; padding-left: 18px;">
         <li>One-click infrastructure — 8 Docker containers</li>
         <li>Start/stop 14+ microservices with health monitoring</li>
         <li>Real-time log streaming via WebSocket</li>
@@ -414,9 +414,9 @@
     <div class="glass glass-accent" style="padding: 24px;">
       <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
         <span style="font-size:1.6em;">🤖</span>
-        <h3 style="font-size: 0.95em; color: #B794F6; margin:0;">The AI Cloud Agent</h3>
+        <h3 style="font-size: 1.1em; color: #B794F6; margin:0;">Agent Coding</h3>
       </div>
-      <ul style="font-size: 0.62em; color: var(--r-main-color); margin: 0; padding-left: 18px;">
+      <ul style="font-size: 0.72em; color: var(--r-main-color); margin: 0; padding-left: 18px;">
         <li>6 Claude Code Skills — from /init to /pr</li>
         <li>Reads Jira tickets, writes Confluence plans</li>
         <li>Multi-repo code generation with mandatory tests</li>
@@ -1207,39 +1207,111 @@ good enough. Make them better.
 </section>
 
 <!-- ============================================ -->
-<!-- SLIDE 16: THANK YOU -->
+<!-- SLIDE: CI/CD PIPELINE -->
 <!-- ============================================ -->
-<section class="center" data-background-gradient="radial-gradient(ellipse 900px 700px at 50% 40%, rgba(124,92,252,0.15) 0%, rgba(0,212,170,0.05) 40%, transparent 70%)">
-  <h1 style="font-size: 4.2em; margin-bottom: 12px;">
-    <span class="glow">Pi Mission Control</span>
-  </h1>
-  <p style="font-size: 1.05em; color: var(--dim); font-weight: 300; margin: 12px 0 48px;">
-    Engineering Productivity, Multiplied by AI
-  </p>
+<section data-background-gradient="radial-gradient(ellipse 600px 400px at 50% 50%, rgba(0,212,170,0.06) 0%, transparent 60%)">
+  <h2>From <span class="glow-blue">CI</span> to <span class="glow">CD</span></h2>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 24px;">Everything shown so far is the CI side. The CD pipeline takes it to production.</p>
 
-  <div class="grid-4" style="max-width: 800px; margin: 0 auto;">
-    <div class="stat-card">
-      <div class="stat-num glow">14+</div>
-      <div class="stat-label">Services</div>
+  <div style="display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 28px; flex-wrap: nowrap;">
+    <div style="padding: 14px 18px; border-radius: 12px; text-align: center; background: rgba(0,212,170,0.08); border: 1px solid rgba(0,212,170,0.2); min-width: 130px;">
+      <div style="font-size: 0.55em; font-weight: 700; color: var(--accent2);">LOCAL DEV</div>
+      <div style="font-size: 0.42em; color: var(--dim); margin-top: 4px;">/plan → /coding → /local-test → /review → /pr</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-num glow">6</div>
-      <div class="stat-label">AI Skills</div>
+    <div style="color: rgba(124,92,252,0.4); font-size: 1.4em; padding: 0 10px;">→</div>
+    <div style="padding: 14px 18px; border-radius: 12px; text-align: center; background: rgba(124,92,252,0.08); border: 1px solid rgba(124,92,252,0.2); min-width: 130px;">
+      <div style="font-size: 0.55em; font-weight: 700; color: #B794F6;">PR CREATED</div>
+      <div style="font-size: 0.42em; color: var(--dim); margin-top: 4px;">Bitbucket PR with full traceability</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-num glow-blue">100%</div>
-      <div class="stat-label">Traceable</div>
+    <div style="color: rgba(124,92,252,0.4); font-size: 1.4em; padding: 0 10px;">→</div>
+    <div style="padding: 14px 18px; border-radius: 12px; text-align: center; background: rgba(77,158,255,0.08); border: 1px solid rgba(77,158,255,0.2); min-width: 130px;">
+      <div style="font-size: 0.55em; font-weight: 700; color: var(--blue);">PIPELINE BUILD</div>
+      <div style="font-size: 0.42em; color: var(--dim); margin-top: 4px;">Automated build + test + scan</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-num glow-warm">0</div>
-      <div class="stat-label">Terminal Windows</div>
+    <div style="color: rgba(124,92,252,0.4); font-size: 1.4em; padding: 0 10px;">→</div>
+    <div style="padding: 14px 18px; border-radius: 12px; text-align: center; background: rgba(255,201,60,0.08); border: 1px solid rgba(255,201,60,0.2); min-width: 100px;">
+      <div style="font-size: 0.55em; font-weight: 700; color: var(--accent5);">QA</div>
+      <div style="font-size: 0.42em; color: var(--dim); margin-top: 4px;">Auto-deploy to QA env</div>
+    </div>
+    <div style="color: rgba(124,92,252,0.4); font-size: 1.4em; padding: 0 10px;">→</div>
+    <div style="padding: 14px 18px; border-radius: 12px; text-align: center; background: rgba(255,107,157,0.08); border: 1px solid rgba(255,107,157,0.2); min-width: 100px;">
+      <div style="font-size: 0.55em; font-weight: 700; color: var(--accent3);">UAT</div>
+      <div style="font-size: 0.42em; color: var(--dim); margin-top: 4px;">Promote to UAT</div>
+    </div>
+    <div style="color: rgba(124,92,252,0.4); font-size: 1.4em; padding: 0 10px;">→</div>
+    <div style="padding: 14px 18px; border-radius: 12px; text-align: center; background: rgba(0,212,170,0.12); border: 2px solid rgba(0,212,170,0.4); min-width: 120px;">
+      <div style="font-size: 0.55em; font-weight: 700; color: var(--accent2);">PRODUCTION</div>
+      <div style="font-size: 0.42em; color: var(--dim); margin-top: 4px;">Promote to prod</div>
     </div>
   </div>
 
-  <p style="font-size: 0.5em; color: var(--dim); margin-top: 56px; letter-spacing: 2px;">
-    BUILT BY THE PI PLATFORM TEAM &middot; PAYTM &middot; MARCH 2026
+  <div class="grid-2" style="gap: 28px;">
+    <div class="glass glass-green" style="padding: 22px;">
+      <h3 style="font-size: 0.95em; color: var(--accent2); margin-bottom: 12px;">CI — What We Showed Today</h3>
+      <ul style="font-size: 0.62em; line-height: 2;">
+        <li><strong>/plan</strong> — Jira → Confluence architecture plan</li>
+        <li><strong>/coding</strong> — Multi-repo code + mandatory tests</li>
+        <li><strong>/local-test</strong> — E2E verification with service orchestration</li>
+        <li><strong>/review</strong> — AI security + quality review</li>
+        <li><strong>/pr</strong> — Create PRs on Bitbucket with full traceability</li>
+      </ul>
+    </div>
+    <div class="glass glass-accent" style="padding: 22px;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+        <h3 style="font-size: 0.95em; color: #B794F6; margin: 0;">CD — What's Coming</h3>
+        <span class="badge badge-yellow" style="font-size: 0.55em;">BUILDING</span>
+      </div>
+      <ul style="font-size: 0.62em; line-height: 2;">
+        <li><strong>Automated pipeline triggers</strong> on PR merge</li>
+        <li><strong>Build + test + security scan</strong> in Bitbucket Pipelines</li>
+        <li><strong>Auto-deploy to QA</strong> — Docker image → ECR → ArgoCD</li>
+        <li><strong>Promote to UAT</strong> — one-click or automated gate</li>
+        <li><strong>Promote to Production</strong> — with rollback capability</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout callout-green" style="font-size: 0.6em; margin-top: 16px;">
+    <strong>End-to-end vision:</strong> From a Jira ticket to production deployment — fully automated, fully traceable. The CI side is live today. The CD pipeline is actively being built by the DevOps team.
+  </div>
+  <aside class="notes">Everything we've shown today is the CI side — from Jira ticket to PR. The CD pipeline is being built right now. Once a PR is merged, it triggers automated builds, deploys to QA, promotes to UAT, then to production. Sreerag from DevOps can walk through the pipeline details.</aside>
+</section>
+
+<!-- ============================================ -->
+<!-- SLIDE: THANK YOU + CONTRIBUTORS -->
+<!-- ============================================ -->
+<section class="center" data-background-gradient="radial-gradient(ellipse 900px 700px at 50% 40%, rgba(124,92,252,0.15) 0%, rgba(0,212,170,0.05) 40%, transparent 70%)">
+  <h1 style="font-size: 3.8em; margin-bottom: 8px;">
+    <span class="glow">Thank You</span>
+  </h1>
+  <p style="font-size: 0.9em; color: var(--dim); font-weight: 300; margin: 8px 0 40px;">
+    Pi Mission Control — Engineering Productivity, Multiplied by AI
   </p>
-  <aside class="notes">Thank you. Pi Mission Control — 14 services, 6 AI skills, 100% traceable, and zero terminal windows needed. Built by the Pi Platform team.</aside>
+
+  <div class="grid-3" style="max-width: 1000px; margin: 0 auto 36px; gap: 24px;">
+    <div class="glass glass-accent" style="padding: 24px; text-align: center;">
+      <div style="font-size: 0.5em; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: #B794F6; margin-bottom: 16px;">Visionaries</div>
+      <div style="font-size: 0.85em; font-weight: 600; color: var(--r-heading-color); margin-bottom: 8px;">Harinder Takhar</div>
+      <div style="font-size: 0.85em; font-weight: 600; color: var(--r-heading-color);">Atul Shridhar</div>
+    </div>
+    <div class="glass glass-blue" style="padding: 24px; text-align: center;">
+      <div style="font-size: 0.5em; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--blue); margin-bottom: 16px;">Tech</div>
+      <div style="font-size: 0.85em; font-weight: 600; color: var(--r-heading-color); margin-bottom: 6px;">Ajay Britelyne</div>
+      <div style="font-size: 0.85em; font-weight: 600; color: var(--r-heading-color); margin-bottom: 6px;">Abra Ghosh</div>
+      <div style="font-size: 0.85em; font-weight: 600; color: var(--r-heading-color); margin-bottom: 6px;">Arijit Gupta</div>
+      <div style="font-size: 0.85em; font-weight: 600; color: var(--r-heading-color);">Girish Kumar</div>
+    </div>
+    <div class="glass glass-green" style="padding: 24px; text-align: center;">
+      <div style="font-size: 0.5em; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--accent2); margin-bottom: 16px;">DevOps</div>
+      <div style="font-size: 0.85em; font-weight: 600; color: var(--r-heading-color); margin-bottom: 8px;">Sreerag Unnikrishnan</div>
+      <div style="font-size: 0.85em; font-weight: 600; color: var(--r-heading-color);">Kshitiz Gupta</div>
+    </div>
+  </div>
+
+  <p style="font-size: 0.42em; color: var(--dim); margin-top: 40px; letter-spacing: 2px;">
+    PAYTM &middot; PI PLATFORM &middot; MARCH 2026
+  </p>
+  <aside class="notes">Thank you. Pi Mission Control — built by this team. Harinder and Atul for the vision, the tech team for building the platform, and the DevOps team for the CI/CD pipeline.</aside>
 </section>
 
 </div><!-- .slides -->
