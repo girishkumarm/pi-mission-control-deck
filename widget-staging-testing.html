@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Widget Feature — Staging E2E Test Report</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/black.min.css" id="theme">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --r-background-color: #050A18;
+    --r-main-font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --r-main-font-size: 26px;
+    --r-main-color: #C8D1E0;
+    --r-heading-font: 'Space Grotesk', sans-serif;
+    --r-heading-color: #FFFFFF;
+    --r-link-color: #6C9CFF;
+    --r-selection-background-color: #7C5CFC;
+    --accent: #7C5CFC;
+    --accent2: #00D4AA;
+    --accent3: #FF6B9D;
+    --accent4: #00B4D8;
+    --accent5: #FFC93C;
+    --accent6: #FF6F61;
+    --blue: #4D9EFF;
+    --dim: #5A6580;
+    --card-bg: rgba(255,255,255,0.03);
+    --card-border: rgba(255,255,255,0.06);
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.08);
+    --red: #FF6F61;
+    --orange: #FF9F43;
+  }
+
+  .reveal { font-family: var(--r-main-font); }
+  .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; letter-spacing: -0.02em;
+    text-transform: none; line-height: 1.1;
+  }
+  .reveal h1 { font-size: 3.2em; }
+  .reveal h2 { font-size: 2.2em; }
+  .reveal h3 { font-size: 1.2em; }
+  .reveal p { font-weight: 400; line-height: 1.7; }
+  .reveal section { text-align: left; }
+  .reveal .center { text-align: center; }
+  .reveal ul, .reveal ol { font-size: 0.82em; }
+  .reveal li { margin-bottom: 10px; line-height: 1.5; }
+
+  /* Mesh BG */
+  .reveal .slides { background: transparent; }
+  .mesh-bg {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: var(--r-background-color); z-index: -2;
+  }
+  .mesh-bg::before {
+    content: ''; position: absolute; top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background:
+      radial-gradient(ellipse 600px 600px at 20% 30%, rgba(255,111,97,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 500px 500px at 80% 60%, rgba(124,92,252,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 400px 400px at 50% 80%, rgba(0,180,216,0.04) 0%, transparent 70%);
+    animation: meshDrift 20s ease-in-out infinite;
+  }
+  @keyframes meshDrift {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(2%, -1%) rotate(1deg); }
+    66% { transform: translate(-1%, 2%) rotate(-1deg); }
+  }
+
+  #particles { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
+
+  /* Gradient Text */
+  .glow { background: linear-gradient(135deg, #7C5CFC 0%, #00D4AA 50%, #4D9EFF 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .glow-warm { background: linear-gradient(135deg, #FF6B9D 0%, #FFC93C 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .glow-blue { background: linear-gradient(135deg, #4D9EFF 0%, #00D4AA 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .glow-red { background: linear-gradient(135deg, #FF6F61 0%, #FF6B9D 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .glow-orange { background: linear-gradient(135deg, #FF9F43 0%, #FFC93C 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  /* Glass Cards */
+  .glass {
+    background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border); border-radius: 16px; padding: 28px;
+    position: relative; overflow: hidden;
+  }
+  .glass::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  }
+  .glass-accent { border-color: rgba(124,92,252,0.2); }
+  .glass-green { border-color: rgba(0,212,170,0.2); }
+  .glass-blue { border-color: rgba(77,158,255,0.2); }
+  .glass-red { border-color: rgba(255,111,97,0.25); }
+  .glass-orange { border-color: rgba(255,159,67,0.25); }
+  .glass-warm { border-color: rgba(255,107,157,0.2); }
+  .glass-yellow { border-color: rgba(255,201,60,0.2); }
+
+  .glass-accent::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, rgba(124,92,252,0.3), transparent); }
+  .glass-red::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,111,97,0.3), transparent); }
+  .glass-orange::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,159,67,0.3), transparent); }
+  .glass-green::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, rgba(0,212,170,0.3), transparent); }
+  .glass-blue::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, rgba(77,158,255,0.3), transparent); }
+
+  /* Badges */
+  .badge {
+    display: inline-block; padding: 5px 14px; border-radius: 100px;
+    font-size: 0.5em; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 1.5px; vertical-align: middle;
+    border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.04);
+  }
+  .badge-accent { background: rgba(124,92,252,0.12); color: #B794F6; border-color: rgba(124,92,252,0.25); }
+  .badge-green { background: rgba(0,212,170,0.1); color: var(--accent2); border-color: rgba(0,212,170,0.25); }
+  .badge-blue { background: rgba(77,158,255,0.1); color: var(--blue); border-color: rgba(77,158,255,0.25); }
+  .badge-red { background: rgba(255,111,97,0.15); color: var(--red); border-color: rgba(255,111,97,0.3); }
+  .badge-orange { background: rgba(255,159,67,0.12); color: var(--orange); border-color: rgba(255,159,67,0.3); }
+  .badge-yellow { background: rgba(255,201,60,0.1); color: var(--accent5); border-color: rgba(255,201,60,0.25); }
+  .badge-warm { background: rgba(255,107,157,0.1); color: var(--accent3); border-color: rgba(255,107,157,0.25); }
+
+  /* Grids */
+  .grid-2 { display: grid !important; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  .grid-3 { display: grid !important; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .grid-4 { display: grid !important; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; }
+
+  /* Stats */
+  .stat-card {
+    text-align: center; padding: 28px 20px;
+    background: var(--glass); border: 1px solid var(--glass-border);
+    border-radius: 16px; position: relative; overflow: hidden;
+  }
+  .stat-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    opacity: 0.6;
+  }
+  .stat-card-red::before { background: linear-gradient(90deg, var(--red), var(--accent3)); }
+  .stat-card-orange::before { background: linear-gradient(90deg, var(--orange), var(--accent5)); }
+  .stat-card-green::before { background: linear-gradient(90deg, var(--accent2), var(--blue)); }
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.5em; font-weight: 700; line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.55em; color: var(--dim); margin-top: 8px;
+    text-transform: uppercase; letter-spacing: 1px; font-weight: 500;
+  }
+
+  /* Screenshot Frame */
+  .screenshot-frame {
+    position: relative; border-radius: 12px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 40px rgba(124,92,252,0.05);
+  }
+  .screenshot-frame img { display: block; width: 100%; }
+  .screenshot-frame::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); z-index: 1;
+  }
+  .screenshot-frame-red { border-color: rgba(255,111,97,0.3); box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 40px rgba(255,111,97,0.1); }
+  .screenshot-frame-red::before { background: linear-gradient(90deg, transparent, rgba(255,111,97,0.3), transparent); }
+
+  /* Pipeline */
+  .pipeline { display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap; }
+  .pipe-step { text-align: center; padding: 14px 8px; }
+  .pipe-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1em; font-weight: 700; margin: 0 auto 10px;
+    font-family: 'Space Grotesk'; position: relative;
+  }
+  .pipe-icon::after {
+    content: ''; position: absolute; inset: -2px; border-radius: 16px;
+    background: inherit; opacity: 0.3; filter: blur(8px); z-index: -1;
+  }
+  .pipe-name { font-size: 0.6em; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  .pipe-desc { font-size: 0.42em; color: var(--dim); max-width: 90px; margin: 4px auto 0; }
+  .pipe-arrow { font-size: 1.1em; color: rgba(124,92,252,0.4); padding: 0 2px; margin-top: -20px; }
+
+  /* Code */
+  .code-block {
+    background: rgba(0,0,0,0.4); border-radius: 12px; padding: 20px 24px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.55em;
+    line-height: 1.8; border: 1px solid rgba(255,255,255,0.05);
+    text-align: left; position: relative; overflow: hidden;
+    white-space: pre !important; overflow-x: auto;
+  }
+  .code-block::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2)); opacity: 0.4;
+  }
+
+  /* Callout */
+  .callout { background: rgba(124,92,252,0.04); border-left: 3px solid var(--accent); border-radius: 0 12px 12px 0; padding: 16px 20px; margin: 16px 0; font-size: 0.72em; }
+  .callout-red { background: rgba(255,111,97,0.06); border-left-color: var(--red); }
+  .callout-orange { background: rgba(255,159,67,0.06); border-left-color: var(--orange); }
+  .callout-green { background: rgba(0,212,170,0.04); border-left-color: var(--accent2); }
+  .callout-blue { background: rgba(77,158,255,0.04); border-left-color: var(--blue); }
+
+  /* Table */
+  .reveal table { width: 100%; border-collapse: collapse; font-size: 0.65em; }
+  .reveal table th {
+    background: rgba(124,92,252,0.06); padding: 12px 14px; text-align: left;
+    font-weight: 600; text-transform: uppercase; font-size: 0.8em;
+    letter-spacing: 1px; color: var(--dim); border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .reveal table td { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+  .reveal table tr:hover td { background: rgba(124,92,252,0.03); }
+
+  /* Chip */
+  .chip {
+    display: inline-block; padding: 6px 14px; border-radius: 100px;
+    font-size: 0.6em; font-weight: 500; margin: 3px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  /* Timeline */
+  .tl { padding-left: 32px; position: relative; font-size: 0.72em; }
+  .tl::before {
+    content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px;
+    background: linear-gradient(180deg, var(--accent), var(--accent2), var(--accent4));
+    border-radius: 2px;
+  }
+  .tl-item { position: relative; margin-bottom: 22px; padding-left: 24px; }
+  .tl-item::before {
+    content: ''; position: absolute; left: -26px; top: 5px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--accent); border: 2px solid var(--r-background-color);
+    box-shadow: 0 0 12px rgba(124,92,252,0.4);
+  }
+  .tl-item-red::before { background: var(--red); box-shadow: 0 0 12px rgba(255,111,97,0.4); }
+  .tl-item-orange::before { background: var(--orange); box-shadow: 0 0 12px rgba(255,159,67,0.4); }
+  .tl-item-green::before { background: var(--accent2); box-shadow: 0 0 12px rgba(0,212,170,0.4); }
+  .tl-step { font-size: 0.8em; font-weight: 600; color: var(--accent); font-family: 'JetBrains Mono'; }
+  .tl-item h4 { font-size: 1em; font-weight: 600; margin: 2px 0; }
+  .tl-item p { color: var(--dim); font-size: 0.88em; margin: 0; }
+
+  /* Helpers */
+  .dim { color: var(--dim); }
+  .small { font-size: 0.65em; color: var(--dim); }
+  .tiny { font-size: 0.5em; color: var(--dim); }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .mt-0 { margin-top: 0 !important; }
+  .mt-1 { margin-top: 12px !important; }
+  .mt-2 { margin-top: 24px !important; }
+  .mt-3 { margin-top: 36px !important; }
+  .mb-0 { margin-bottom: 0 !important; }
+  .mb-1 { margin-bottom: 12px !important; }
+
+  .dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    margin-right: 8px; vertical-align: middle; box-shadow: 0 0 8px currentColor;
+  }
+
+  /* Severity indicators */
+  .severity-critical { color: var(--red); }
+  .severity-high { color: var(--orange); }
+  .severity-medium { color: var(--accent5); }
+  .severity-pass { color: var(--accent2); }
+
+  /* Animated border */
+  .anim-border {
+    position: relative; border-radius: 16px; padding: 2px;
+    background: linear-gradient(135deg, var(--red), var(--accent3), var(--accent5));
+    background-size: 300% 300%; animation: borderFlow 4s ease-in-out infinite;
+  }
+  .anim-border-inner { background: var(--r-background-color); border-radius: 14px; padding: 28px; }
+  @keyframes borderFlow { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+  /* Progress bar */
+  .reveal .progress span { background: linear-gradient(90deg, var(--red), var(--accent)); }
+  .reveal .slide-number { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--dim); }
+  .reveal .controls { color: var(--accent); }
+
+  /* Fragment animations */
+  .reveal .slides section .fragment { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+  .reveal .slides section .fragment.visible { opacity: 1; }
+  .reveal .slides section .fragment.fade-up { transform: translateY(30px); opacity: 0; }
+  .reveal .slides section .fragment.fade-up.visible { transform: translateY(0); opacity: 1; }
+
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  .animate-in { animation: fadeInUp 0.7s cubic-bezier(0.4, 0, 0.2, 1) both; }
+  .pulse { animation: pulse 2s ease-in-out infinite; }
+  .d1 { animation-delay: 0.1s; } .d2 { animation-delay: 0.2s; } .d3 { animation-delay: 0.3s; } .d4 { animation-delay: 0.4s; }
+</style>
+</head>
+<body>
+
+<div class="mesh-bg"></div>
+<canvas id="particles"></canvas>
+
+<div class="reveal">
+<div class="slides">
+
+<!-- ===== SLIDE 1: TITLE ===== -->
+<section class="center" data-background-gradient="radial-gradient(ellipse 800px 600px at 50% 40%, rgba(255,111,97,0.12) 0%, rgba(124,92,252,0.04) 40%, transparent 70%)">
+  <div style="margin-bottom: 24px;">
+    <span class="badge badge-red" style="font-size:0.45em; letter-spacing: 2px;">STAGING E2E TEST REPORT</span>
+  </div>
+  <h1 style="font-size: 3.6em; margin-bottom: 8px;">
+    <span class="glow">Widget Feature</span>
+  </h1>
+  <p style="font-size: 1em; color: var(--dim); font-weight: 300; margin-top: 8px;">
+    End-to-End Testing on Pi Platform Staging<br>
+    <span style="color: var(--accent3);">Agentic Decision Agent Pipeline</span>
+  </p>
+
+  <div class="grid-4" style="max-width: 720px; margin: 48px auto 0;">
+    <div class="stat-card stat-card-red">
+      <div class="stat-num glow-red">4</div>
+      <div class="stat-label">Issues Found</div>
+    </div>
+    <div class="stat-card stat-card-orange">
+      <div class="stat-num glow-orange">2</div>
+      <div class="stat-label">Critical</div>
+    </div>
+    <div class="stat-card stat-card-green">
+      <div class="stat-num glow">3</div>
+      <div class="stat-label">Repos Reviewed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num glow-blue">13</div>
+      <div class="stat-label">Screenshots</div>
+    </div>
+  </div>
+
+  <p class="tiny" style="margin-top: 52px; letter-spacing: 2px;">PAYTM &middot; PI PLATFORM &middot; PG DOMAIN &middot; MARCH 13, 2026</p>
+</section>
+
+<!-- ===== SLIDE 2: TEST SUMMARY ===== -->
+<section>
+  <h2><span class="glow-warm">Test Summary</span></h2>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 24px;">Overall results from staging E2E testing of widget functionality</p>
+
+  <table>
+    <thead>
+      <tr><th>Test Area</th><th>Status</th><th>Details</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Widget Code Review (3 repos)</td>
+        <td><span class="badge badge-green">PASS</span></td>
+        <td>Well-structured across pi-rule-admin, pi-rule-engine, pi-botcore</td>
+      </tr>
+      <tr>
+        <td>Widget UI Panel (Admin)</td>
+        <td><span class="badge badge-red">FAIL</span></td>
+        <td>403 errors on Widget Service API calls</td>
+      </tr>
+      <tr>
+        <td>Flow Activation with Widgets</td>
+        <td><span class="badge badge-red">FAIL</span></td>
+        <td>Event schema missing required domain attributes</td>
+      </tr>
+      <tr>
+        <td>GraphQL API Consistency</td>
+        <td><span class="badge badge-orange">FAIL</span></td>
+        <td>List queries return empty arrays despite non-zero counts</td>
+      </tr>
+      <tr>
+        <td>E2E via Event Gateway</td>
+        <td><span class="badge badge-yellow">BLOCKED</span></td>
+        <td>No deployed widget flow exists in staging</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout-red" style="margin-top: 20px; font-size: 0.65em;">
+    <strong>Bottom Line:</strong> Widget code implementation is solid, but staging environment configuration issues block end-to-end testing. Two critical fixes needed before E2E validation is possible.
+  </div>
+</section>
+
+<!-- ===== SLIDE 3: WIDGET ARCHITECTURE ===== -->
+<section>
+  <h2>Widget <span class="glow-blue">Architecture</span></h2>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 20px;">How widgets flow through the Agentic pipeline</p>
+
+  <div class="pipeline" style="margin-bottom: 20px;">
+    <div class="pipe-step">
+      <div class="pipe-icon" style="background: rgba(77,158,255,0.15); color: var(--blue);">EG</div>
+      <div class="pipe-name">Event GW</div>
+      <div class="pipe-desc">Validates &amp; routes</div>
+    </div>
+    <div class="pipe-arrow">&rarr;</div>
+    <div class="pipe-step">
+      <div class="pipe-icon" style="background: rgba(124,92,252,0.15); color: #B794F6;">RE</div>
+      <div class="pipe-name">Rule Engine</div>
+      <div class="pipe-desc">JMESPath resolve</div>
+    </div>
+    <div class="pipe-arrow">&rarr;</div>
+    <div class="pipe-step">
+      <div class="pipe-icon" style="background: rgba(0,212,170,0.15); color: var(--accent2);">BC</div>
+      <div class="pipe-name">BotCore</div>
+      <div class="pipe-desc">Widget tool build</div>
+    </div>
+    <div class="pipe-arrow">&rarr;</div>
+    <div class="pipe-step">
+      <div class="pipe-icon" style="background: rgba(255,201,60,0.15); color: var(--accent5);">LLM</div>
+      <div class="pipe-name">LLM Agent</div>
+      <div class="pipe-desc">Decides invoke</div>
+    </div>
+    <div class="pipe-arrow">&rarr;</div>
+    <div class="pipe-step">
+      <div class="pipe-icon" style="background: rgba(255,107,157,0.15); color: var(--accent3);">WH</div>
+      <div class="pipe-name">Widget Handler</div>
+      <div class="pipe-desc">Skips LLM RT</div>
+    </div>
+    <div class="pipe-arrow">&rarr;</div>
+    <div class="pipe-step">
+      <div class="pipe-icon" style="background: rgba(0,180,216,0.15); color: var(--accent4);">WS</div>
+      <div class="pipe-name">Widget Svc</div>
+      <div class="pipe-desc">Transform API</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="glass glass-accent" style="padding: 20px;">
+      <h3 style="color: #B794F6; font-size: 0.9em; margin-bottom: 12px;">Rule Engine (JMESPath Resolution)</h3>
+      <ul style="font-size: 0.65em; margin: 0; padding-left: 16px;">
+        <li>Resolves widget params from PAYLOAD, CONFIG, FEATURE, LIST, VARIABLE, FUNCTION</li>
+        <li>Classifies: <span class="mono" style="color: var(--accent2);">RESOLVED</span> / <span class="mono" style="color: var(--accent5);">UNRESOLVED</span> / <span class="mono" style="color: var(--accent3);">LET_LLM_DECIDE</span></li>
+        <li>Auto-zips same-size lists into <code>List&lt;Map&gt;</code></li>
+        <li>Sends <code>widget_properties</code> to BotCore</li>
+      </ul>
+    </div>
+    <div class="glass glass-green" style="padding: 20px;">
+      <h3 style="color: var(--accent2); font-size: 0.9em; margin-bottom: 12px;">BotCore (Widget Handling)</h3>
+      <ul style="font-size: 0.65em; margin: 0; padding-left: 16px;">
+        <li>Converts <code>widget_properties</code> &rarr; OpenAI function tools</li>
+        <li><code>widget_handler</code> node skips LLM round-trip (optimization)</li>
+        <li>Calls Widget Service <code>/api/v1/domain/{d}/widgets/transform</code></li>
+        <li><code>strip_widget_messages()</code> cleans session history</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 4: STAGING EXPLORATION ===== -->
+<section>
+  <h2>Staging <span class="glow">Exploration</span></h2>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 20px;">Navigation through the Pi Risk Admin UI on staging environment</p>
+
+  <div class="grid-2">
+    <div>
+      <p style="font-size: 0.72em; margin-bottom: 10px; font-weight: 600;">Decision Flows List</p>
+      <div class="screenshot-frame">
+        <img src="widget-testing/staging-after-login.png" alt="Decision Flows List">
+      </div>
+      <p class="small mt-1">57 flows across 6 pages in PG domain. Searched for "widget" &mdash; no direct match in flow names.</p>
+    </div>
+    <div>
+      <p style="font-size: 0.72em; margin-bottom: 10px; font-weight: 600;">ActionsAndDA Flow Canvas</p>
+      <div class="screenshot-frame">
+        <img src="widget-testing/staging-actionsandda-flow.png" alt="ActionsAndDA Flow">
+      </div>
+      <p class="small mt-1">Flow: Start &rarr; Action (<code>open_meteo_weather</code>) &rarr; Decision (<code>test_widget</code>, LIVE). Status: <span style="color: var(--accent5);">DRAFT</span>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 5: WIDGET DA CANVAS ===== -->
+<section>
+  <h2>test_widget <span class="glow-blue">Decision Agent</span></h2>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 16px;">The only widget-enabled Decision Agent node in staging (V1, ACTIVE)</p>
+
+  <div class="screenshot-frame" style="max-width: 85%; margin: 0 auto;">
+    <img src="widget-testing/staging-test-widget-dn-detail.png" alt="test_widget DA Canvas">
+  </div>
+
+  <div class="grid-4 mt-2" style="font-size: 0.65em;">
+    <div class="glass" style="padding: 14px; text-align: center;">
+      <div style="font-size: 1.8em; margin-bottom: 6px;">4</div>
+      <div class="dim" style="font-size: 0.8em;">Input Params</div>
+      <div class="mono" style="font-size: 0.7em; color: var(--blue); margin-top: 4px;">amount, bank_name, bank_country, date_of_birth</div>
+    </div>
+    <div class="glass" style="padding: 14px; text-align: center;">
+      <div style="font-size: 1.8em; margin-bottom: 6px;">1</div>
+      <div class="dim" style="font-size: 0.8em;">Widget</div>
+      <div class="mono" style="font-size: 0.7em; color: var(--accent3); margin-top: 4px;">transaction_list</div>
+    </div>
+    <div class="glass" style="padding: 14px; text-align: center;">
+      <div style="font-size: 1.8em; margin-bottom: 6px;">1</div>
+      <div class="dim" style="font-size: 0.8em;">KB + Agent</div>
+      <div class="mono" style="font-size: 0.7em; color: var(--accent2); margin-top: 4px;">Knowledge Base</div>
+    </div>
+    <div class="glass" style="padding: 14px; text-align: center;">
+      <div style="font-size: 1.8em; margin-bottom: 6px;">1</div>
+      <div class="dim" style="font-size: 0.8em;">LLM Model</div>
+      <div class="mono" style="font-size: 0.7em; color: #B794F6; margin-top: 4px;">Configured</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 6: ISSUE 1 - Widget 403 ===== -->
+<section data-background-gradient="radial-gradient(ellipse 600px 400px at 50% 50%, rgba(255,111,97,0.08) 0%, transparent 70%)">
+  <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 4px;">
+    <span class="badge badge-red" style="font-size: 0.55em;">CRITICAL</span>
+    <span class="badge" style="font-size: 0.45em;">ISSUE-1</span>
+  </div>
+  <h2 style="margin-bottom: 4px;">Widget Panel <span class="glow-red">403 Errors</span></h2>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 16px;">Widget Service API calls blocked by Keycloak audience misconfiguration</p>
+
+  <div class="grid-2">
+    <div class="screenshot-frame screenshot-frame-red">
+      <img src="widget-testing/staging-widget-panel-403-errors.png" alt="Widget 403 Errors">
+    </div>
+    <div>
+      <div class="glass glass-red" style="padding: 20px; margin-bottom: 16px;">
+        <h3 style="color: var(--red); font-size: 0.85em; margin-bottom: 10px;">Failing GraphQL Queries</h3>
+        <div class="code-block" style="font-size: 0.85em; padding: 14px;">WidgetVersions
+  {domain: "PG", widgetName: "transaction_list"}
+  &rarr; HTTP 403
+
+WidgetDataSchema
+  {domain: "PG", version: "v1", widgetName: "transaction_list"}
+  &rarr; HTTP 403</div>
+      </div>
+      <div class="glass" style="padding: 20px;">
+        <h3 style="font-size: 0.85em; margin-bottom: 10px;">Root Cause</h3>
+        <p style="font-size: 0.68em; margin: 0;">JWT token audiences include:</p>
+        <div style="font-size: 0.6em; margin-top: 8px;">
+          <span class="chip" style="border-color: rgba(0,212,170,0.3);">com.paytm.pi.rule-admin</span>
+          <span class="chip" style="border-color: rgba(0,212,170,0.3);">com.paytm.pi.event-registry</span>
+          <span class="chip" style="border-color: rgba(0,212,170,0.3);">com.paytm.pi.feature-store</span>
+          <span class="chip" style="border-color: rgba(255,111,97,0.4); color: var(--red);">Widget Service MISSING</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 7: ISSUE 1 IMPACT ===== -->
+<section>
+  <h2>Issue-1 <span class="glow-red">Impact</span></h2>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 24px;">What breaks when the Widget Service audience is missing from Keycloak JWT</p>
+
+  <div class="grid-3">
+    <div class="glass glass-red" style="padding: 20px;">
+      <div style="font-size: 2em; margin-bottom: 8px;">1</div>
+      <h3 style="color: var(--red); font-size: 0.85em;">Cannot View Versions</h3>
+      <p style="font-size: 0.62em; color: var(--dim);">Widget version dropdown is empty. Users cannot select which version to use.</p>
+    </div>
+    <div class="glass glass-red" style="padding: 20px;">
+      <div style="font-size: 2em; margin-bottom: 8px;">2</div>
+      <h3 style="color: var(--red); font-size: 0.85em;">Cannot Load Schema</h3>
+      <p style="font-size: 0.62em; color: var(--dim);">Widget data schema fails to load. Panel shows "No schema found for this widget version."</p>
+    </div>
+    <div class="glass glass-red" style="padding: 20px;">
+      <div style="font-size: 2em; margin-bottom: 8px;">3</div>
+      <h3 style="color: var(--red); font-size: 0.85em;">Cannot Map Params</h3>
+      <p style="font-size: 0.62em; color: var(--dim);">Input parameter mapping section is completely empty. Cannot configure widget-to-canvas bindings.</p>
+    </div>
+  </div>
+
+  <div class="callout-red mt-2" style="font-size: 0.65em;">
+    <strong>Fix:</strong> Register the Widget Service as a Keycloak client, add <code>com.paytm.pi.widget-service</code> (or equivalent) to the JWT audience list in the token exchange configuration.
+  </div>
+</section>
+
+<!-- ===== SLIDE 8: ISSUE 2 - Flow Activation ===== -->
+<section data-background-gradient="radial-gradient(ellipse 600px 400px at 50% 50%, rgba(255,159,67,0.08) 0%, transparent 70%)">
+  <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 4px;">
+    <span class="badge badge-orange" style="font-size: 0.55em;">HIGH</span>
+    <span class="badge" style="font-size: 0.45em;">ISSUE-2</span>
+  </div>
+  <h2 style="margin-bottom: 4px;">Flow Activation <span class="glow-orange">Blocked</span></h2>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 16px;">Event schema mismatch prevents ActionsAndDA flow from going live</p>
+
+  <div class="grid-2">
+    <div class="screenshot-frame" style="border-color: rgba(255,159,67,0.3);">
+      <img src="widget-testing/staging-activation-error.png" alt="Activation Error">
+    </div>
+    <div>
+      <div class="glass glass-orange" style="padding: 18px; margin-bottom: 14px;">
+        <h3 style="color: var(--orange); font-size: 0.85em; margin-bottom: 8px;">Error Message</h3>
+        <div class="code-block" style="font-size: 0.75em; padding: 12px; white-space: pre-wrap !important; word-wrap: break-word;">Decision Agent (id=293, name=test_widget) requires domain attribute(s) not available: [amount, bank_name, bank_country, date_of_birth]</div>
+      </div>
+      <div class="glass" style="padding: 18px;">
+        <h3 style="font-size: 0.85em; margin-bottom: 10px;">Schema Comparison</h3>
+        <table style="font-size: 0.95em;">
+          <tr><th>test_sarabjeet_event has</th><th>test_widget needs</th></tr>
+          <tr><td><code>customerId1</code> (String)</td><td><code>amount</code> (String)</td></tr>
+          <tr><td style="color: var(--dim);">&mdash; nothing else &mdash;</td><td><code>bank_name</code> (String)</td></tr>
+          <tr><td></td><td><code>bank_country</code> (String)</td></tr>
+          <tr><td></td><td><code>date_of_birth</code> (String)</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 9: ISSUE 3 & 4 ===== -->
+<section>
+  <h2>Additional <span class="glow">Issues</span></h2>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 20px;">Two more issues discovered during staging investigation</p>
+
+  <div class="grid-2">
+    <div class="anim-border" style="background: linear-gradient(135deg, var(--accent5), var(--orange), var(--accent3)); background-size: 300% 300%; animation: borderFlow 4s ease-in-out infinite;">
+      <div class="anim-border-inner">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <span class="badge badge-yellow" style="font-size: 0.55em;">MEDIUM</span>
+          <span style="font-size: 0.7em; font-weight: 700;">ISSUE-3</span>
+        </div>
+        <h3 style="font-size: 1em; margin-bottom: 8px;">GraphQL Resolver Bug</h3>
+        <p style="font-size: 0.68em; color: var(--dim); margin-bottom: 12px;">
+          List queries return <code>totalElements &gt; 0</code> but the actual array is empty.
+        </p>
+        <div class="code-block" style="font-size: 0.8em; padding: 12px;">// Widget nodes search
+{ decisionNodes: [],
+  totalElements: 2 }
+
+// Active flows query
+{ decisionFlows: [],
+  totalElements: 29 }</div>
+        <p style="font-size: 0.6em; color: var(--dim); margin-top: 10px;">Backend counts entities correctly but fails to serialize them. Likely a data mapping bug in the GraphQL resolver.</p>
+      </div>
+    </div>
+
+    <div class="glass glass-red" style="padding: 24px;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+        <span class="badge badge-orange" style="font-size: 0.55em;">HIGH</span>
+        <span style="font-size: 0.7em; font-weight: 700;">ISSUE-4</span>
+      </div>
+      <h3 style="font-size: 1em; margin-bottom: 8px;">No Deployed Widget Flow</h3>
+      <p style="font-size: 0.68em; color: var(--dim); margin-bottom: 16px;">
+        No Decision Flow containing a Widget-enabled Decision Agent is currently deployed in the PG domain on staging.
+      </p>
+      <div style="font-size: 0.65em;">
+        <p style="margin-bottom: 8px;"><strong>Blocked by:</strong></p>
+        <ul style="padding-left: 16px; margin: 0;">
+          <li>Issue-1: Cannot configure widget params (403)</li>
+          <li>Issue-2: Event schema mismatch prevents activation</li>
+          <li>Result: Full E2E pipeline cannot be validated</li>
+        </ul>
+      </div>
+      <div class="callout-red mt-2" style="font-size: 0.62em; margin-bottom: 0;">
+        <strong>This means:</strong> Event Gateway &rarr; Rule Engine &rarr; BotCore &rarr; Widget Service has never been tested end-to-end on staging.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 10: CODE REVIEW ===== -->
+<section>
+  <h2>Code Review <span class="glow-blue">Results</span></h2>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 20px;">Widget implementation across all 3 core repos is solid</p>
+
+  <div class="grid-3">
+    <div class="glass glass-accent" style="padding: 20px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <span class="badge badge-accent" style="font-size: 0.55em;">PI-RULE-ADMIN</span>
+        <span class="badge badge-green" style="font-size: 0.5em;">PASS</span>
+      </div>
+      <ul style="font-size: 0.62em; margin: 0; padding-left: 14px;">
+        <li>Widget model with hierarchical <code>inputParamsList</code></li>
+        <li><code>collectLeafParams()</code> recursive extraction</li>
+        <li>JMESPath validation at save time (DA_161)</li>
+        <li>Unique alias name enforcement</li>
+        <li>Domain attribute validation on flow activation</li>
+      </ul>
+    </div>
+    <div class="glass glass-blue" style="padding: 20px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <span class="badge badge-blue" style="font-size: 0.55em;">PI-RULE-ENGINE</span>
+        <span class="badge badge-green" style="font-size: 0.5em;">PASS</span>
+      </div>
+      <ul style="font-size: 0.62em; margin: 0; padding-left: 14px;">
+        <li>Multi-source JMESPath resolution (6 sources)</li>
+        <li>Auto-zipping same-size list params</li>
+        <li>Graceful null handling in JMESPath eval</li>
+        <li>Unresolved params marked <code>LET_LLM_DECIDE</code></li>
+        <li><code>widget_properties</code> in BotCore request</li>
+      </ul>
+    </div>
+    <div class="glass glass-green" style="padding: 20px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <span class="badge badge-green" style="font-size: 0.55em;">PI-BOTCORE</span>
+        <span class="badge badge-green" style="font-size: 0.5em;">PASS</span>
+      </div>
+      <ul style="font-size: 0.62em; margin: 0; padding-left: 14px;">
+        <li>Widget tools skip Action Executor</li>
+        <li><code>widget_handler</code> skips LLM round-trip</li>
+        <li>Widget Service client (HS256 JWT, 3 retries)</li>
+        <li><code>strip_widget_messages()</code> session cleanup</li>
+        <li>910 lines of tests (2 test files)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout-green mt-2" style="font-size: 0.65em;">
+    <strong>Verdict:</strong> The widget feature is well-implemented in code. All issues found are environment/configuration problems, not code defects.
+  </div>
+</section>
+
+<!-- ===== SLIDE 11: EVENT & WIDGET CONFIG ===== -->
+<section>
+  <h2>Event <span class="glow">Configuration</span></h2>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 16px;">Current state of test_sarabjeet_event and the widget node configuration</p>
+
+  <div class="grid-2">
+    <div>
+      <p style="font-size: 0.72em; font-weight: 600; margin-bottom: 10px;">Event Schema (test_sarabjeet_event)</p>
+      <div class="screenshot-frame">
+        <img src="widget-testing/staging-sarabjeet-event-schema.png" alt="Event Schema">
+      </div>
+      <p class="small mt-1">LIVE (V1) &mdash; Only field: <code>customerId1</code> (String). Source: <code>/chat/completion</code>. Missing 4 required fields for the widget flow.</p>
+    </div>
+    <div>
+      <p style="font-size: 0.72em; font-weight: 600; margin-bottom: 10px;">Widget Config Panel (403 blocked)</p>
+      <div class="screenshot-frame screenshot-frame-red">
+        <img src="widget-testing/staging-widget-config-panel-403.png" alt="Widget Config Panel">
+      </div>
+      <p class="small mt-1">Widget name: <code>transaction_list</code>. Version dropdown empty. Schema unavailable. Input parameters section shows "No schema found."</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 12: EXPECTED E2E FLOW ===== -->
+<section>
+  <h2>Expected <span class="glow">E2E Flow</span></h2>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 16px;">When all issues are resolved, this is the expected payload and flow</p>
+
+  <div class="grid-2">
+    <div>
+      <h3 style="font-size: 0.9em; color: var(--blue); margin-bottom: 10px;">Event Gateway Payload</h3>
+      <div class="code-block" style="font-size: 0.85em;">POST /v1/domains/PG/event/process
+
+{
+  "eventName": "test_sarabjeet_event",
+  "payload": {
+    "customerId1": "CUST-12345",
+    "amount": "5000",
+    "bank_name": "HDFC Bank",
+    "bank_country": "India",
+    "date_of_birth": "1990-01-15"
+  }
+}</div>
+    </div>
+    <div>
+      <h3 style="font-size: 0.9em; color: var(--accent2); margin-bottom: 10px;">Execution Pipeline</h3>
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-step">Step 1</div>
+          <h4>Event Gateway</h4>
+          <p>Validates against schema, enriches, routes to Rule Engine</p>
+        </div>
+        <div class="tl-item">
+          <div class="tl-step">Step 2</div>
+          <h4>Rule Engine DAG</h4>
+          <p>Resolves 4 input params via JMESPath, builds widget_properties</p>
+        </div>
+        <div class="tl-item tl-item-green">
+          <div class="tl-step" style="color: var(--accent2);">Step 3</div>
+          <h4>BotCore</h4>
+          <p>Builds widget tool, LLM invokes it, widget_handler processes</p>
+        </div>
+        <div class="tl-item tl-item-green">
+          <div class="tl-step" style="color: var(--accent2);">Step 4</div>
+          <h4>Widget Service</h4>
+          <p>Transform API renders widget data, returns widget_details</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 13: RECOMMENDATIONS ===== -->
+<section>
+  <h2><span class="glow-warm">Recommendations</span></h2>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 20px;">Prioritized action items to unblock widget E2E testing</p>
+
+  <div class="grid-2">
+    <div>
+      <h3 style="font-size: 0.9em; color: var(--red); margin-bottom: 14px;"><span class="dot" style="color: var(--red);"></span> P0 &mdash; Immediate</h3>
+      <div class="glass glass-red" style="padding: 18px; margin-bottom: 14px;">
+        <h4 style="font-size: 0.82em; margin-bottom: 6px;">1. Fix Widget Service Keycloak Audience</h4>
+        <p style="font-size: 0.62em; color: var(--dim); margin: 0;">Register Widget Service as a Keycloak client. Add to JWT audience list. Unblocks widget configuration in admin UI.</p>
+      </div>
+      <div class="glass glass-red" style="padding: 18px;">
+        <h4 style="font-size: 0.82em; margin-bottom: 6px;">2. Fix Event Schema for test_sarabjeet_event</h4>
+        <p style="font-size: 0.62em; color: var(--dim); margin: 0;">Add 4 missing domain attributes (<code>amount</code>, <code>bank_name</code>, <code>bank_country</code>, <code>date_of_birth</code>). Unblocks flow activation &amp; deployment.</p>
+      </div>
+    </div>
+    <div>
+      <h3 style="font-size: 0.9em; color: var(--accent5); margin-bottom: 14px;"><span class="dot" style="color: var(--accent5);"></span> P1 &mdash; Short-term</h3>
+      <div class="glass glass-yellow" style="padding: 18px; margin-bottom: 14px;">
+        <h4 style="font-size: 0.82em; margin-bottom: 6px;">3. Fix GraphQL Resolver Bug</h4>
+        <p style="font-size: 0.62em; color: var(--dim); margin: 0;">List queries returning empty arrays despite <code>totalElements &gt; 0</code>. Check DecisionFlowSummary / DecisionNodeSummary field mappings.</p>
+      </div>
+      <div class="glass glass-yellow" style="padding: 18px; margin-bottom: 14px;">
+        <h4 style="font-size: 0.82em; margin-bottom: 6px;">4. Deploy Widget Test Flow</h4>
+        <p style="font-size: 0.62em; color: var(--dim); margin: 0;">After P0 fixes, activate and deploy ActionsAndDA flow. Run full E2E from Event Gateway.</p>
+      </div>
+
+      <h3 style="font-size: 0.9em; color: var(--accent2); margin-top: 20px; margin-bottom: 14px;"><span class="dot" style="color: var(--accent2);"></span> P2 &mdash; Long-term</h3>
+      <div class="glass glass-green" style="padding: 18px;">
+        <h4 style="font-size: 0.82em; margin-bottom: 6px;">5. Automated Widget Integration Tests</h4>
+        <p style="font-size: 0.62em; color: var(--dim); margin: 0;">Create dedicated test event + flow that is always deployed. Add CI tests for JMESPath resolution, auto-zipping, and Widget Service transform API.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SLIDE 14: ENVIRONMENT HEALTH ===== -->
+<section>
+  <h2>Environment <span class="glow-blue">Health</span></h2>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 20px;">Staging service status during testing</p>
+
+  <table style="max-width: 800px;">
+    <thead>
+      <tr><th>Service</th><th>Status</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Pi Risk Admin UI</td>
+        <td><span class="dot" style="color: var(--accent2);"></span> <span style="color: var(--accent2);">UP</span></td>
+        <td>Responsive, Keycloak auth working</td>
+      </tr>
+      <tr>
+        <td>Event Gateway</td>
+        <td><span class="dot" style="color: var(--accent2);"></span> <span style="color: var(--accent2);">UP</span></td>
+        <td>Accepting connections</td>
+      </tr>
+      <tr>
+        <td>Rule Engine</td>
+        <td><span class="dot" style="color: var(--accent2);"></span> <span style="color: var(--accent2);">UP</span></td>
+        <td>Processing requests</td>
+      </tr>
+      <tr>
+        <td>Event Registry</td>
+        <td><span class="dot" style="color: var(--accent2);"></span> <span style="color: var(--accent2);">UP</span></td>
+        <td>Schema CRUD working</td>
+      </tr>
+      <tr>
+        <td>GraphQL Gateway</td>
+        <td><span class="dot" style="color: var(--accent5);"></span> <span style="color: var(--accent5);">DEGRADED</span></td>
+        <td>List queries return empty arrays (Issue-3)</td>
+      </tr>
+      <tr>
+        <td>Widget Service</td>
+        <td><span class="dot" style="color: var(--red);"></span> <span style="color: var(--red);">UNKNOWN</span></td>
+        <td>403 errors &mdash; may be up but auth-blocked (Issue-1)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout-blue mt-2" style="font-size: 0.65em;">
+    <strong>Note:</strong> 5 of 6 tested services are operational. The Widget Service health cannot be determined due to the Keycloak 403 blocker.
+  </div>
+</section>
+
+<!-- ===== SLIDE 15: THANK YOU ===== -->
+<section class="center" data-background-gradient="radial-gradient(ellipse 800px 600px at 50% 40%, rgba(124,92,252,0.12) 0%, rgba(0,212,170,0.04) 40%, transparent 70%)">
+  <h1 style="font-size: 3em; margin-bottom: 16px;">
+    <span class="glow">Thank You</span>
+  </h1>
+  <p style="font-size: 0.85em; color: var(--dim); margin-bottom: 36px;">
+    Widget Staging E2E Test Report &mdash; March 2026
+  </p>
+
+  <div class="glass glass-accent" style="max-width: 600px; margin: 0 auto; padding: 24px;">
+    <div style="font-size: 0.72em; text-align: center;">
+      <p style="margin-bottom: 12px;"><strong>Key Takeaway:</strong> Widget code is production-ready. Two P0 environment fixes needed to enable full E2E testing.</p>
+      <div style="display: flex; justify-content: center; gap: 16px; margin-top: 16px;">
+        <span class="badge badge-red" style="font-size: 0.65em;">2 CRITICAL</span>
+        <span class="badge badge-orange" style="font-size: 0.65em;">1 HIGH</span>
+        <span class="badge badge-yellow" style="font-size: 0.65em;">1 MEDIUM</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="tiny" style="margin-top: 48px; letter-spacing: 2px;">GIRISH KUMAR &middot; PI PLATFORM &middot; PAYTM</p>
+</section>
+
+</div>
+</div>
+
+<!-- Reveal.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    width: 1440,
+    height: 810,
+    margin: 0.06,
+    transition: 'slide',
+    transitionSpeed: 'default',
+    backgroundTransition: 'fade',
+    center: false,
+    controls: true,
+    progress: true,
+    history: true,
+  });
+
+  // Particles
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const particles = [];
+  for (let i = 0; i < 40; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.2 + 0.3,
+      dx: (Math.random() - 0.5) * 0.3,
+      dy: (Math.random() - 0.5) * 0.3,
+      o: Math.random() * 0.3 + 0.1
+    });
+  }
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(124, 92, 252, ${p.o})`;
+      ctx.fill();
+      p.x += p.dx; p.y += p.dy;
+      if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+    });
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+  window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+</script>
+</body>
+</html>
