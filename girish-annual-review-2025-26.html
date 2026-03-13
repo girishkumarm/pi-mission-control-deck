@@ -282,7 +282,7 @@
       <div class="stat-label">Team Size</div>
     </div>
     <div class="stat-card">
-      <div class="stat-num glow-warm">5</div>
+      <div class="stat-num glow-warm">3</div>
       <div class="stat-label">Environments</div>
     </div>
     <div class="stat-card">
@@ -340,7 +340,7 @@
     <div class="glass glass-warm" style="padding: 24px;">
       <h3 style="font-size: 0.95em; color: var(--accent3); margin-bottom: 14px;">Before</h3>
       <ul style="font-size: 0.68em; line-height: 2;">
-        <li>Owned <strong>1 environment</strong> (OCRR2) for Risk 2.0 migration</li>
+        <li>Owned <strong>1 environment</strong> (OCLRE2) for Risk 2.0 migration</li>
         <li><strong>5-6 team members</strong> under me</li>
         <li>Other environments handled by separate leads</li>
         <li>Multiple leaders across the risk org</li>
@@ -350,10 +350,10 @@
       <div class="anim-border-inner">
         <h3 style="font-size: 0.95em; color: var(--accent2); margin-bottom: 14px;">After</h3>
         <ul style="font-size: 0.68em; line-height: 2;">
-          <li>Full ownership of <strong>all environments</strong> &mdash; UCLR2, Lending, TPAP, DeepApp</li>
+          <li>Full ownership of <strong>all environments</strong> &mdash; OCLRE2, Lending, TPAP</li>
           <li><strong>18 team members</strong> &mdash; 3x growth overnight</li>
           <li>End-to-end accountability for platform stability</li>
-          <li><strong>Single point of leadership</strong> for the entire Risk platform</li>
+          <li><strong>Primary technical leader</strong> for the Risk platform, guided by Bhaskar</li>
         </ul>
       </div>
     </div>
@@ -378,7 +378,7 @@
     </div>
     <div class="tl-item">
       <h4>Stabilize &mdash; Reduce Incidents, Build Confidence</h4>
-      <p>Systematic incident reduction. Ensured stable environments across UCLR2, Lending, TPAP, and DeepApp. Built monitoring and alerting.</p>
+      <p>Systematic incident reduction. Ensured stable environments across OCLRE2, Lending, and TPAP. Built monitoring and alerting.</p>
     </div>
     <div class="tl-item">
       <h4>Optimize &mdash; Performance + Cost</h4>
@@ -402,22 +402,18 @@
   <h2>Risk Platform <span class="glow">Impact</span></h2>
   <p class="dim" style="font-size: 0.68em; margin-bottom: 28px;">Scale of ownership and delivery</p>
 
-  <div class="grid-4" style="max-width: 900px; margin: 0 auto 28px;">
+  <div class="grid-3" style="max-width: 750px; margin: 0 auto 28px;">
     <div class="stat-card">
-      <div class="stat-num glow-warm">5</div>
+      <div class="stat-num glow-warm">3</div>
       <div class="stat-label">Environments Owned</div>
     </div>
     <div class="stat-card">
-      <div class="stat-num glow">14+</div>
+      <div class="stat-num glow">6+</div>
       <div class="stat-label">Microservices</div>
     </div>
     <div class="stat-card">
       <div class="stat-num glow-blue">18</div>
       <div class="stat-label">Team Members</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num" style="color: var(--accent2);">1</div>
-      <div class="stat-label">Leader (from 4-5)</div>
     </div>
   </div>
 
@@ -477,62 +473,7 @@
 </section>
 
 <!-- ============================================ -->
-<!-- SLIDE 7: AGENTIC ARCHITECTURE -->
-<!-- ============================================ -->
-<section data-background-gradient="radial-gradient(ellipse 600px 400px at 50% 50%, rgba(0,180,216,0.06) 0%, transparent 60%)">
-  <h2>Agentic <span class="glow-blue">Architecture</span></h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 20px;">End-to-end platform designed and built this year</p>
-
-  <div style="display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 24px; flex-wrap: nowrap;">
-    <div style="padding: 12px 14px; border-radius: 12px; text-align: center; background: rgba(0,212,170,0.08); border: 1px solid rgba(0,212,170,0.2); min-width: 100px;">
-      <div style="font-size: 0.5em; font-weight: 700; color: var(--accent2);">Client</div>
-      <div style="font-size: 0.38em; color: var(--dim); margin-top: 2px;">Browser / Mobile</div>
-    </div>
-    <div class="journey-arrow">&#8594;</div>
-    <div style="padding: 12px 14px; border-radius: 12px; text-align: center; background: rgba(124,92,252,0.08); border: 1px solid rgba(124,92,252,0.2); min-width: 100px;">
-      <div style="font-size: 0.5em; font-weight: 700; color: #B794F6;">WS Gateway</div>
-      <div style="font-size: 0.38em; color: var(--dim); margin-top: 2px;">AG-UI Protocol</div>
-    </div>
-    <div class="journey-arrow">&#8594;</div>
-    <div style="padding: 12px 14px; border-radius: 12px; text-align: center; background: rgba(77,158,255,0.08); border: 1px solid rgba(77,158,255,0.2); min-width: 100px;">
-      <div style="font-size: 0.5em; font-weight: 700; color: var(--blue);">Endpoint Svc</div>
-      <div style="font-size: 0.38em; color: var(--dim); margin-top: 2px;">SSE Transform</div>
-    </div>
-    <div class="journey-arrow">&#8594;</div>
-    <div style="padding: 12px 14px; border-radius: 12px; text-align: center; background: rgba(255,201,60,0.08); border: 1px solid rgba(255,201,60,0.2); min-width: 100px;">
-      <div style="font-size: 0.5em; font-weight: 700; color: var(--accent5);">Rule Engine</div>
-      <div style="font-size: 0.38em; color: var(--dim); margin-top: 2px;">DAG Executor</div>
-    </div>
-    <div class="journey-arrow">&#8594;</div>
-    <div style="padding: 12px 14px; border-radius: 12px; text-align: center; background: rgba(255,107,157,0.08); border: 1px solid rgba(255,107,157,0.2); min-width: 100px;">
-      <div style="font-size: 0.5em; font-weight: 700; color: var(--accent3);">BotCore</div>
-      <div style="font-size: 0.38em; color: var(--dim); margin-top: 2px;">LLM Brain</div>
-    </div>
-    <div class="journey-arrow">&#8594;</div>
-    <div style="padding: 12px 14px; border-radius: 12px; text-align: center; background: rgba(0,212,170,0.12); border: 2px solid rgba(0,212,170,0.4); min-width: 100px;">
-      <div style="font-size: 0.5em; font-weight: 700; color: var(--accent2);">Action Exec</div>
-      <div style="font-size: 0.38em; color: var(--dim); margin-top: 2px;">Connectors</div>
-    </div>
-  </div>
-
-  <div class="grid-3" style="gap: 16px; font-size: 0.6em;">
-    <div class="glass" style="padding: 16px; text-align: center;">
-      <strong style="color: var(--accent2);">Session Manager</strong>
-      <p style="color: var(--dim); font-size: 0.85em; margin-top: 4px;">Redis + PostgreSQL persistence</p>
-    </div>
-    <div class="glass" style="padding: 16px; text-align: center;">
-      <strong style="color: #B794F6;">Auth Service</strong>
-      <p style="color: var(--dim); font-size: 0.85em; margin-top: 4px;">SSO-to-AAT, RS256 JWT</p>
-    </div>
-    <div class="glass" style="padding: 16px; text-align: center;">
-      <strong style="color: var(--blue);">Data Privacy Layer</strong>
-      <p style="color: var(--dim); font-size: 0.85em; margin-top: 4px;">PII tokenization (21+ types)</p>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================ -->
-<!-- SLIDE 8: TEAM BUILDING — HIRING -->
+<!-- SLIDE 7: TEAM BUILDING — HIRING -->
 <!-- ============================================ -->
 <section data-background-gradient="radial-gradient(ellipse 600px 400px at 50% 50%, rgba(77,158,255,0.06) 0%, transparent 60%)">
   <div class="chapter-label">Chapter 3 &mdash; Team Building</div>
@@ -555,9 +496,9 @@
       <div class="glass glass-green" style="padding: 22px;">
         <h3 style="font-size: 0.95em; color: var(--accent2); margin-bottom: 14px;">Notable Hires</h3>
         <div style="font-size: 0.7em; line-height: 2.2;">
-          <div><span class="dot" style="color: var(--accent2);"></span> <strong>Abra</strong> &mdash; already a key contributor</div>
+          <div><span class="dot" style="color: var(--accent2);"></span> <strong>Abhra</strong> &mdash; already a key contributor</div>
           <div><span class="dot" style="color: var(--blue);"></span> <strong>Saksham</strong> &mdash; ramped up and delivering</div>
-          <div><span class="dot" style="color: #B794F6;"></span> <strong>Vinesh</strong> &mdash; high-impact addition</div>
+          <div><span class="dot" style="color: #B794F6;"></span> <strong>Hariharan</strong> &mdash; grew fast, moved to lead Voice team</div>
           <div style="margin-top: 10px; color: var(--dim); font-size: 0.85em;">...and many more across the team</div>
         </div>
       </div>
@@ -744,7 +685,7 @@
         <h3 style="font-size: 0.9em; color: #B794F6; margin: 0;">Risk Platform</h3>
       </div>
       <ul style="font-size: 0.6em; line-height: 1.9; margin: 0;">
-        <li>Full ownership of all environments (UCLR2, Lending, TPAP, DeepApp)</li>
+        <li>Full ownership of all environments (OCLRE2, Lending, TPAP)</li>
         <li>Stabilized platform, reduced incidents</li>
         <li>Performance + cost optimization</li>
       </ul>
@@ -786,7 +727,42 @@
 </section>
 
 <!-- ============================================ -->
-<!-- SLIDE 14: THANK YOU -->
+<!-- SLIDE: AREAS OF IMPROVEMENT -->
+<!-- ============================================ -->
+<section data-background-gradient="radial-gradient(ellipse 600px 400px at 50% 50%, rgba(255,201,60,0.06) 0%, transparent 60%)">
+  <div class="chapter-label">Self-Awareness</div>
+  <h2>Areas of <span class="glow-warm">Improvement</span></h2>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 20px;">What I'm actively working on &mdash; for myself and the team</p>
+
+  <div class="grid-2" style="gap: 28px;">
+    <div class="glass glass-warm" style="padding: 24px;">
+      <h3 style="font-size: 0.95em; color: var(--accent3); margin-bottom: 14px;">The Problem</h3>
+      <ul style="font-size: 0.65em; line-height: 2;">
+        <li><strong>AI adoption isn't enough</strong> &mdash; using AI tools is step one, using them <em>rightly</em> in day-to-day systems is the real challenge</li>
+        <li><strong>Untested code reaching production</strong> &mdash; we've seen cases where code goes live without proper testing</li>
+        <li><strong>Quality gaps</strong> &mdash; sometimes speed wins over rigor, and that needs to change</li>
+        <li><strong>Incident prevention</strong> &mdash; we need to move from reactive fixes to proactive quality gates</li>
+      </ul>
+    </div>
+    <div>
+      <div class="glass glass-green" style="padding: 24px; margin-bottom: 16px;">
+        <h3 style="font-size: 0.95em; color: var(--accent2); margin-bottom: 14px;">What We're Doing About It</h3>
+        <ul style="font-size: 0.65em; line-height: 2;">
+          <li><strong>Building an AI-powered DevSuite</strong> &mdash; automated code review, testing, and quality gates before production</li>
+          <li><strong>Zero untested code policy</strong> &mdash; mandatory test coverage as part of the development workflow</li>
+          <li><strong>AI for quality, not just speed</strong> &mdash; shifting the team mindset from "AI writes code" to "AI ensures quality"</li>
+          <li><strong>CI/CD pipeline</strong> &mdash; automated build, test, scan, and deploy to catch issues early</li>
+        </ul>
+      </div>
+      <div class="callout callout-yellow" style="font-size: 0.58em;">
+        <strong>This year's mission:</strong> It's not just about AI adoption anymore &mdash; it's about using AI to build systems that are reliable, tested, and production-ready. No shortcuts.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- SLIDE: THANK YOU -->
 <!-- ============================================ -->
 <section class="center" data-background-gradient="radial-gradient(ellipse 900px 700px at 50% 40%, rgba(124,92,252,0.15) 0%, rgba(0,212,170,0.05) 40%, transparent 70%)">
   <h1 style="font-size: 3.8em; margin-bottom: 8px;">
