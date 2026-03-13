@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Widget Feature — Staging E2E Test Report</title>
+<title>Widget Feature — Staging Test Report (v2)</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/black.min.css" id="theme">
 <style>
@@ -31,6 +31,7 @@
     --glass-border: rgba(255,255,255,0.08);
     --red: #FF6F61;
     --orange: #FF9F43;
+    --green: #00D4AA;
   }
 
   .reveal { font-family: var(--r-main-font); }
@@ -48,881 +49,578 @@
   .reveal ul, .reveal ol { font-size: 0.82em; }
   .reveal li { margin-bottom: 10px; line-height: 1.5; }
 
-  /* Mesh BG */
-  .reveal .slides { background: transparent; }
-  .mesh-bg {
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: var(--r-background-color); z-index: -2;
+  .tag {
+    display: inline-block; padding: 4px 14px; border-radius: 20px;
+    font-size: 0.65em; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; margin: 2px 4px;
   }
-  .mesh-bg::before {
-    content: ''; position: absolute; top: -50%; left: -50%;
-    width: 200%; height: 200%;
-    background:
-      radial-gradient(ellipse 600px 600px at 20% 30%, rgba(255,111,97,0.08) 0%, transparent 70%),
-      radial-gradient(ellipse 500px 500px at 80% 60%, rgba(124,92,252,0.06) 0%, transparent 70%),
-      radial-gradient(ellipse 400px 400px at 50% 80%, rgba(0,180,216,0.04) 0%, transparent 70%);
-    animation: meshDrift 20s ease-in-out infinite;
+  .tag-pass { background: rgba(0,212,170,0.15); color: var(--accent2); border: 1px solid rgba(0,212,170,0.3); }
+  .tag-fail { background: rgba(255,111,97,0.15); color: var(--red); border: 1px solid rgba(255,111,97,0.3); }
+  .tag-blocked { background: rgba(255,159,67,0.15); color: var(--orange); border: 1px solid rgba(255,159,67,0.3); }
+  .tag-info { background: rgba(124,92,252,0.15); color: var(--accent); border: 1px solid rgba(124,92,252,0.3); }
+  .tag-new { background: rgba(0,180,216,0.15); color: var(--accent4); border: 1px solid rgba(0,180,216,0.3); }
+
+  .card {
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 16px; padding: 28px; margin: 12px 0;
   }
-  @keyframes meshDrift {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    33% { transform: translate(2%, -1%) rotate(1deg); }
-    66% { transform: translate(-1%, 2%) rotate(-1deg); }
-  }
-
-  #particles { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
-
-  /* Gradient Text */
-  .glow { background: linear-gradient(135deg, #7C5CFC 0%, #00D4AA 50%, #4D9EFF 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .glow-warm { background: linear-gradient(135deg, #FF6B9D 0%, #FFC93C 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .glow-blue { background: linear-gradient(135deg, #4D9EFF 0%, #00D4AA 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .glow-red { background: linear-gradient(135deg, #FF6F61 0%, #FF6B9D 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .glow-orange { background: linear-gradient(135deg, #FF9F43 0%, #FFC93C 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-
-  /* Glass Cards */
-  .glass {
-    background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border); border-radius: 16px; padding: 28px;
-    position: relative; overflow: hidden;
-  }
-  .glass::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-  }
-  .glass-accent { border-color: rgba(124,92,252,0.2); }
-  .glass-green { border-color: rgba(0,212,170,0.2); }
-  .glass-blue { border-color: rgba(77,158,255,0.2); }
-  .glass-red { border-color: rgba(255,111,97,0.25); }
-  .glass-orange { border-color: rgba(255,159,67,0.25); }
-  .glass-warm { border-color: rgba(255,107,157,0.2); }
-  .glass-yellow { border-color: rgba(255,201,60,0.2); }
-
-  .glass-accent::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, rgba(124,92,252,0.3), transparent); }
-  .glass-red::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,111,97,0.3), transparent); }
-  .glass-orange::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,159,67,0.3), transparent); }
-  .glass-green::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, rgba(0,212,170,0.3), transparent); }
-  .glass-blue::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, rgba(77,158,255,0.3), transparent); }
-
-  /* Badges */
-  .badge {
-    display: inline-block; padding: 5px 14px; border-radius: 100px;
-    font-size: 0.5em; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 1.5px; vertical-align: middle;
-    border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.04);
-  }
-  .badge-accent { background: rgba(124,92,252,0.12); color: #B794F6; border-color: rgba(124,92,252,0.25); }
-  .badge-green { background: rgba(0,212,170,0.1); color: var(--accent2); border-color: rgba(0,212,170,0.25); }
-  .badge-blue { background: rgba(77,158,255,0.1); color: var(--blue); border-color: rgba(77,158,255,0.25); }
-  .badge-red { background: rgba(255,111,97,0.15); color: var(--red); border-color: rgba(255,111,97,0.3); }
-  .badge-orange { background: rgba(255,159,67,0.12); color: var(--orange); border-color: rgba(255,159,67,0.3); }
-  .badge-yellow { background: rgba(255,201,60,0.1); color: var(--accent5); border-color: rgba(255,201,60,0.25); }
-  .badge-warm { background: rgba(255,107,157,0.1); color: var(--accent3); border-color: rgba(255,107,157,0.25); }
-
-  /* Grids */
-  .grid-2 { display: grid !important; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
-  .grid-3 { display: grid !important; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
-  .grid-4 { display: grid !important; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; }
-
-  /* Stats */
-  .stat-card {
-    text-align: center; padding: 28px 20px;
+  .glass-card {
     background: var(--glass); border: 1px solid var(--glass-border);
-    border-radius: 16px; position: relative; overflow: hidden;
+    border-radius: 16px; padding: 24px; backdrop-filter: blur(10px);
   }
-  .stat-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    opacity: 0.6;
+  .metric-row { display: flex; gap: 16px; margin: 16px 0; }
+  .metric-box {
+    flex: 1; padding: 20px; border-radius: 14px; text-align: center;
+    background: var(--glass); border: 1px solid var(--glass-border);
   }
-  .stat-card-red::before { background: linear-gradient(90deg, var(--red), var(--accent3)); }
-  .stat-card-orange::before { background: linear-gradient(90deg, var(--orange), var(--accent5)); }
-  .stat-card-green::before { background: linear-gradient(90deg, var(--accent2), var(--blue)); }
-  .stat-num {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 2.5em; font-weight: 700; line-height: 1;
-  }
-  .stat-label {
-    font-size: 0.55em; color: var(--dim); margin-top: 8px;
-    text-transform: uppercase; letter-spacing: 1px; font-weight: 500;
-  }
+  .metric-box .value { font-size: 2em; font-weight: 800; font-family: 'Space Grotesk'; }
+  .metric-box .label { font-size: 0.7em; color: var(--dim); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.1em; }
 
-  /* Screenshot Frame */
-  .screenshot-frame {
-    position: relative; border-radius: 12px; overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.08);
-    box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 40px rgba(124,92,252,0.05);
-  }
-  .screenshot-frame img { display: block; width: 100%; }
-  .screenshot-frame::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); z-index: 1;
-  }
-  .screenshot-frame-red { border-color: rgba(255,111,97,0.3); box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 40px rgba(255,111,97,0.1); }
-  .screenshot-frame-red::before { background: linear-gradient(90deg, transparent, rgba(255,111,97,0.3), transparent); }
-
-  /* Pipeline */
-  .pipeline { display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap; }
-  .pipe-step { text-align: center; padding: 14px 8px; }
-  .pipe-icon {
-    width: 52px; height: 52px; border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1em; font-weight: 700; margin: 0 auto 10px;
-    font-family: 'Space Grotesk'; position: relative;
-  }
-  .pipe-icon::after {
-    content: ''; position: absolute; inset: -2px; border-radius: 16px;
-    background: inherit; opacity: 0.3; filter: blur(8px); z-index: -1;
-  }
-  .pipe-name { font-size: 0.6em; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
-  .pipe-desc { font-size: 0.42em; color: var(--dim); max-width: 90px; margin: 4px auto 0; }
-  .pipe-arrow { font-size: 1.1em; color: rgba(124,92,252,0.4); padding: 0 2px; margin-top: -20px; }
-
-  /* Code */
   .code-block {
-    background: rgba(0,0,0,0.4); border-radius: 12px; padding: 20px 24px;
-    font-family: 'JetBrains Mono', monospace; font-size: 0.55em;
-    line-height: 1.8; border: 1px solid rgba(255,255,255,0.05);
-    text-align: left; position: relative; overflow: hidden;
-    white-space: pre !important; overflow-x: auto;
+    background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px; padding: 16px 20px; font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55em; line-height: 1.6; overflow-x: auto; color: #B8C4D8;
   }
-  .code-block::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2)); opacity: 0.4;
-  }
+  .code-block .keyword { color: var(--accent3); }
+  .code-block .string { color: var(--accent2); }
+  .code-block .field { color: var(--accent4); }
+  .code-block .comment { color: var(--dim); }
 
-  /* Callout */
-  .callout { background: rgba(124,92,252,0.04); border-left: 3px solid var(--accent); border-radius: 0 12px 12px 0; padding: 16px 20px; margin: 16px 0; font-size: 0.72em; }
-  .callout-red { background: rgba(255,111,97,0.06); border-left-color: var(--red); }
-  .callout-orange { background: rgba(255,159,67,0.06); border-left-color: var(--orange); }
-  .callout-green { background: rgba(0,212,170,0.04); border-left-color: var(--accent2); }
-  .callout-blue { background: rgba(77,158,255,0.04); border-left-color: var(--blue); }
+  .screenshot { border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 32px rgba(0,0,0,0.4); max-height: 420px; }
+  .screenshot-sm { max-height: 340px; }
 
-  /* Table */
-  .reveal table { width: 100%; border-collapse: collapse; font-size: 0.65em; }
-  .reveal table th {
-    background: rgba(124,92,252,0.06); padding: 12px 14px; text-align: left;
-    font-weight: 600; text-transform: uppercase; font-size: 0.8em;
-    letter-spacing: 1px; color: var(--dim); border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-  .reveal table td { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.03); }
-  .reveal table tr:hover td { background: rgba(124,92,252,0.03); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
 
-  /* Chip */
-  .chip {
-    display: inline-block; padding: 6px 14px; border-radius: 100px;
-    font-size: 0.6em; font-weight: 500; margin: 3px;
-    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-  }
+  .divider { border: none; border-top: 1px solid var(--glass-border); margin: 20px 0; }
 
-  /* Timeline */
-  .tl { padding-left: 32px; position: relative; font-size: 0.72em; }
-  .tl::before {
-    content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px;
-    background: linear-gradient(180deg, var(--accent), var(--accent2), var(--accent4));
-    border-radius: 2px;
-  }
-  .tl-item { position: relative; margin-bottom: 22px; padding-left: 24px; }
-  .tl-item::before {
-    content: ''; position: absolute; left: -26px; top: 5px;
-    width: 12px; height: 12px; border-radius: 50%;
-    background: var(--accent); border: 2px solid var(--r-background-color);
-    box-shadow: 0 0 12px rgba(124,92,252,0.4);
-  }
-  .tl-item-red::before { background: var(--red); box-shadow: 0 0 12px rgba(255,111,97,0.4); }
-  .tl-item-orange::before { background: var(--orange); box-shadow: 0 0 12px rgba(255,159,67,0.4); }
-  .tl-item-green::before { background: var(--accent2); box-shadow: 0 0 12px rgba(0,212,170,0.4); }
-  .tl-step { font-size: 0.8em; font-weight: 600; color: var(--accent); font-family: 'JetBrains Mono'; }
-  .tl-item h4 { font-size: 1em; font-weight: 600; margin: 2px 0; }
-  .tl-item p { color: var(--dim); font-size: 0.88em; margin: 0; }
+  table.styled { width: 100%; border-collapse: collapse; font-size: 0.7em; }
+  table.styled th { background: rgba(124,92,252,0.1); color: var(--accent); padding: 10px 14px; text-align: left; font-weight: 600; border-bottom: 2px solid rgba(124,92,252,0.2); }
+  table.styled td { padding: 10px 14px; border-bottom: 1px solid var(--glass-border); }
+  table.styled tr:hover td { background: rgba(255,255,255,0.02); }
 
-  /* Helpers */
-  .dim { color: var(--dim); }
-  .small { font-size: 0.65em; color: var(--dim); }
-  .tiny { font-size: 0.5em; color: var(--dim); }
-  .mono { font-family: 'JetBrains Mono', monospace; }
-  .mt-0 { margin-top: 0 !important; }
-  .mt-1 { margin-top: 12px !important; }
-  .mt-2 { margin-top: 24px !important; }
-  .mt-3 { margin-top: 36px !important; }
-  .mb-0 { margin-bottom: 0 !important; }
-  .mb-1 { margin-bottom: 12px !important; }
+  .pill { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.6em; font-weight: 600; }
+  .pill-red { background: rgba(255,111,97,0.2); color: var(--red); }
+  .pill-green { background: rgba(0,212,170,0.2); color: var(--green); }
+  .pill-orange { background: rgba(255,159,67,0.2); color: var(--orange); }
+  .pill-blue { background: rgba(77,158,255,0.2); color: var(--blue); }
 
-  .dot {
-    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
-    margin-right: 8px; vertical-align: middle; box-shadow: 0 0 8px currentColor;
-  }
-
-  /* Severity indicators */
-  .severity-critical { color: var(--red); }
-  .severity-high { color: var(--orange); }
-  .severity-medium { color: var(--accent5); }
-  .severity-pass { color: var(--accent2); }
-
-  /* Animated border */
-  .anim-border {
-    position: relative; border-radius: 16px; padding: 2px;
-    background: linear-gradient(135deg, var(--red), var(--accent3), var(--accent5));
-    background-size: 300% 300%; animation: borderFlow 4s ease-in-out infinite;
-  }
-  .anim-border-inner { background: var(--r-background-color); border-radius: 14px; padding: 28px; }
-  @keyframes borderFlow { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-
-  /* Progress bar */
-  .reveal .progress span { background: linear-gradient(90deg, var(--red), var(--accent)); }
-  .reveal .slide-number { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--dim); }
-  .reveal .controls { color: var(--accent); }
-
-  /* Fragment animations */
-  .reveal .slides section .fragment { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-  .reveal .slides section .fragment.visible { opacity: 1; }
-  .reveal .slides section .fragment.fade-up { transform: translateY(30px); opacity: 0; }
-  .reveal .slides section .fragment.fade-up.visible { transform: translateY(0); opacity: 1; }
-
-  @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-  .animate-in { animation: fadeInUp 0.7s cubic-bezier(0.4, 0, 0.2, 1) both; }
-  .pulse { animation: pulse 2s ease-in-out infinite; }
-  .d1 { animation-delay: 0.1s; } .d2 { animation-delay: 0.2s; } .d3 { animation-delay: 0.3s; } .d4 { animation-delay: 0.4s; }
+  .reveal .slides section .fragment.current-visible.visible:not(.current-fragment) { display: none; }
 </style>
 </head>
 <body>
-
-<div class="mesh-bg"></div>
-<canvas id="particles"></canvas>
-
 <div class="reveal">
 <div class="slides">
 
-<!-- ===== SLIDE 1: TITLE ===== -->
-<section class="center" data-background-gradient="radial-gradient(ellipse 800px 600px at 50% 40%, rgba(255,111,97,0.12) 0%, rgba(124,92,252,0.04) 40%, transparent 70%)">
-  <div style="margin-bottom: 24px;">
-    <span class="badge badge-red" style="font-size:0.45em; letter-spacing: 2px;">STAGING E2E TEST REPORT</span>
+<!-- Slide 1: Title -->
+<section data-background-gradient="radial-gradient(ellipse at 20% 50%, rgba(124,92,252,0.15) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(0,180,216,0.1) 0%, transparent 40%)">
+  <div class="center">
+    <p style="font-size:0.6em; color:var(--dim); letter-spacing:0.2em; text-transform:uppercase;">Pi Platform &middot; Agentic</p>
+    <h1 style="font-size:2.8em; margin:20px 0;">Widget Feature<br><span style="color:var(--accent);">Staging Test Report</span></h1>
+    <p style="color:var(--dim); font-size:0.75em; margin-top:30px;">
+      Domain: <span style="color:var(--accent4)">PG</span> &nbsp;&middot;&nbsp;
+      Date: <span style="color:var(--accent2)">2026-03-13</span> &nbsp;&middot;&nbsp;
+      Version: <span style="color:var(--accent5)">v2 (Deep Dive)</span>
+    </p>
+    <p style="font-size:0.65em; color:var(--dim); margin-top:10px;">Tester: Girish Kumar &middot; girish3.kumar@paytm.com</p>
   </div>
-  <h1 style="font-size: 3.6em; margin-bottom: 8px;">
-    <span class="glow">Widget Feature</span>
-  </h1>
-  <p style="font-size: 1em; color: var(--dim); font-weight: 300; margin-top: 8px;">
-    End-to-End Testing on Pi Platform Staging<br>
-    <span style="color: var(--accent3);">Agentic Decision Agent Pipeline</span>
-  </p>
-
-  <div class="grid-4" style="max-width: 720px; margin: 48px auto 0;">
-    <div class="stat-card stat-card-red">
-      <div class="stat-num glow-red">4</div>
-      <div class="stat-label">Issues Found</div>
-    </div>
-    <div class="stat-card stat-card-orange">
-      <div class="stat-num glow-orange">2</div>
-      <div class="stat-label">Critical</div>
-    </div>
-    <div class="stat-card stat-card-green">
-      <div class="stat-num glow">3</div>
-      <div class="stat-label">Repos Reviewed</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num glow-blue">13</div>
-      <div class="stat-label">Screenshots</div>
-    </div>
-  </div>
-
-  <p class="tiny" style="margin-top: 52px; letter-spacing: 2px;">PAYTM &middot; PI PLATFORM &middot; PG DOMAIN &middot; MARCH 13, 2026</p>
 </section>
 
-<!-- ===== SLIDE 2: TEST SUMMARY ===== -->
+<!-- Slide 2: Test Summary Dashboard -->
 <section>
-  <h2><span class="glow-warm">Test Summary</span></h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 24px;">Overall results from staging E2E testing of widget functionality</p>
-
-  <table>
-    <thead>
-      <tr><th>Test Area</th><th>Status</th><th>Details</th></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Widget Code Review (3 repos)</td>
-        <td><span class="badge badge-green">PASS</span></td>
-        <td>Well-structured across pi-rule-admin, pi-rule-engine, pi-botcore</td>
-      </tr>
-      <tr>
-        <td>Widget UI Panel (Admin)</td>
-        <td><span class="badge badge-red">FAIL</span></td>
-        <td>403 errors on Widget Service API calls</td>
-      </tr>
-      <tr>
-        <td>Flow Activation with Widgets</td>
-        <td><span class="badge badge-red">FAIL</span></td>
-        <td>Event schema missing required domain attributes</td>
-      </tr>
-      <tr>
-        <td>GraphQL API Consistency</td>
-        <td><span class="badge badge-orange">FAIL</span></td>
-        <td>List queries return empty arrays despite non-zero counts</td>
-      </tr>
-      <tr>
-        <td>E2E via Event Gateway</td>
-        <td><span class="badge badge-yellow">BLOCKED</span></td>
-        <td>No deployed widget flow exists in staging</td>
-      </tr>
-    </tbody>
+  <h2 style="font-size:1.8em;">Test Summary</h2>
+  <div class="metric-row">
+    <div class="metric-box">
+      <div class="value" style="color:var(--accent2);">3</div>
+      <div class="label">Queries Tested</div>
+    </div>
+    <div class="metric-box">
+      <div class="value" style="color:var(--accent);">1</div>
+      <div class="label">Mutation Tested</div>
+    </div>
+    <div class="metric-box">
+      <div class="value" style="color:var(--red);">3/3</div>
+      <div class="label">Queries 403</div>
+    </div>
+    <div class="metric-box">
+      <div class="value" style="color:var(--accent4);">19</div>
+      <div class="label">Screenshots</div>
+    </div>
+  </div>
+  <table class="styled" style="margin-top:16px;">
+    <tr><th>Test Area</th><th>Status</th><th>Details</th></tr>
+    <tr><td>Widget UI — View Mode</td><td><span class="pill pill-green">PASS</span></td><td>Canvas renders widgets, panel opens correctly</td></tr>
+    <tr><td>Widget UI — Edit Mode</td><td><span class="pill pill-orange">PARTIAL</span></td><td>Panel fields editable but widget list empty (403)</td></tr>
+    <tr><td>Widget GraphQL Queries</td><td><span class="pill pill-red">FAIL</span></td><td>All 3 queries return 403 — Keycloak audience missing</td></tr>
+    <tr><td>Widget Mutation (upsert)</td><td><span class="pill pill-green">PASS</span></td><td>Schema validated, accepts correct payload structure</td></tr>
+    <tr><td>DA Node API (with widgets)</td><td><span class="pill pill-green">PASS</span></td><td>Full widget config returned with inputParamsList</td></tr>
+    <tr><td>Widget E2E via Event Gateway</td><td><span class="pill pill-orange">BLOCKED</span></td><td>No deployed flow with widgets + 403 on Widget Service</td></tr>
   </table>
-
-  <div class="callout-red" style="margin-top: 20px; font-size: 0.65em;">
-    <strong>Bottom Line:</strong> Widget code implementation is solid, but staging environment configuration issues block end-to-end testing. Two critical fixes needed before E2E validation is possible.
-  </div>
 </section>
 
-<!-- ===== SLIDE 3: WIDGET ARCHITECTURE ===== -->
+<!-- Slide 3: Widget Architecture -->
 <section>
-  <h2>Widget <span class="glow-blue">Architecture</span></h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 20px;">How widgets flow through the Agentic pipeline</p>
-
-  <div class="pipeline" style="margin-bottom: 20px;">
-    <div class="pipe-step">
-      <div class="pipe-icon" style="background: rgba(77,158,255,0.15); color: var(--blue);">EG</div>
-      <div class="pipe-name">Event GW</div>
-      <div class="pipe-desc">Validates &amp; routes</div>
-    </div>
-    <div class="pipe-arrow">&rarr;</div>
-    <div class="pipe-step">
-      <div class="pipe-icon" style="background: rgba(124,92,252,0.15); color: #B794F6;">RE</div>
-      <div class="pipe-name">Rule Engine</div>
-      <div class="pipe-desc">JMESPath resolve</div>
-    </div>
-    <div class="pipe-arrow">&rarr;</div>
-    <div class="pipe-step">
-      <div class="pipe-icon" style="background: rgba(0,212,170,0.15); color: var(--accent2);">BC</div>
-      <div class="pipe-name">BotCore</div>
-      <div class="pipe-desc">Widget tool build</div>
-    </div>
-    <div class="pipe-arrow">&rarr;</div>
-    <div class="pipe-step">
-      <div class="pipe-icon" style="background: rgba(255,201,60,0.15); color: var(--accent5);">LLM</div>
-      <div class="pipe-name">LLM Agent</div>
-      <div class="pipe-desc">Decides invoke</div>
-    </div>
-    <div class="pipe-arrow">&rarr;</div>
-    <div class="pipe-step">
-      <div class="pipe-icon" style="background: rgba(255,107,157,0.15); color: var(--accent3);">WH</div>
-      <div class="pipe-name">Widget Handler</div>
-      <div class="pipe-desc">Skips LLM RT</div>
-    </div>
-    <div class="pipe-arrow">&rarr;</div>
-    <div class="pipe-step">
-      <div class="pipe-icon" style="background: rgba(0,180,216,0.15); color: var(--accent4);">WS</div>
-      <div class="pipe-name">Widget Svc</div>
-      <div class="pipe-desc">Transform API</div>
-    </div>
+  <h2 style="font-size:1.8em;">Widget Architecture</h2>
+  <div class="code-block" style="font-size:0.5em;">
+<span class="comment">// Widget Pipeline</span>
+<span class="keyword">Event Payload</span>
+    &darr;
+<span class="field">pi-rule-engine</span> (DecisionAgentExecutor)
+    ├── Resolves widget input params via <span class="string">JMESPath</span>
+    ├── Classifies: RESOLVED / UNRESOLVED / LET_LLM_DECIDE
+    ├── Auto-zips same-size list params &rarr; <span class="string">List&lt;Map&gt;</span>
+    ├── Builds <span class="keyword">widget_properties</span> map
+    &darr;
+<span class="field">pi-botcore</span>
+    ├── <span class="keyword">widget_tool_builder</span>: converts widget_properties &rarr; OpenAI function tools
+    ├── LangGraph agent loop: LLM decides to invoke widget tool
+    ├── <span class="keyword">widget_handler</span> node: skips LLM round-trip (optimization)
+    ├── <span class="field">WidgetServiceClient</span>: POST /api/v1/domain/{domain}/widgets/transform
+    ├── <span class="keyword">strip_widget_messages</span>: cleans session history
+    &darr;
+<span class="string">Response with widget_details</span> (rendered widget data)
   </div>
-
-  <div class="grid-2">
-    <div class="glass glass-accent" style="padding: 20px;">
-      <h3 style="color: #B794F6; font-size: 0.9em; margin-bottom: 12px;">Rule Engine (JMESPath Resolution)</h3>
-      <ul style="font-size: 0.65em; margin: 0; padding-left: 16px;">
-        <li>Resolves widget params from PAYLOAD, CONFIG, FEATURE, LIST, VARIABLE, FUNCTION</li>
-        <li>Classifies: <span class="mono" style="color: var(--accent2);">RESOLVED</span> / <span class="mono" style="color: var(--accent5);">UNRESOLVED</span> / <span class="mono" style="color: var(--accent3);">LET_LLM_DECIDE</span></li>
-        <li>Auto-zips same-size lists into <code>List&lt;Map&gt;</code></li>
-        <li>Sends <code>widget_properties</code> to BotCore</li>
-      </ul>
-    </div>
-    <div class="glass glass-green" style="padding: 20px;">
-      <h3 style="color: var(--accent2); font-size: 0.9em; margin-bottom: 12px;">BotCore (Widget Handling)</h3>
-      <ul style="font-size: 0.65em; margin: 0; padding-left: 16px;">
-        <li>Converts <code>widget_properties</code> &rarr; OpenAI function tools</li>
-        <li><code>widget_handler</code> node skips LLM round-trip (optimization)</li>
-        <li>Calls Widget Service <code>/api/v1/domain/{d}/widgets/transform</code></li>
-        <li><code>strip_widget_messages()</code> cleans session history</li>
-      </ul>
-    </div>
-  </div>
+  <p style="font-size:0.65em; color:var(--dim); margin-top:12px;">Widget Service URL: <code style="color:var(--accent4);">pi-agentic-widget-service.internal.ap-south-1.staging.ocltpap-v2.risk.pai.mypaytm.com</code></p>
 </section>
 
-<!-- ===== SLIDE 4: STAGING EXPLORATION ===== -->
+<!-- Slide 4: V1 ACTIVE — Canvas View -->
 <section>
-  <h2>Staging <span class="glow">Exploration</span></h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 20px;">Navigation through the Pi Risk Admin UI on staging environment</p>
-
+  <h2 style="font-size:1.6em;">V1 Active — DA Canvas <span class="tag tag-info">VIEW MODE</span></h2>
   <div class="grid-2">
     <div>
-      <p style="font-size: 0.72em; margin-bottom: 10px; font-weight: 600;">Decision Flows List</p>
-      <div class="screenshot-frame">
-        <img src="widget-testing/staging-after-login.png" alt="Decision Flows List">
-      </div>
-      <p class="small mt-1">57 flows across 6 pages in PG domain. Searched for "widget" &mdash; no direct match in flow names.</p>
+      <img src="widget-testing/staging-test-widget-dn-detail.png" class="screenshot screenshot-sm" style="width:100%;">
+      <p style="font-size:0.55em; color:var(--dim); margin-top:8px;">4 Input nodes + 1 Widget + KB + Agent + LLM</p>
     </div>
-    <div>
-      <p style="font-size: 0.72em; margin-bottom: 10px; font-weight: 600;">ActionsAndDA Flow Canvas</p>
-      <div class="screenshot-frame">
-        <img src="widget-testing/staging-actionsandda-flow.png" alt="ActionsAndDA Flow">
-      </div>
-      <p class="small mt-1">Flow: Start &rarr; Action (<code>open_meteo_weather</code>) &rarr; Decision (<code>test_widget</code>, LIVE). Status: <span style="color: var(--accent5);">DRAFT</span>.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ===== SLIDE 5: WIDGET DA CANVAS ===== -->
-<section>
-  <h2>test_widget <span class="glow-blue">Decision Agent</span></h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 16px;">The only widget-enabled Decision Agent node in staging (V1, ACTIVE)</p>
-
-  <div class="screenshot-frame" style="max-width: 85%; margin: 0 auto;">
-    <img src="widget-testing/staging-test-widget-dn-detail.png" alt="test_widget DA Canvas">
-  </div>
-
-  <div class="grid-4 mt-2" style="font-size: 0.65em;">
-    <div class="glass" style="padding: 14px; text-align: center;">
-      <div style="font-size: 1.8em; margin-bottom: 6px;">4</div>
-      <div class="dim" style="font-size: 0.8em;">Input Params</div>
-      <div class="mono" style="font-size: 0.7em; color: var(--blue); margin-top: 4px;">amount, bank_name, bank_country, date_of_birth</div>
-    </div>
-    <div class="glass" style="padding: 14px; text-align: center;">
-      <div style="font-size: 1.8em; margin-bottom: 6px;">1</div>
-      <div class="dim" style="font-size: 0.8em;">Widget</div>
-      <div class="mono" style="font-size: 0.7em; color: var(--accent3); margin-top: 4px;">transaction_list</div>
-    </div>
-    <div class="glass" style="padding: 14px; text-align: center;">
-      <div style="font-size: 1.8em; margin-bottom: 6px;">1</div>
-      <div class="dim" style="font-size: 0.8em;">KB + Agent</div>
-      <div class="mono" style="font-size: 0.7em; color: var(--accent2); margin-top: 4px;">Knowledge Base</div>
-    </div>
-    <div class="glass" style="padding: 14px; text-align: center;">
-      <div style="font-size: 1.8em; margin-bottom: 6px;">1</div>
-      <div class="dim" style="font-size: 0.8em;">LLM Model</div>
-      <div class="mono" style="font-size: 0.7em; color: #B794F6; margin-top: 4px;">Configured</div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== SLIDE 6: ISSUE 1 - Widget 403 ===== -->
-<section data-background-gradient="radial-gradient(ellipse 600px 400px at 50% 50%, rgba(255,111,97,0.08) 0%, transparent 70%)">
-  <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 4px;">
-    <span class="badge badge-red" style="font-size: 0.55em;">CRITICAL</span>
-    <span class="badge" style="font-size: 0.45em;">ISSUE-1</span>
-  </div>
-  <h2 style="margin-bottom: 4px;">Widget Panel <span class="glow-red">403 Errors</span></h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 16px;">Widget Service API calls blocked by Keycloak audience misconfiguration</p>
-
-  <div class="grid-2">
-    <div class="screenshot-frame screenshot-frame-red">
-      <img src="widget-testing/staging-widget-panel-403-errors.png" alt="Widget 403 Errors">
-    </div>
-    <div>
-      <div class="glass glass-red" style="padding: 20px; margin-bottom: 16px;">
-        <h3 style="color: var(--red); font-size: 0.85em; margin-bottom: 10px;">Failing GraphQL Queries</h3>
-        <div class="code-block" style="font-size: 0.85em; padding: 14px;">WidgetVersions
-  {domain: "PG", widgetName: "transaction_list"}
-  &rarr; HTTP 403
-
-WidgetDataSchema
-  {domain: "PG", version: "v1", widgetName: "transaction_list"}
-  &rarr; HTTP 403</div>
-      </div>
-      <div class="glass" style="padding: 20px;">
-        <h3 style="font-size: 0.85em; margin-bottom: 10px;">Root Cause</h3>
-        <p style="font-size: 0.68em; margin: 0;">JWT token audiences include:</p>
-        <div style="font-size: 0.6em; margin-top: 8px;">
-          <span class="chip" style="border-color: rgba(0,212,170,0.3);">com.paytm.pi.rule-admin</span>
-          <span class="chip" style="border-color: rgba(0,212,170,0.3);">com.paytm.pi.event-registry</span>
-          <span class="chip" style="border-color: rgba(0,212,170,0.3);">com.paytm.pi.feature-store</span>
-          <span class="chip" style="border-color: rgba(255,111,97,0.4); color: var(--red);">Widget Service MISSING</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== SLIDE 7: ISSUE 1 IMPACT ===== -->
-<section>
-  <h2>Issue-1 <span class="glow-red">Impact</span></h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 24px;">What breaks when the Widget Service audience is missing from Keycloak JWT</p>
-
-  <div class="grid-3">
-    <div class="glass glass-red" style="padding: 20px;">
-      <div style="font-size: 2em; margin-bottom: 8px;">1</div>
-      <h3 style="color: var(--red); font-size: 0.85em;">Cannot View Versions</h3>
-      <p style="font-size: 0.62em; color: var(--dim);">Widget version dropdown is empty. Users cannot select which version to use.</p>
-    </div>
-    <div class="glass glass-red" style="padding: 20px;">
-      <div style="font-size: 2em; margin-bottom: 8px;">2</div>
-      <h3 style="color: var(--red); font-size: 0.85em;">Cannot Load Schema</h3>
-      <p style="font-size: 0.62em; color: var(--dim);">Widget data schema fails to load. Panel shows "No schema found for this widget version."</p>
-    </div>
-    <div class="glass glass-red" style="padding: 20px;">
-      <div style="font-size: 2em; margin-bottom: 8px;">3</div>
-      <h3 style="color: var(--red); font-size: 0.85em;">Cannot Map Params</h3>
-      <p style="font-size: 0.62em; color: var(--dim);">Input parameter mapping section is completely empty. Cannot configure widget-to-canvas bindings.</p>
-    </div>
-  </div>
-
-  <div class="callout-red mt-2" style="font-size: 0.65em;">
-    <strong>Fix:</strong> Register the Widget Service as a Keycloak client, add <code>com.paytm.pi.widget-service</code> (or equivalent) to the JWT audience list in the token exchange configuration.
-  </div>
-</section>
-
-<!-- ===== SLIDE 8: ISSUE 2 - Flow Activation ===== -->
-<section data-background-gradient="radial-gradient(ellipse 600px 400px at 50% 50%, rgba(255,159,67,0.08) 0%, transparent 70%)">
-  <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 4px;">
-    <span class="badge badge-orange" style="font-size: 0.55em;">HIGH</span>
-    <span class="badge" style="font-size: 0.45em;">ISSUE-2</span>
-  </div>
-  <h2 style="margin-bottom: 4px;">Flow Activation <span class="glow-orange">Blocked</span></h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 16px;">Event schema mismatch prevents ActionsAndDA flow from going live</p>
-
-  <div class="grid-2">
-    <div class="screenshot-frame" style="border-color: rgba(255,159,67,0.3);">
-      <img src="widget-testing/staging-activation-error.png" alt="Activation Error">
-    </div>
-    <div>
-      <div class="glass glass-orange" style="padding: 18px; margin-bottom: 14px;">
-        <h3 style="color: var(--orange); font-size: 0.85em; margin-bottom: 8px;">Error Message</h3>
-        <div class="code-block" style="font-size: 0.75em; padding: 12px; white-space: pre-wrap !important; word-wrap: break-word;">Decision Agent (id=293, name=test_widget) requires domain attribute(s) not available: [amount, bank_name, bank_country, date_of_birth]</div>
-      </div>
-      <div class="glass" style="padding: 18px;">
-        <h3 style="font-size: 0.85em; margin-bottom: 10px;">Schema Comparison</h3>
-        <table style="font-size: 0.95em;">
-          <tr><th>test_sarabjeet_event has</th><th>test_widget needs</th></tr>
-          <tr><td><code>customerId1</code> (String)</td><td><code>amount</code> (String)</td></tr>
-          <tr><td style="color: var(--dim);">&mdash; nothing else &mdash;</td><td><code>bank_name</code> (String)</td></tr>
-          <tr><td></td><td><code>bank_country</code> (String)</td></tr>
-          <tr><td></td><td><code>date_of_birth</code> (String)</td></tr>
-        </table>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== SLIDE 9: ISSUE 3 & 4 ===== -->
-<section>
-  <h2>Additional <span class="glow">Issues</span></h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 20px;">Two more issues discovered during staging investigation</p>
-
-  <div class="grid-2">
-    <div class="anim-border" style="background: linear-gradient(135deg, var(--accent5), var(--orange), var(--accent3)); background-size: 300% 300%; animation: borderFlow 4s ease-in-out infinite;">
-      <div class="anim-border-inner">
-        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-          <span class="badge badge-yellow" style="font-size: 0.55em;">MEDIUM</span>
-          <span style="font-size: 0.7em; font-weight: 700;">ISSUE-3</span>
-        </div>
-        <h3 style="font-size: 1em; margin-bottom: 8px;">GraphQL Resolver Bug</h3>
-        <p style="font-size: 0.68em; color: var(--dim); margin-bottom: 12px;">
-          List queries return <code>totalElements &gt; 0</code> but the actual array is empty.
-        </p>
-        <div class="code-block" style="font-size: 0.8em; padding: 12px;">// Widget nodes search
-{ decisionNodes: [],
-  totalElements: 2 }
-
-// Active flows query
-{ decisionFlows: [],
-  totalElements: 29 }</div>
-        <p style="font-size: 0.6em; color: var(--dim); margin-top: 10px;">Backend counts entities correctly but fails to serialize them. Likely a data mapping bug in the GraphQL resolver.</p>
-      </div>
-    </div>
-
-    <div class="glass glass-red" style="padding: 24px;">
-      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-        <span class="badge badge-orange" style="font-size: 0.55em;">HIGH</span>
-        <span style="font-size: 0.7em; font-weight: 700;">ISSUE-4</span>
-      </div>
-      <h3 style="font-size: 1em; margin-bottom: 8px;">No Deployed Widget Flow</h3>
-      <p style="font-size: 0.68em; color: var(--dim); margin-bottom: 16px;">
-        No Decision Flow containing a Widget-enabled Decision Agent is currently deployed in the PG domain on staging.
-      </p>
-      <div style="font-size: 0.65em;">
-        <p style="margin-bottom: 8px;"><strong>Blocked by:</strong></p>
-        <ul style="padding-left: 16px; margin: 0;">
-          <li>Issue-1: Cannot configure widget params (403)</li>
-          <li>Issue-2: Event schema mismatch prevents activation</li>
-          <li>Result: Full E2E pipeline cannot be validated</li>
-        </ul>
-      </div>
-      <div class="callout-red mt-2" style="font-size: 0.62em; margin-bottom: 0;">
-        <strong>This means:</strong> Event Gateway &rarr; Rule Engine &rarr; BotCore &rarr; Widget Service has never been tested end-to-end on staging.
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== SLIDE 10: CODE REVIEW ===== -->
-<section>
-  <h2>Code Review <span class="glow-blue">Results</span></h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 20px;">Widget implementation across all 3 core repos is solid</p>
-
-  <div class="grid-3">
-    <div class="glass glass-accent" style="padding: 20px;">
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-        <span class="badge badge-accent" style="font-size: 0.55em;">PI-RULE-ADMIN</span>
-        <span class="badge badge-green" style="font-size: 0.5em;">PASS</span>
-      </div>
-      <ul style="font-size: 0.62em; margin: 0; padding-left: 14px;">
-        <li>Widget model with hierarchical <code>inputParamsList</code></li>
-        <li><code>collectLeafParams()</code> recursive extraction</li>
-        <li>JMESPath validation at save time (DA_161)</li>
-        <li>Unique alias name enforcement</li>
-        <li>Domain attribute validation on flow activation</li>
-      </ul>
-    </div>
-    <div class="glass glass-blue" style="padding: 20px;">
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-        <span class="badge badge-blue" style="font-size: 0.55em;">PI-RULE-ENGINE</span>
-        <span class="badge badge-green" style="font-size: 0.5em;">PASS</span>
-      </div>
-      <ul style="font-size: 0.62em; margin: 0; padding-left: 14px;">
-        <li>Multi-source JMESPath resolution (6 sources)</li>
-        <li>Auto-zipping same-size list params</li>
-        <li>Graceful null handling in JMESPath eval</li>
-        <li>Unresolved params marked <code>LET_LLM_DECIDE</code></li>
-        <li><code>widget_properties</code> in BotCore request</li>
-      </ul>
-    </div>
-    <div class="glass glass-green" style="padding: 20px;">
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-        <span class="badge badge-green" style="font-size: 0.55em;">PI-BOTCORE</span>
-        <span class="badge badge-green" style="font-size: 0.5em;">PASS</span>
-      </div>
-      <ul style="font-size: 0.62em; margin: 0; padding-left: 14px;">
-        <li>Widget tools skip Action Executor</li>
-        <li><code>widget_handler</code> skips LLM round-trip</li>
-        <li>Widget Service client (HS256 JWT, 3 retries)</li>
-        <li><code>strip_widget_messages()</code> session cleanup</li>
-        <li>910 lines of tests (2 test files)</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="callout-green mt-2" style="font-size: 0.65em;">
-    <strong>Verdict:</strong> The widget feature is well-implemented in code. All issues found are environment/configuration problems, not code defects.
-  </div>
-</section>
-
-<!-- ===== SLIDE 11: EVENT & WIDGET CONFIG ===== -->
-<section>
-  <h2>Event <span class="glow">Configuration</span></h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 16px;">Current state of test_sarabjeet_event and the widget node configuration</p>
-
-  <div class="grid-2">
-    <div>
-      <p style="font-size: 0.72em; font-weight: 600; margin-bottom: 10px;">Event Schema (test_sarabjeet_event)</p>
-      <div class="screenshot-frame">
-        <img src="widget-testing/staging-sarabjeet-event-schema.png" alt="Event Schema">
-      </div>
-      <p class="small mt-1">LIVE (V1) &mdash; Only field: <code>customerId1</code> (String). Source: <code>/chat/completion</code>. Missing 4 required fields for the widget flow.</p>
-    </div>
-    <div>
-      <p style="font-size: 0.72em; font-weight: 600; margin-bottom: 10px;">Widget Config Panel (403 blocked)</p>
-      <div class="screenshot-frame screenshot-frame-red">
-        <img src="widget-testing/staging-widget-config-panel-403.png" alt="Widget Config Panel">
-      </div>
-      <p class="small mt-1">Widget name: <code>transaction_list</code>. Version dropdown empty. Schema unavailable. Input parameters section shows "No schema found."</p>
-    </div>
-  </div>
-</section>
-
-<!-- ===== SLIDE 12: EXPECTED E2E FLOW ===== -->
-<section>
-  <h2>Expected <span class="glow">E2E Flow</span></h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 16px;">When all issues are resolved, this is the expected payload and flow</p>
-
-  <div class="grid-2">
-    <div>
-      <h3 style="font-size: 0.9em; color: var(--blue); margin-bottom: 10px;">Event Gateway Payload</h3>
-      <div class="code-block" style="font-size: 0.85em;">POST /v1/domains/PG/event/process
-
+    <div class="glass-card" style="font-size:0.7em;">
+      <h4 style="color:var(--accent); margin-bottom:12px;">V1 Widget Config (from GraphQL)</h4>
+      <div class="code-block" style="font-size:0.75em;">
 {
-  "eventName": "test_sarabjeet_event",
-  "payload": {
-    "customerId1": "CUST-12345",
-    "amount": "5000",
-    "bank_name": "HDFC Bank",
-    "bank_country": "India",
-    "date_of_birth": "1990-01-15"
-  }
-}</div>
-    </div>
-    <div>
-      <h3 style="font-size: 0.9em; color: var(--accent2); margin-bottom: 10px;">Execution Pipeline</h3>
-      <div class="tl">
-        <div class="tl-item">
-          <div class="tl-step">Step 1</div>
-          <h4>Event Gateway</h4>
-          <p>Validates against schema, enriches, routes to Rule Engine</p>
-        </div>
-        <div class="tl-item">
-          <div class="tl-step">Step 2</div>
-          <h4>Rule Engine DAG</h4>
-          <p>Resolves 4 input params via JMESPath, builds widget_properties</p>
-        </div>
-        <div class="tl-item tl-item-green">
-          <div class="tl-step" style="color: var(--accent2);">Step 3</div>
-          <h4>BotCore</h4>
-          <p>Builds widget tool, LLM invokes it, widget_handler processes</p>
-        </div>
-        <div class="tl-item tl-item-green">
-          <div class="tl-step" style="color: var(--accent2);">Step 4</div>
-          <h4>Widget Service</h4>
-          <p>Transform API renders widget data, returns widget_details</p>
-        </div>
+  <span class="field">"name"</span>: <span class="string">"transaction_list"</span>,
+  <span class="field">"widgetId"</span>: <span class="string">"3"</span>,
+  <span class="field">"version"</span>: <span class="string">"v1"</span>,
+  <span class="field">"widgetAliasName"</span>: <span class="keyword">null</span>,
+  <span class="field">"domain"</span>: <span class="string">"PG"</span>,
+  <span class="field">"description"</span>: <span class="string">"Displays a list
+    of transactions with sender,
+    amount, date and status"</span>
+}
       </div>
+      <p style="font-size:0.8em; color:var(--orange); margin-top:10px;">widgetAliasName is null in V1</p>
     </div>
   </div>
 </section>
 
-<!-- ===== SLIDE 13: RECOMMENDATIONS ===== -->
+<!-- Slide 5: V10 DRAFT — Canvas with Edit Mode -->
 <section>
-  <h2><span class="glow-warm">Recommendations</span></h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 20px;">Prioritized action items to unblock widget E2E testing</p>
-
+  <h2 style="font-size:1.6em;">V10 Draft — Edit Mode <span class="tag tag-new">NEW</span></h2>
   <div class="grid-2">
     <div>
-      <h3 style="font-size: 0.9em; color: var(--red); margin-bottom: 14px;"><span class="dot" style="color: var(--red);"></span> P0 &mdash; Immediate</h3>
-      <div class="glass glass-red" style="padding: 18px; margin-bottom: 14px;">
-        <h4 style="font-size: 0.82em; margin-bottom: 6px;">1. Fix Widget Service Keycloak Audience</h4>
-        <p style="font-size: 0.62em; color: var(--dim); margin: 0;">Register Widget Service as a Keycloak client. Add to JWT audience list. Unblocks widget configuration in admin UI.</p>
-      </div>
-      <div class="glass glass-red" style="padding: 18px;">
-        <h4 style="font-size: 0.82em; margin-bottom: 6px;">2. Fix Event Schema for test_sarabjeet_event</h4>
-        <p style="font-size: 0.62em; color: var(--dim); margin: 0;">Add 4 missing domain attributes (<code>amount</code>, <code>bank_name</code>, <code>bank_country</code>, <code>date_of_birth</code>). Unblocks flow activation &amp; deployment.</p>
-      </div>
+      <img src="widget-testing/draft-v10-edit-mode.png" class="screenshot screenshot-sm" style="width:100%;">
+      <p style="font-size:0.55em; color:var(--dim); margin-top:8px;">Component palette with Widget button visible</p>
     </div>
     <div>
-      <h3 style="font-size: 0.9em; color: var(--accent5); margin-bottom: 14px;"><span class="dot" style="color: var(--accent5);"></span> P1 &mdash; Short-term</h3>
-      <div class="glass glass-yellow" style="padding: 18px; margin-bottom: 14px;">
-        <h4 style="font-size: 0.82em; margin-bottom: 6px;">3. Fix GraphQL Resolver Bug</h4>
-        <p style="font-size: 0.62em; color: var(--dim); margin: 0;">List queries returning empty arrays despite <code>totalElements &gt; 0</code>. Check DecisionFlowSummary / DecisionNodeSummary field mappings.</p>
-      </div>
-      <div class="glass glass-yellow" style="padding: 18px; margin-bottom: 14px;">
-        <h4 style="font-size: 0.82em; margin-bottom: 6px;">4. Deploy Widget Test Flow</h4>
-        <p style="font-size: 0.62em; color: var(--dim); margin: 0;">After P0 fixes, activate and deploy ActionsAndDA flow. Run full E2E from Event Gateway.</p>
-      </div>
-
-      <h3 style="font-size: 0.9em; color: var(--accent2); margin-top: 20px; margin-bottom: 14px;"><span class="dot" style="color: var(--accent2);"></span> P2 &mdash; Long-term</h3>
-      <div class="glass glass-green" style="padding: 18px;">
-        <h4 style="font-size: 0.82em; margin-bottom: 6px;">5. Automated Widget Integration Tests</h4>
-        <p style="font-size: 0.62em; color: var(--dim); margin: 0;">Create dedicated test event + flow that is always deployed. Add CI tests for JMESPath resolution, auto-zipping, and Widget Service transform API.</p>
-      </div>
+      <img src="widget-testing/draft-v10-canvas.png" class="screenshot screenshot-sm" style="width:100%;">
+      <p style="font-size:0.55em; color:var(--dim); margin-top:8px;">2 widgets: transaction_list_alias_omf + transaction_list_alias_new_2</p>
     </div>
   </div>
 </section>
 
-<!-- ===== SLIDE 14: ENVIRONMENT HEALTH ===== -->
+<!-- Slide 6: V10 Widget Config from Backend -->
 <section>
-  <h2>Environment <span class="glow-blue">Health</span></h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 20px;">Staging service status during testing</p>
-
-  <table style="max-width: 800px;">
-    <thead>
-      <tr><th>Service</th><th>Status</th><th>Notes</th></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Pi Risk Admin UI</td>
-        <td><span class="dot" style="color: var(--accent2);"></span> <span style="color: var(--accent2);">UP</span></td>
-        <td>Responsive, Keycloak auth working</td>
-      </tr>
-      <tr>
-        <td>Event Gateway</td>
-        <td><span class="dot" style="color: var(--accent2);"></span> <span style="color: var(--accent2);">UP</span></td>
-        <td>Accepting connections</td>
-      </tr>
-      <tr>
-        <td>Rule Engine</td>
-        <td><span class="dot" style="color: var(--accent2);"></span> <span style="color: var(--accent2);">UP</span></td>
-        <td>Processing requests</td>
-      </tr>
-      <tr>
-        <td>Event Registry</td>
-        <td><span class="dot" style="color: var(--accent2);"></span> <span style="color: var(--accent2);">UP</span></td>
-        <td>Schema CRUD working</td>
-      </tr>
-      <tr>
-        <td>GraphQL Gateway</td>
-        <td><span class="dot" style="color: var(--accent5);"></span> <span style="color: var(--accent5);">DEGRADED</span></td>
-        <td>List queries return empty arrays (Issue-3)</td>
-      </tr>
-      <tr>
-        <td>Widget Service</td>
-        <td><span class="dot" style="color: var(--red);"></span> <span style="color: var(--red);">UNKNOWN</span></td>
-        <td>403 errors &mdash; may be up but auth-blocked (Issue-1)</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="callout-blue mt-2" style="font-size: 0.65em;">
-    <strong>Note:</strong> 5 of 6 tested services are operational. The Widget Service health cannot be determined due to the Keycloak 403 blocker.
+  <h2 style="font-size:1.6em;">V10 Widget Config <span class="tag tag-pass">BACKEND DATA</span></h2>
+  <div class="grid-2">
+    <div class="glass-card" style="font-size:0.65em;">
+      <h4 style="color:var(--accent2); margin-bottom:10px;">Widget 1: transaction_list_alias_omf</h4>
+      <div class="code-block" style="font-size:0.8em;">
+{
+  <span class="field">"name"</span>: <span class="string">"transaction_list"</span>,
+  <span class="field">"widgetId"</span>: <span class="string">"3"</span>,
+  <span class="field">"version"</span>: <span class="string">"v2"</span>,
+  <span class="field">"widgetAliasName"</span>: <span class="string">"transaction_list_alias_omf"</span>,
+  <span class="field">"inputParamsList"</span>: [{
+    <span class="field">"name"</span>: <span class="string">"transactions"</span>,
+    <span class="field">"type"</span>: <span class="string">"list"</span>,
+    <span class="field">"inputParamsList"</span>: [
+      { <span class="field">"name"</span>: <span class="string">"date"</span> },
+      { <span class="field">"name"</span>: <span class="string">"amount"</span> },
+      { <span class="field">"name"</span>: <span class="string">"sender"</span> },
+      { <span class="field">"name"</span>: <span class="string">"status"</span> }
+    ]
+  }]
+}
+      </div>
+    </div>
+    <div class="glass-card" style="font-size:0.65em;">
+      <h4 style="color:var(--accent3); margin-bottom:10px;">Widget 2: transaction_list_alias_new_2</h4>
+      <div class="code-block" style="font-size:0.8em;">
+{
+  <span class="field">"name"</span>: <span class="string">"transaction_list"</span>,
+  <span class="field">"widgetId"</span>: <span class="string">"6"</span>,
+  <span class="field">"version"</span>: <span class="string">"v3"</span>,
+  <span class="field">"widgetAliasName"</span>: <span class="string">"transaction_list_alias_new_2"</span>,
+  <span class="field">"description"</span>: <span class="string">"...with a primary
+    action button"</span>,
+  <span class="field">"inputParamsList"</span>: <span class="comment">// same structure</span>
+}
+      </div>
+      <p style="font-size:0.8em; color:var(--dim); margin-top:8px;">V3 adds a primary action button to the widget</p>
+    </div>
   </div>
 </section>
 
-<!-- ===== SLIDE 15: THANK YOU ===== -->
-<section class="center" data-background-gradient="radial-gradient(ellipse 800px 600px at 50% 40%, rgba(124,92,252,0.12) 0%, rgba(0,212,170,0.04) 40%, transparent 70%)">
-  <h1 style="font-size: 3em; margin-bottom: 16px;">
-    <span class="glow">Thank You</span>
-  </h1>
-  <p style="font-size: 0.85em; color: var(--dim); margin-bottom: 36px;">
-    Widget Staging E2E Test Report &mdash; March 2026
-  </p>
+<!-- Slide 7: Widget Edit Panel — 403 Errors -->
+<section>
+  <h2 style="font-size:1.6em;">Widget Edit Panel <span class="tag tag-fail">403 ERRORS</span></h2>
+  <div class="grid-2">
+    <div>
+      <img src="widget-testing/draft-v10-widget-edit-panel.png" class="screenshot" style="width:100%;">
+      <p style="font-size:0.55em; color:var(--dim); margin-top:8px;">Edit mode — fields enabled but data blocked</p>
+    </div>
+    <div class="glass-card" style="font-size:0.65em;">
+      <h4 style="color:var(--red); margin-bottom:12px;">Panel Behavior in Edit Mode</h4>
+      <ul style="font-size:0.9em;">
+        <li><span style="color:var(--green);">Widget Name</span> — combobox editable, but <span style="color:var(--red);">dropdown is empty</span> (widget list 403)</li>
+        <li><span style="color:var(--green);">Alias Name</span> — text field editable, accepts input</li>
+        <li><span style="color:var(--red);">Version</span> — dropdown present but <span style="color:var(--red);">no options</span> (versions 403)</li>
+        <li><span style="color:var(--red);">Input Parameters</span> — shows <em>"No schema found for this widget version"</em> (schema 403)</li>
+        <li><span style="color:var(--green);">Save button</span> — visible and clickable</li>
+      </ul>
+      <hr class="divider">
+      <h4 style="color:var(--orange); margin-bottom:8px;">3 API Calls Fail on Panel Open</h4>
+      <ol style="font-size:0.85em;">
+        <li>GET <code>widgets?limit=100&offset=0</code> &rarr; 403</li>
+        <li>GET <code>widgets/versions?widget_name=...</code> &rarr; 403</li>
+        <li>GET <code>widgets/data-schema?widget_name=...&version=...</code> &rarr; 403</li>
+      </ol>
+    </div>
+  </div>
+</section>
 
-  <div class="glass glass-accent" style="max-width: 600px; margin: 0 auto; padding: 24px;">
-    <div style="font-size: 0.72em; text-align: center;">
-      <p style="margin-bottom: 12px;"><strong>Key Takeaway:</strong> Widget code is production-ready. Two P0 environment fixes needed to enable full E2E testing.</p>
-      <div style="display: flex; justify-content: center; gap: 16px; margin-top: 16px;">
-        <span class="badge badge-red" style="font-size: 0.65em;">2 CRITICAL</span>
-        <span class="badge badge-orange" style="font-size: 0.65em;">1 HIGH</span>
-        <span class="badge badge-yellow" style="font-size: 0.65em;">1 MEDIUM</span>
+<!-- Slide 8: Root Cause — JWT Audience -->
+<section>
+  <h2 style="font-size:1.6em;">Root Cause: JWT Audience <span class="tag tag-fail">CRITICAL</span></h2>
+  <div class="glass-card" style="font-size:0.65em;">
+    <h4 style="color:var(--accent); margin-bottom:12px;">JWT Token Audiences (Decoded from 403 Response)</h4>
+    <div class="code-block" style="font-size:0.85em;">
+<span class="field">"aud"</span>: [
+  <span class="string">"realm-management"</span>,
+  <span class="string">"com.paytm.pi.event-registry"</span>,       <span class="comment">// Event Registry</span>
+  <span class="string">"com.paytm.pi.feature-store"</span>,        <span class="comment">// Feature Store</span>
+  <span class="string">"com.paytm.pi.rule-admin"</span>,           <span class="comment">// Rule Admin</span>
+  <span class="string">"account"</span>
+]
+
+<span class="comment">// MISSING: Widget Service is NOT in the audience list</span>
+<span class="comment">// GraphQL Gateway (maquette-gateway) forwards the same token</span>
+<span class="comment">// Widget Service rejects it &rarr; 403</span>
+    </div>
+    <hr class="divider">
+    <h4 style="color:var(--accent2); margin-bottom:8px;">Widget Service Backend URL (from error stack)</h4>
+    <div class="code-block" style="font-size:0.85em;">
+<span class="field">baseURL</span>: <span class="string">"https://pi-agentic-widget-service.internal.ap-south-1.staging.ocltpap-v2.risk.pai.mypaytm.com/api/v1/domain/PG"</span>
+    </div>
+  </div>
+  <p style="font-size:0.7em; color:var(--accent5); margin-top:12px;"><strong>Fix:</strong> Register Widget Service as Keycloak client &amp; add to JWT audience exchange config</p>
+</section>
+
+<!-- Slide 9: GraphQL Backend Tests -->
+<section>
+  <h2 style="font-size:1.6em;">GraphQL API Test Results <span class="tag tag-new">BACKEND</span></h2>
+  <table class="styled">
+    <tr><th>API</th><th>Type</th><th>Status</th><th>Details</th></tr>
+    <tr>
+      <td><code>widgetList(domain)</code></td>
+      <td>Query</td>
+      <td><span class="pill pill-red">403</span></td>
+      <td>Widget Service auth blocked</td>
+    </tr>
+    <tr>
+      <td><code>widgetVersions(domain, widgetName)</code></td>
+      <td>Query</td>
+      <td><span class="pill pill-red">403</span></td>
+      <td>Widget Service auth blocked</td>
+    </tr>
+    <tr>
+      <td><code>widgetDataSchema(domain, widgetName, version)</code></td>
+      <td>Query</td>
+      <td><span class="pill pill-red">403</span></td>
+      <td>Widget Service auth blocked</td>
+    </tr>
+    <tr>
+      <td><code>upsertWidgetNode(domain, id, nodeData)</code></td>
+      <td>Mutation</td>
+      <td><span class="pill pill-green">SCHEMA OK</span></td>
+      <td>Validates input types correctly (goes to rule-admin, not widget service)</td>
+    </tr>
+    <tr>
+      <td><code>decisionNodeByVersionAndName</code></td>
+      <td>Query</td>
+      <td><span class="pill pill-green">PASS</span></td>
+      <td>Returns full widget config with inputParamsList</td>
+    </tr>
+    <tr>
+      <td><code>decisionNodeVersions</code></td>
+      <td>Query</td>
+      <td><span class="pill pill-green">PASS</span></td>
+      <td>Returns all 10 versions (V1-V9 ACTIVE, V10 DRAFT)</td>
+    </tr>
+  </table>
+  <p style="font-size:0.65em; color:var(--dim); margin-top:12px;">Note: Widget-specific queries proxy to Widget Service (blocked). DA queries go to rule-admin (working).</p>
+</section>
+
+<!-- Slide 10: GraphQL Schema Deep Dive -->
+<section>
+  <h2 style="font-size:1.6em;">Widget GraphQL Schema <span class="tag tag-info">INTROSPECTION</span></h2>
+  <div class="grid-2">
+    <div class="glass-card" style="font-size:0.6em;">
+      <h4 style="color:var(--accent2); margin-bottom:10px;">DecisionNodeWidget (Output)</h4>
+      <div class="code-block" style="font-size:0.85em;">
+type DecisionNodeWidget {
+  <span class="field">id</span>: <span class="keyword">String!</span>
+  <span class="field">name</span>: String
+  <span class="field">widgetId</span>: String
+  <span class="field">version</span>: String
+  <span class="field">description</span>: String
+  <span class="field">domain</span>: String
+  <span class="field">widgetAliasName</span>: String
+  <span class="field">coordinates</span>: JSON
+  <span class="field">inputParamsList</span>: [WidgetParamList!]
+}
+      </div>
+    </div>
+    <div class="glass-card" style="font-size:0.6em;">
+      <h4 style="color:var(--accent3); margin-bottom:10px;">DecisionNodeWidgetInput (Mutation)</h4>
+      <div class="code-block" style="font-size:0.85em;">
+input DecisionNodeWidgetInput {
+  <span class="field">id</span>: <span class="keyword">String!</span>
+  <span class="field">name</span>: String
+  <span class="field">widgetId</span>: String
+  <span class="field">version</span>: String
+  <span class="field">description</span>: String
+  <span class="field">domain</span>: String
+  <span class="field">widgetAliasName</span>: String
+  <span class="field">coordinates</span>: JSON
+  <span class="field">inputParamsList</span>: [WidgetParamListInput!]
+}
       </div>
     </div>
   </div>
+  <div class="glass-card" style="font-size:0.6em; margin-top:12px;">
+    <h4 style="color:var(--accent4); margin-bottom:8px;">Hierarchical Params</h4>
+    <div class="code-block" style="font-size:0.85em;">
+<span class="comment">// WidgetParamList is recursive (supports nested params)</span>
+type WidgetParamList { name: String!, type: String!, inputParams: [WidgetParams!], <span class="keyword">inputParamsList: [WidgetParamList!]</span> }
+type WidgetParams { inputName: String!, inputValue: String, referenceFieldId: String, referenceNodeType: NodeType, referenceFieldName: String }
+    </div>
+  </div>
+</section>
 
-  <p class="tiny" style="margin-top: 48px; letter-spacing: 2px;">GIRISH KUMAR &middot; PI PLATFORM &middot; PAYTM</p>
+<!-- Slide 11: Version Evolution -->
+<section>
+  <h2 style="font-size:1.6em;">Widget Version Evolution</h2>
+  <table class="styled">
+    <tr><th>Version</th><th>State</th><th>Widgets</th><th>Alias Name</th><th>Widget Version</th><th>Input Params</th></tr>
+    <tr>
+      <td><span style="color:var(--accent);">V1</span></td>
+      <td><span class="pill pill-green">ACTIVE</span></td>
+      <td>1 widget</td>
+      <td><span style="color:var(--red);">null</span></td>
+      <td>v1 (widgetId: 3)</td>
+      <td>4 flat inputs: amount, bank_name, bank_country, date_of_birth</td>
+    </tr>
+    <tr>
+      <td><span style="color:var(--accent);">V9</span></td>
+      <td><span class="pill pill-green">ACTIVE</span></td>
+      <td>1 widget</td>
+      <td><span style="color:var(--red);">null</span></td>
+      <td>v2 (widgetId: 3)</td>
+      <td>Upgraded to v2</td>
+    </tr>
+    <tr>
+      <td><span style="color:var(--accent5);">V10</span></td>
+      <td><span class="pill pill-blue">DRAFT</span></td>
+      <td><strong>2 widgets</strong></td>
+      <td><span style="color:var(--green);">Set</span></td>
+      <td>v2 (id:3) + v3 (id:6)</td>
+      <td>Hierarchical: transactions &rarr; [date, amount, sender, status]</td>
+    </tr>
+  </table>
+  <div class="glass-card" style="font-size:0.65em; margin-top:16px;">
+    <h4 style="color:var(--accent5); margin-bottom:8px;">Key Observations</h4>
+    <ul style="font-size:0.9em;">
+      <li><strong>widgetAliasName</strong> was null in V1-V9, first set in V10 draft &mdash; likely a newer feature</li>
+      <li>V10 has <strong>2 widget nodes</strong> (same base widget, different versions) demonstrating multi-widget support</li>
+      <li>Input structure changed from flat params to <strong>hierarchical inputParamsList</strong> with nested children</li>
+      <li>V10 created by <code>prakarsh.srivastava@paytm.com</code>, updated today</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Slide 12: Widget UI Test — View vs Edit -->
+<section>
+  <h2 style="font-size:1.6em;">Widget Panel: View vs Edit <span class="tag tag-new">UI TEST</span></h2>
+  <div class="grid-2">
+    <div>
+      <img src="widget-testing/draft-v10-widget-panel-403.png" class="screenshot screenshot-sm" style="width:100%;">
+      <p style="font-size:0.55em; color:var(--dim); margin-top:8px;"><strong>View Mode</strong> — All fields disabled</p>
+    </div>
+    <div>
+      <img src="widget-testing/draft-v10-widget-edit-panel.png" class="screenshot screenshot-sm" style="width:100%;">
+      <p style="font-size:0.55em; color:var(--dim); margin-top:8px;"><strong>Edit Mode</strong> — Fields enabled, Save button shown</p>
+    </div>
+  </div>
+  <div class="glass-card" style="font-size:0.65em; margin-top:12px;">
+    <p><span style="color:var(--green);">View &rarr; Edit transition works correctly.</span> Fields toggle between disabled/enabled states. The panel UI code is working &mdash; only the backend data fetch is blocked by auth.</p>
+  </div>
+</section>
+
+<!-- Slide 13: Component Palette -->
+<section>
+  <h2 style="font-size:1.6em;">Edit Mode — Component Palette</h2>
+  <img src="widget-testing/draft-v10-edit-mode.png" class="screenshot" style="width:80%; display:block; margin:16px auto;">
+  <div class="glass-card" style="font-size:0.65em; margin-top:12px;">
+    <p><span style="color:var(--accent2);">Widget is a first-class component</span> in the DA canvas palette, alongside: Input, Config, Variable, Feature, List, ML Model, Function, Agent, Action.</p>
+    <p style="margin-top:8px;">Canvas shows edit/delete icons on nodes. Edge connections are editable. Palette button for Widget is present but adding new widgets via click/double-click did not work &mdash; likely requires drag-and-drop interaction.</p>
+  </div>
+</section>
+
+<!-- Slide 14: Flow Activation Test -->
+<section>
+  <h2 style="font-size:1.6em;">Flow Activation Validation <span class="tag tag-pass">WORKING</span></h2>
+  <div class="grid-2">
+    <div>
+      <img src="widget-testing/staging-activation-error.png" class="screenshot screenshot-sm" style="width:100%;">
+      <p style="font-size:0.55em; color:var(--dim); margin-top:8px;">Flow activation correctly blocks missing domain attributes</p>
+    </div>
+    <div class="glass-card" style="font-size:0.65em;">
+      <h4 style="color:var(--accent2); margin-bottom:10px;">Validation Works Correctly</h4>
+      <p style="font-size:0.85em;">When trying to activate <code>ActionsAndDA</code> flow, the system correctly detects that <code>test_sarabjeet_event</code> is missing required domain attributes:</p>
+      <div class="code-block" style="font-size:0.8em; margin-top:8px;">
+Missing: <span class="keyword">amount</span>, <span class="keyword">bank_name</span>,
+         <span class="keyword">bank_country</span>, <span class="keyword">date_of_birth</span>
+
+Event only has: <span class="string">customerId1</span>
+      </div>
+      <p style="font-size:0.85em; color:var(--green); margin-top:10px;">This is the rule-admin validation working as designed &mdash; prevents deploying misconfigured flows.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Slide 15: Event & Flow Config -->
+<section>
+  <h2 style="font-size:1.6em;">Staging Artifacts Found</h2>
+  <div class="grid-2">
+    <div>
+      <img src="widget-testing/staging-actionsandda-flow.png" class="screenshot screenshot-sm" style="width:100%;">
+      <p style="font-size:0.55em; color:var(--dim); margin-top:8px;">ActionsAndDA flow — Start &rarr; Action &rarr; Decision (test_widget)</p>
+    </div>
+    <div>
+      <img src="widget-testing/staging-sarabjeet-event-schema.png" class="screenshot screenshot-sm" style="width:100%;">
+      <p style="font-size:0.55em; color:var(--dim); margin-top:8px;">test_sarabjeet_event — only has customerId1</p>
+    </div>
+  </div>
+  <table class="styled" style="margin-top:12px; font-size:0.65em;">
+    <tr><th>Artifact</th><th>Status</th><th>Notes</th></tr>
+    <tr><td>Decision Flow: ActionsAndDA</td><td><span class="pill pill-blue">DRAFT V1</span></td><td>Contains widget node, mapped to test_sarabjeet_event</td></tr>
+    <tr><td>Decision Agent: test_widget</td><td><span class="pill pill-green">V1-V9 ACTIVE, V10 DRAFT</span></td><td>10 versions, 2 widgets in draft</td></tr>
+    <tr><td>Event: test_sarabjeet_event</td><td><span class="pill pill-green">LIVE V1</span></td><td>Only customerId1 — missing widget params</td></tr>
+  </table>
+</section>
+
+<!-- Slide 16: Expected E2E Flow -->
+<section>
+  <h2 style="font-size:1.6em;">Expected E2E Flow <span class="tag tag-blocked">BLOCKED</span></h2>
+  <div class="code-block" style="font-size:0.48em;">
+<span class="comment">// When Widget Service auth is fixed and event schema updated:</span>
+
+POST /v1/domains/PG/event/process
+{
+  <span class="field">"eventName"</span>: <span class="string">"test_sarabjeet_event"</span>,
+  <span class="field">"payload"</span>: {
+    <span class="field">"customerId1"</span>: <span class="string">"CUST-12345"</span>,
+    <span class="field">"transactions"</span>: [
+      { <span class="field">"date"</span>: <span class="string">"2026-03-13"</span>, <span class="field">"amount"</span>: <span class="string">"5000"</span>, <span class="field">"sender"</span>: <span class="string">"HDFC"</span>, <span class="field">"status"</span>: <span class="string">"completed"</span> }
+    ]
+  }
+}
+
+<span class="comment">// Expected Pipeline:</span>
+Event Gateway &rarr; Rule Engine (resolve JMESPath: <span class="keyword">payload.transactions</span>)
+  &rarr; BotCore (<span class="keyword">widget_tool_builder</span> &rarr; LLM &rarr; <span class="keyword">widget_handler</span>)
+    &rarr; Widget Service (<span class="keyword">POST /api/v1/domain/PG/widgets/transform</span>)
+      &rarr; Response with <span class="string">widget_details</span>
+  </div>
+</section>
+
+<!-- Slide 17: Recommendations -->
+<section>
+  <h2 style="font-size:1.8em;">Recommendations</h2>
+  <div class="grid-2">
+    <div class="glass-card">
+      <h4 style="color:var(--red); margin-bottom:10px;">P0 — Critical</h4>
+      <ul style="font-size:0.72em;">
+        <li><strong>Fix Widget Service Keycloak audience</strong><br><span style="color:var(--dim);">Register as Keycloak client, add to JWT audience exchange. This unblocks ALL widget functionality.</span></li>
+      </ul>
+    </div>
+    <div class="glass-card">
+      <h4 style="color:var(--orange); margin-bottom:10px;">P1 — High</h4>
+      <ul style="font-size:0.72em;">
+        <li><strong>Fix event schema</strong><br><span style="color:var(--dim);">Add transactions field to test_sarabjeet_event to match V10 widget params</span></li>
+        <li><strong>Deploy widget test flow</strong><br><span style="color:var(--dim);">Activate ActionsAndDA with corrected event, run full E2E</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="glass-card" style="margin-top:12px;">
+    <h4 style="color:var(--accent4); margin-bottom:10px;">P2 — Improvements</h4>
+    <ul style="font-size:0.72em;">
+      <li><strong>Add Widget Service health check</strong> — Currently shows as UNKNOWN in monitoring</li>
+      <li><strong>Widget drag-and-drop</strong> — Palette "Widget" button click doesn't add node (may need drag support)</li>
+      <li><strong>widgetAliasName backfill</strong> — V1-V9 have null alias names; consider migration or default</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Slide 18: Thank You -->
+<section data-background-gradient="radial-gradient(ellipse at 30% 60%, rgba(124,92,252,0.12) 0%, transparent 50%), radial-gradient(ellipse at 70% 30%, rgba(0,212,170,0.08) 0%, transparent 40%)">
+  <div class="center">
+    <h2 style="font-size:2.4em; margin-bottom:20px;">Testing Complete</h2>
+    <p style="color:var(--dim); font-size:0.8em;">Widget Feature — Staging Test Report v2</p>
+    <div class="metric-row" style="margin-top:30px;">
+      <div class="metric-box">
+        <div class="value" style="color:var(--green);">19</div>
+        <div class="label">Screenshots</div>
+      </div>
+      <div class="metric-box">
+        <div class="value" style="color:var(--accent);">15+</div>
+        <div class="label">GraphQL Tests</div>
+      </div>
+      <div class="metric-box">
+        <div class="value" style="color:var(--red);">1</div>
+        <div class="label">Critical Blocker</div>
+      </div>
+      <div class="metric-box">
+        <div class="value" style="color:var(--accent5);">10</div>
+        <div class="label">DA Versions</div>
+      </div>
+    </div>
+    <p style="color:var(--dim); font-size:0.65em; margin-top:30px;">Girish Kumar &middot; girish3.kumar@paytm.com &middot; 2026-03-13</p>
+  </div>
 </section>
 
 </div>
 </div>
 
-<!-- Reveal.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
 <script>
-  Reveal.initialize({
-    hash: true,
-    slideNumber: 'c/t',
-    width: 1440,
-    height: 810,
-    margin: 0.06,
-    transition: 'slide',
-    transitionSpeed: 'default',
-    backgroundTransition: 'fade',
-    center: false,
-    controls: true,
-    progress: true,
-    history: true,
-  });
-
-  // Particles
-  const canvas = document.getElementById('particles');
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  const particles = [];
-  for (let i = 0; i < 40; i++) {
-    particles.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 1.2 + 0.3,
-      dx: (Math.random() - 0.5) * 0.3,
-      dy: (Math.random() - 0.5) * 0.3,
-      o: Math.random() * 0.3 + 0.1
-    });
-  }
-  function animateParticles() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(124, 92, 252, ${p.o})`;
-      ctx.fill();
-      p.x += p.dx; p.y += p.dy;
-      if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-      if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
-    });
-    requestAnimationFrame(animateParticles);
-  }
-  animateParticles();
-  window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+Reveal.initialize({
+  hash: true,
+  slideNumber: 'c/t',
+  width: 1400, height: 820,
+  margin: 0.06,
+  transition: 'slide',
+  backgroundTransition: 'fade',
+  center: false
+});
 </script>
 </body>
 </html>
