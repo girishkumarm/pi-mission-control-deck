@@ -612,10 +612,10 @@
 <!-- ============================================ -->
 <section data-background-gradient="radial-gradient(ellipse 600px 400px at 40% 60%, rgba(0,180,216,0.06) 0%, transparent 60%)">
   <h2>Interactive <span class="glow-blue">Dependency Graph</span></h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 16px;">Full service topology — products, services, and infrastructure with live status</p>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 16px;">Full service topology with live start/stop controls, product filtering, and downstream highlighting</p>
 
   <div class="screenshot-frame">
-    <img src="09-dependency-graph-all.png" alt="Dependency Graph">
+    <img src="10-dependency-graph-updated.png" alt="Dependency Graph">
   </div>
 
   <div style="display: flex; gap: 16px; margin-top: 16px; font-size: 0.55em;">
@@ -623,16 +623,16 @@
       <strong style="color: var(--blue);">13 Services</strong> across 2 products
     </div>
     <div class="glass" style="padding: 12px 16px; flex: 1; text-align: center;">
-      <strong style="color: var(--accent2);">7 Infrastructure</strong> containers
+      <strong style="color: var(--accent2);">7 Infrastructure</strong> with live status
     </div>
     <div class="glass" style="padding: 12px 16px; flex: 1; text-align: center;">
-      <strong style="color: #B794F6;">42 Edges</strong> — S2S + infra deps
+      <strong style="color: #B794F6;">15 S2S + 27 Infra</strong> dependency edges
     </div>
     <div class="glass" style="padding: 12px 16px; flex: 1; text-align: center;">
-      <strong style="color: var(--accent5);">Click</strong> to filter/highlight
+      <strong style="color: var(--accent5);">Start/Stop</strong> per node
     </div>
   </div>
-  <aside class="notes">The dependency graph is an interactive React Flow visualization. It shows all 13 services and 7 infrastructure containers with live status. Click a product to filter, click a service to highlight its dependencies, double-click to start or stop. Built from the product JSON configs — adding a new product auto-updates the graph.</aside>
+  <aside class="notes">The dependency graph now has per-node start/stop controls, live status indicators, product filtering (Agentic/Risk/All), connection type toggles (S2S, infra deps), and downstream highlighting. 13 services, 7 infra, 15 service-to-service and 27 infra dependency edges. Click a product to filter, click a service to highlight downstream, use play/stop buttons to control services directly from the graph.</aside>
 </section>
 
 <!-- ============================================ -->
