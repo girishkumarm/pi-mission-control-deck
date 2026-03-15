@@ -501,57 +501,77 @@
 <!-- ============================================ -->
 <section>
   <h2>MCP Servers — <span class="glow">The Integration Layer</span></h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 24px;">Two MCP servers power the platform — Atlassian for SDLC, Pi MCP for policy management</p>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 24px;">Three MCP servers power the platform — Atlassian for SDLC, Pi MCP for policy management, Playwright for UI testing</p>
 
-  <div class="grid-2" style="gap: 28px;">
+  <div class="grid-3" style="gap: 20px;">
     <div>
-      <div class="glass glass-blue" style="padding: 24px;">
-        <div style="display:flex; align-items:center; gap:12px; margin-bottom: 16px;">
-          <span style="font-size: 2em;">🏢</span>
+      <div class="glass glass-blue" style="padding: 20px;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom: 14px;">
+          <span style="font-size: 1.6em;">🏢</span>
           <div>
-            <div style="font-size: 1.1em; font-weight: 700; color: var(--blue); font-family: 'Space Grotesk';">Atlassian MCP</div>
-            <div style="font-size: 0.55em; color: var(--dim);">Used by all 8 skills — the backbone of the SDLC automation</div>
+            <div style="font-size: 1em; font-weight: 700; color: var(--blue); font-family: 'Space Grotesk';">Atlassian MCP</div>
+            <div style="font-size: 0.5em; color: var(--dim);">All 8 skills — SDLC backbone</div>
           </div>
         </div>
-        <table style="font-size: 0.85em;">
+        <table style="font-size: 0.75em;">
           <thead><tr><th>Tool</th><th>Used By</th></tr></thead>
           <tbody>
-            <tr><td><span class="mono" style="color:var(--blue);">getJiraIssue</span></td><td>/plan — fetch ticket details, ACs</td></tr>
-            <tr><td><span class="mono" style="color:var(--blue);">addCommentToJiraIssue</span></td><td>/plan, /review, /pr — post updates</td></tr>
-            <tr><td><span class="mono" style="color:var(--blue);">getConfluencePage</span></td><td>/coding, /local-test, /review, /pr</td></tr>
-            <tr><td><span class="mono" style="color:var(--blue);">getConfluencePageDescendants</span></td><td>/init, /plan — find product pages</td></tr>
-            <tr><td><span class="mono" style="color:var(--blue);">createConfluencePage</span></td><td>/init, /plan — create new pages</td></tr>
-            <tr><td><span class="mono" style="color:var(--blue);">updateConfluencePage</span></td><td>All 8 — update status on every step</td></tr>
+            <tr><td><span class="mono" style="color:var(--blue);">getJiraIssue</span></td><td>/plan — ticket details</td></tr>
+            <tr><td><span class="mono" style="color:var(--blue);">addCommentToJiraIssue</span></td><td>/plan, /review, /pr</td></tr>
+            <tr><td><span class="mono" style="color:var(--blue);">getConfluencePage</span></td><td>/coding, /local-test, /review</td></tr>
+            <tr><td><span class="mono" style="color:var(--blue);">createConfluencePage</span></td><td>/init, /plan</td></tr>
+            <tr><td><span class="mono" style="color:var(--blue);">updateConfluencePage</span></td><td>All 8 skills</td></tr>
           </tbody>
         </table>
       </div>
     </div>
     <div>
-      <div class="glass glass-green" style="padding: 22px; margin-bottom: 14px;">
-        <div style="display:flex; align-items:center; gap:12px; margin-bottom: 12px;">
-          <span style="font-size: 2em;">🏗</span>
+      <div class="glass glass-green" style="padding: 20px;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom: 14px;">
+          <span style="font-size: 1.6em;">🏗</span>
           <div>
-            <div style="font-size: 1.1em; font-weight: 700; color: var(--accent2); font-family: 'Space Grotesk';">Pi MCP</div>
-            <div style="font-size: 0.55em; color: var(--dim);">Policy builder — 16 tools for Decision Nodes, Agents, Flows</div>
+            <div style="font-size: 1em; font-weight: 700; color: var(--accent2); font-family: 'Space Grotesk';">Pi MCP</div>
+            <div style="font-size: 0.5em; color: var(--dim);">Policy builder — 16 tools</div>
           </div>
         </div>
-        <table style="font-size: 0.85em;">
+        <table style="font-size: 0.75em;">
           <thead><tr><th>Tool</th><th>Purpose</th></tr></thead>
           <tbody>
-            <tr><td><span class="mono" style="color:var(--accent2);">manage_decision_node</span></td><td>Deterministic rules with DMN tables</td></tr>
-            <tr><td><span class="mono" style="color:var(--accent2);">manage_decision_agent</span></td><td>LLM-powered agents (KB, persona, tools)</td></tr>
-            <tr><td><span class="mono" style="color:var(--accent2);">manage_decision_flow</span></td><td>DAG builder — chains nodes, gateways</td></tr>
-            <tr><td><span class="mono" style="color:var(--accent2);">deploy_entity</span></td><td>Deploy any entity to production</td></tr>
-            <tr><td><span class="mono" style="color:var(--dim);">+ 12 more</span></td><td>Events, actions, functions, configs...</td></tr>
+            <tr><td><span class="mono" style="color:var(--accent2);">manage_decision_node</span></td><td>DMN rules</td></tr>
+            <tr><td><span class="mono" style="color:var(--accent2);">manage_decision_agent</span></td><td>LLM agents</td></tr>
+            <tr><td><span class="mono" style="color:var(--accent2);">manage_decision_flow</span></td><td>DAG builder</td></tr>
+            <tr><td><span class="mono" style="color:var(--accent2);">deploy_entity</span></td><td>Deploy to prod</td></tr>
+            <tr><td><span class="mono" style="color:var(--dim);">+ 12 more</span></td><td>Events, actions...</td></tr>
           </tbody>
         </table>
       </div>
-      <div class="callout" style="font-size: 0.58em; margin: 0;">
-        <strong>Both MCPs in settings.json.</strong> Atlassian for SDLC automation. Pi MCP for policy management. Everything else — Git, Docker, builds — is native.
+    </div>
+    <div>
+      <div class="glass glass-accent" style="padding: 20px;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom: 14px;">
+          <span style="font-size: 1.6em;">🎭</span>
+          <div>
+            <div style="font-size: 1em; font-weight: 700; color: #B794F6; font-family: 'Space Grotesk';">Playwright MCP</div>
+            <div style="font-size: 0.5em; color: var(--dim);">/ui-test — browser automation</div>
+          </div>
+        </div>
+        <table style="font-size: 0.75em;">
+          <thead><tr><th>Tool</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><span class="mono" style="color:#B794F6;">browser_navigate</span></td><td>Open URLs</td></tr>
+            <tr><td><span class="mono" style="color:#B794F6;">browser_snapshot</span></td><td>Element ID</td></tr>
+            <tr><td><span class="mono" style="color:#B794F6;">browser_click</span></td><td>UI interaction</td></tr>
+            <tr><td><span class="mono" style="color:#B794F6;">browser_screenshot</span></td><td>Visual evidence</td></tr>
+            <tr><td><span class="mono" style="color:#B794F6;">console_messages</span></td><td>JS error check</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
-  <aside class="notes">Two MCP servers. Atlassian MCP for Jira and Confluence integration — powers the 8 SDLC skills. Pi MCP wraps our Rule Admin and Event Registry APIs so you can build entire fraud policies from Claude Code using natural language. 16 tools covering 70+ operations. Plus Playwright MCP for browser-based UI testing.</aside>
+  <div class="callout" style="font-size: 0.58em; margin-top: 18px;">
+    <strong>All three MCPs in settings.json.</strong> Atlassian for SDLC automation. Pi MCP for policy management. Playwright for UI testing. Everything else — Git, Docker, builds — is native.
+  </div>
+  <aside class="notes">Three MCP servers. Atlassian MCP for Jira and Confluence — powers all 8 SDLC skills. Pi MCP wraps Rule Admin and Event Registry APIs — 16 tools for building fraud policies from Claude Code. Playwright MCP opens a real browser for UI testing — navigate, click, fill forms, take screenshots, check console errors.</aside>
 </section>
 
 <!-- ============================================ -->

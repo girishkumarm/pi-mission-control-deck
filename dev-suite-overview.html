@@ -500,8 +500,8 @@
 <!-- SLIDE 4: MCP SERVERS -->
 <!-- ============================================ -->
 <section>
-  <h2>MCP Server — <span class="glow">The Integration Layer</span></h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 24px;">The one MCP server that powers all 8 Dev Suite skills</p>
+  <h2>MCP Servers — <span class="glow">The Integration Layer</span></h2>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 24px;">Two MCP servers power the 8 Dev Suite skills — Atlassian for SDLC, Playwright for UI testing</p>
 
   <div class="grid-2" style="gap: 28px;">
     <div>
@@ -528,23 +528,30 @@
     </div>
     <div>
       <div class="glass glass-accent" style="padding: 22px; margin-bottom: 14px;">
-        <h3 style="font-size: 0.85em; color: #B794F6; margin-bottom: 10px;">Why Only One MCP?</h3>
-        <p style="font-size: 0.6em; color: var(--dim); margin: 0;">Everything else is handled natively:</p>
-        <ul style="font-size: 0.58em; color: var(--r-main-color); padding-left: 16px; margin-top: 8px;">
-          <li><strong>Git/Bitbucket</strong> — Claude Code's built-in git + SSH</li>
-          <li><strong>Docker</strong> — Dev Suite server REST API</li>
-          <li><strong>Service orchestration</strong> — Dev Suite server API</li>
-          <li><strong>MySQL</strong> — direct CLI from Claude Code's Bash</li>
-          <li><strong>Build/Test</strong> — gradle, maven, pytest via Bash</li>
-          <li><strong>Code changes</strong> — Claude Code's native Read/Write/Edit</li>
-        </ul>
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom: 12px;">
+          <span style="font-size: 2em;">🎭</span>
+          <div>
+            <div style="font-size: 1.1em; font-weight: 700; color: #B794F6; font-family: 'Space Grotesk';">Playwright MCP</div>
+            <div style="font-size: 0.55em; color: var(--dim);">Used by /ui-test — browser automation for visual testing</div>
+          </div>
+        </div>
+        <table style="font-size: 0.85em;">
+          <thead><tr><th>Tool</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><span class="mono" style="color:#B794F6;">browser_navigate</span></td><td>Open application URLs</td></tr>
+            <tr><td><span class="mono" style="color:#B794F6;">browser_snapshot</span></td><td>Accessibility tree for element ID</td></tr>
+            <tr><td><span class="mono" style="color:#B794F6;">browser_click / fill_form</span></td><td>Interact with UI elements</td></tr>
+            <tr><td><span class="mono" style="color:#B794F6;">browser_take_screenshot</span></td><td>Visual evidence capture</td></tr>
+            <tr><td><span class="mono" style="color:#B794F6;">browser_console_messages</span></td><td>Detect JavaScript errors</td></tr>
+          </tbody>
+        </table>
       </div>
       <div class="callout" style="font-size: 0.58em; margin: 0;">
-        <strong>One-time setup:</strong> Add the Atlassian MCP to Claude Code's <span class="mono">settings.json</span>. That's it — all 8 skills work immediately. No other external MCP dependencies.
+        <strong>One-time setup:</strong> Add both MCPs to Claude Code's <span class="mono">settings.json</span>. Atlassian for SDLC automation. Playwright for UI testing. Everything else — Git, Docker, builds — is native.
       </div>
     </div>
   </div>
-  <aside class="notes">We only need one MCP server — Atlassian. It gives Claude direct access to Jira and Confluence. Everything else — Git, Docker, databases, builds — is handled through Claude Code's built-in tools and the Dev Suite server API.</aside>
+  <aside class="notes">Two MCP servers. Atlassian MCP gives Claude direct access to Jira and Confluence — powers all 8 SDLC skills. Playwright MCP gives Claude a real browser for UI testing — navigate, click, fill forms, take screenshots. Everything else — Git, Docker, databases, builds — is handled through Claude Code's built-in tools and the Dev Suite server API.</aside>
 </section>
 
 <!-- ============================================ -->
