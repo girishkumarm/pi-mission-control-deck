@@ -375,7 +375,7 @@
       <div class="stat-label">Products</div>
     </div>
     <div class="stat-card">
-      <div class="stat-num glow" data-count="6">6</div>
+      <div class="stat-num glow" data-count="8">8</div>
       <div class="stat-label">AI Skills</div>
     </div>
     <div class="stat-card">
@@ -417,7 +417,7 @@
         <h3 style="font-size: 1.1em; color: #B794F6; margin:0;">Agent Coding</h3>
       </div>
       <ul style="font-size: 0.72em; color: var(--r-main-color); margin: 0; padding-left: 18px;">
-        <li>6 Claude Code Skills — from /init to /pr</li>
+        <li>8 Claude Code Skills — from /init to /pr</li>
         <li>Reads Jira tickets, writes Confluence plans</li>
         <li>Multi-repo code generation with mandatory tests</li>
         <li>Automated E2E testing with service orchestration</li>
@@ -510,7 +510,7 @@
           <span style="font-size: 2em;">🏢</span>
           <div>
             <div style="font-size: 1.1em; font-weight: 700; color: var(--blue); font-family: 'Space Grotesk';">Atlassian MCP</div>
-            <div style="font-size: 0.55em; color: var(--dim);">Used by all 6 skills — the backbone of the SDLC automation</div>
+            <div style="font-size: 0.55em; color: var(--dim);">Used by all 8 skills — the backbone of the SDLC automation</div>
           </div>
         </div>
         <table style="font-size: 0.85em;">
@@ -521,7 +521,7 @@
             <tr><td><span class="mono" style="color:var(--blue);">getConfluencePage</span></td><td>/coding, /local-test, /review, /pr</td></tr>
             <tr><td><span class="mono" style="color:var(--blue);">getConfluencePageDescendants</span></td><td>/init, /plan — find product pages</td></tr>
             <tr><td><span class="mono" style="color:var(--blue);">createConfluencePage</span></td><td>/init, /plan — create new pages</td></tr>
-            <tr><td><span class="mono" style="color:var(--blue);">updateConfluencePage</span></td><td>All 6 — update status on every step</td></tr>
+            <tr><td><span class="mono" style="color:var(--blue);">updateConfluencePage</span></td><td>All 8 — update status on every step</td></tr>
           </tbody>
         </table>
       </div>
@@ -551,7 +551,7 @@
       </div>
     </div>
   </div>
-  <aside class="notes">Two MCP servers. Atlassian MCP for Jira and Confluence integration — powers the 6 SDLC skills. Pi MCP is new — it wraps our Rule Admin and Event Registry APIs so you can build entire fraud policies from Claude Code using natural language. 16 tools covering 70+ operations.</aside>
+  <aside class="notes">Two MCP servers. Atlassian MCP for Jira and Confluence integration — powers the 8 SDLC skills. Pi MCP wraps our Rule Admin and Event Registry APIs so you can build entire fraud policies from Claude Code using natural language. 16 tools covering 70+ operations. Plus Playwright MCP for browser-based UI testing.</aside>
 </section>
 
 <!-- ============================================ -->
@@ -636,10 +636,10 @@
 </section>
 
 <!-- ============================================ -->
-<!-- SLIDE 7: 6 SKILLS OVERVIEW -->
+<!-- SLIDE 7: 8 SKILLS OVERVIEW -->
 <!-- ============================================ -->
 <section data-background-gradient="radial-gradient(ellipse 900px 500px at 50% 50%, rgba(124,92,252,0.06) 0%, transparent 70%)">
-  <h2>6 <span class="glow">Claude Code Skills</span></h2>
+  <h2>8 <span class="glow">Claude Code Skills</span></h2>
   <p class="dim" style="font-size: 0.68em; margin-bottom: 24px;">Custom slash commands that ship with Dev Suite. Each automates a complete workflow step.</p>
 
   <div class="pipeline" style="margin-bottom: 28px;">
@@ -656,75 +656,102 @@
     </div>
     <div class="pipe-arrow">→</div>
     <div class="pipe-step">
-      <div class="pipe-icon" style="background: rgba(0,212,170,0.2); color: var(--accent2);">3</div>
+      <div class="pipe-icon" style="background: rgba(255,111,97,0.2); color: var(--accent6);">3</div>
+      <div class="pipe-name" style="color: var(--accent6);">/regression-tests</div>
+      <div class="pipe-desc">Auto test cases</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step">
+      <div class="pipe-icon" style="background: rgba(0,212,170,0.2); color: var(--accent2);">4</div>
       <div class="pipe-name" style="color: var(--accent2);">/coding</div>
       <div class="pipe-desc">Code + tests + format</div>
     </div>
     <div class="pipe-arrow">→</div>
     <div class="pipe-step">
-      <div class="pipe-icon" style="background: rgba(255,201,60,0.2); color: var(--accent5);">4</div>
+      <div class="pipe-icon" style="background: rgba(255,201,60,0.2); color: var(--accent5);">5</div>
       <div class="pipe-name" style="color: var(--accent5);">/local-test</div>
       <div class="pipe-desc">E2E verification</div>
     </div>
     <div class="pipe-arrow">→</div>
     <div class="pipe-step">
-      <div class="pipe-icon" style="background: rgba(255,107,157,0.2); color: var(--accent3);">5</div>
+      <div class="pipe-icon" style="background: rgba(0,180,216,0.2); color: var(--accent4);">6</div>
+      <div class="pipe-name" style="color: var(--accent4);">/ui-test</div>
+      <div class="pipe-desc">Browser UI testing</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step">
+      <div class="pipe-icon" style="background: rgba(255,107,157,0.2); color: var(--accent3);">7</div>
       <div class="pipe-name" style="color: var(--accent3);">/review</div>
       <div class="pipe-desc">AI code review</div>
     </div>
     <div class="pipe-arrow">→</div>
     <div class="pipe-step">
-      <div class="pipe-icon" style="background: rgba(0,212,170,0.2); color: var(--accent2);">6</div>
+      <div class="pipe-icon" style="background: rgba(0,212,170,0.2); color: var(--accent2);">8</div>
       <div class="pipe-name" style="color: var(--accent2);">/pr</div>
       <div class="pipe-desc">Ship to Bitbucket</div>
     </div>
   </div>
 
-  <div class="grid-3" style="font-size: 0.58em;">
-    <div class="glass glass-accent" style="padding: 18px;">
-      <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+  <div class="grid-4" style="font-size: 0.54em;">
+    <div class="glass glass-accent" style="padding: 16px;">
+      <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px;">
         <strong style="color:#B794F6;">/init</strong>
-        <span class="badge badge-accent" style="font-size:0.75em;">ONE-TIME</span>
+        <span class="badge badge-accent" style="font-size:0.7em;">ONE-TIME</span>
       </div>
-      <p style="color: var(--dim); margin: 0;">Deep-scans all repos, reads CLAUDE.md + source code, generates architecture knowledge base. Publishes to Confluence. <strong style="color:var(--accent5);">~30-40 min</strong> on developer laptop.</p>
+      <p style="color: var(--dim); margin: 0;">Deep-scans all repos, reads CLAUDE.md + source code, generates architecture knowledge base. Publishes to Confluence.</p>
     </div>
-    <div class="glass glass-blue" style="padding: 18px;">
-      <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+    <div class="glass glass-blue" style="padding: 16px;">
+      <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px;">
         <strong style="color:var(--blue);">/plan</strong>
-        <span class="badge badge-warm" style="font-size:0.75em;">CLARITY GATE</span>
+        <span class="badge badge-warm" style="font-size:0.7em;">CLARITY GATE</span>
       </div>
-      <p style="color: var(--dim); margin: 0;">Reads Jira, checks clarity. <strong style="color:var(--accent5);">If unclear — asks dev, posts Jira comment. BLOCKS until clarified.</strong> Then creates Confluence plan with architecture diagrams.</p>
+      <p style="color: var(--dim); margin: 0;">Reads Jira, checks clarity. <strong style="color:var(--accent5);">If unclear — BLOCKS until clarified.</strong> Creates Confluence plan with architecture diagrams.</p>
     </div>
-    <div class="glass glass-green" style="padding: 18px;">
-      <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+    <div class="glass" style="padding: 16px; border-color: rgba(255,111,97,0.2);">
+      <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px;">
+        <strong style="color:var(--accent6);">/regression-tests</strong>
+        <span class="badge badge-red" style="font-size:0.7em;">AUTO</span>
+      </div>
+      <p style="color: var(--dim); margin: 0;">Auto-generates test cases from plan. P0-P3 categories. Creates Jira sub-tasks. Appends to Confluence.</p>
+    </div>
+    <div class="glass glass-green" style="padding: 16px;">
+      <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px;">
         <strong style="color:var(--accent2);">/coding</strong>
-        <span class="badge badge-green" style="font-size:0.75em;">ONE-SHOT</span>
+        <span class="badge badge-green" style="font-size:0.7em;">ONE-SHOT</span>
       </div>
-      <p style="color: var(--dim); margin: 0;">Reads Confluence plan, creates branches, writes code + <strong style="color:var(--accent5);">mandatory unit tests</strong> + formatter. Blocks if tests fail. Updates Confluence status.</p>
+      <p style="color: var(--dim); margin: 0;">Reads Confluence plan, creates branches, writes code + <strong style="color:var(--accent5);">mandatory unit tests</strong> + formatter. Blocks if tests fail.</p>
     </div>
-    <div class="glass glass-yellow" style="padding: 18px;">
-      <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+    <div class="glass glass-yellow" style="padding: 16px;">
+      <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px;">
         <strong style="color:var(--accent5);">/local-test</strong>
-        <span class="badge badge-yellow" style="font-size:0.75em;">GUIDED</span>
+        <span class="badge badge-yellow" style="font-size:0.7em;">GUIDED</span>
       </div>
-      <p style="color: var(--dim); margin: 0;">Starts infra + services via DevSuite API. Generates test plan, <strong style="color:var(--accent5);">presents to dev for approval</strong>. Executes step-by-step. <strong style="color:var(--accent5);">Sensitive data masked</strong> via env vars.</p>
+      <p style="color: var(--dim); margin: 0;">Starts infra + services via DevSuite API. Generates test plan, <strong style="color:var(--accent5);">presents to dev for approval</strong>. Executes step-by-step.</p>
     </div>
-    <div class="glass glass-warm" style="padding: 18px;">
-      <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+    <div class="glass" style="padding: 16px; border-color: rgba(0,180,216,0.2);">
+      <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px;">
+        <strong style="color:var(--accent4);">/ui-test</strong>
+        <span class="badge badge-blue" style="font-size:0.7em;">GUIDED</span>
+        <span class="badge" style="font-size:0.65em; background: rgba(0,180,216,0.1); color: var(--accent4); border-color: rgba(0,180,216,0.25);">PLAYWRIGHT MCP</span>
+      </div>
+      <p style="color: var(--dim); margin: 0;">Opens real browser via Playwright MCP. Generates UI test steps from plan. Dev approves before execution.</p>
+    </div>
+    <div class="glass glass-warm" style="padding: 16px;">
+      <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px;">
         <strong style="color:var(--accent3);">/review</strong>
-        <span class="badge badge-red" style="font-size:0.75em;">AI REVIEW</span>
+        <span class="badge badge-red" style="font-size:0.7em;">AI REVIEW</span>
       </div>
-      <p style="color: var(--dim); margin: 0;">Security analysis, thread safety, test coverage, API compatibility. Done by <strong style="color:var(--accent5);">Claude Code for now</strong> — model can be swapped in future.</p>
+      <p style="color: var(--dim); margin: 0;">Security analysis, thread safety, test coverage, API compatibility. Model-swappable.</p>
     </div>
-    <div class="glass glass-green" style="padding: 18px;">
-      <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+    <div class="glass glass-green" style="padding: 16px;">
+      <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px;">
         <strong style="color:var(--accent2);">/pr</strong>
-        <span class="badge badge-green" style="font-size:0.75em;">SHIP IT</span>
+        <span class="badge badge-green" style="font-size:0.7em;">SHIP IT</span>
       </div>
       <p style="color: var(--dim); margin: 0;">Commits, pushes branches, creates PRs on Bitbucket. Cross-links Jira, Confluence, and PRs. Full audit trail.</p>
     </div>
   </div>
-  <aside class="notes">Six skills, from knowledge generation to shipping code. Each one is a custom slash command. Let me walk through the important ones in detail.</aside>
+  <aside class="notes">Eight skills, from knowledge generation to shipping code. Each one is a custom slash command. The two new additions — regression-tests auto-generates test cases from the plan before coding starts, and ui-test opens a real browser via Playwright MCP for visual UI testing after local tests pass.</aside>
 </section>
 
 <!-- ============================================ -->
@@ -844,7 +871,7 @@
 
   <p style="font-size: 0.58em; color: var(--dim); margin-top: 28px;">
     Skills are Markdown instruction files in <span class="mono" style="color:var(--blue);">.claude/commands/devsuite/</span><br>
-    They ship with the repo — any developer who clones dev-suite gets all 6 skills automatically.
+    They ship with the repo — any developer who clones dev-suite gets all 8 skills automatically.
   </p>
   <aside class="notes">This is what it looks like in the terminal. You type a slash command, and the AI agent takes over. It reads the Jira ticket, analyzes the architecture, creates a plan on Confluence, and then implements the code across multiple repos.</aside>
 </section>
@@ -1216,7 +1243,7 @@ good enough. Make them better.
   <div style="display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 24px; flex-wrap: nowrap;">
     <div style="padding: 14px 18px; border-radius: 12px; text-align: center; background: rgba(0,212,170,0.08); border: 1px solid rgba(0,212,170,0.2); min-width: 130px;">
       <div style="font-size: 0.55em; font-weight: 700; color: var(--accent2);">CI (Dev Suite)</div>
-      <div style="font-size: 0.42em; color: var(--dim); margin-top: 4px;">/plan → /coding → /local-test → /review → /pr</div>
+      <div style="font-size: 0.42em; color: var(--dim); margin-top: 4px;">/plan → /regression-tests → /coding → /local-test → /ui-test → /review → /pr</div>
     </div>
     <div style="color: rgba(124,92,252,0.4); font-size: 1.4em; padding: 0 10px;">→</div>
     <div style="padding: 14px 18px; border-radius: 12px; text-align: center; background: rgba(124,92,252,0.08); border: 1px solid rgba(124,92,252,0.2); min-width: 110px;">
@@ -1240,8 +1267,10 @@ good enough. Make them better.
       <h3 style="font-size: 0.95em; color: var(--accent2); margin-bottom: 12px;">CI — What We Showed Today</h3>
       <ul style="font-size: 0.62em; line-height: 2;">
         <li><strong>/plan</strong> — Jira → Confluence architecture plan</li>
+        <li><strong>/regression-tests</strong> — Auto-generate test cases from plan</li>
         <li><strong>/coding</strong> — Multi-repo code + mandatory tests</li>
         <li><strong>/local-test</strong> — E2E verification with service orchestration</li>
+        <li><strong>/ui-test</strong> — Browser UI testing via Playwright MCP</li>
         <li><strong>/review</strong> — AI security + quality review</li>
         <li><strong>/pr</strong> — Create PRs on Bitbucket with full traceability</li>
       </ul>
@@ -1265,6 +1294,149 @@ good enough. Make them better.
     <strong>Note:</strong> Steps 2&ndash;5 are piloted in a lower environment &mdash; production readiness underway.
   </div>
   <aside class="notes">Everything we've shown today is the CI side — from Jira ticket to PR. For CD, we're building a single promotion pipeline from Feature to Dev to Prod. Flux Image Reflector auto-detects new images, Argo CD auto-syncs deployments, automated canary analysis uses Prometheus and ELK metrics, and failed canaries trigger instant rollback. Steps 2 through 5 are currently piloted in a lower environment, production readiness is underway.</aside>
+</section>
+
+<!-- ============================================ -->
+<!-- SLIDE: AUTOMATED TESTING AT EVERY LAYER -->
+<!-- ============================================ -->
+<section data-background-gradient="radial-gradient(ellipse 800px 500px at 50% 50%, rgba(0,180,216,0.06) 0%, transparent 60%)">
+  <div style="display:flex; align-items:center; gap:12px; margin-bottom: 8px;">
+    <h2 style="margin:0;">Automated Testing at <span class="glow-blue">Every Layer</span></h2>
+    <span class="badge badge-green" style="font-size:0.4em;">CURRENT CAPABILITY</span>
+  </div>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 20px;">Three testing skills — backend regression, API integration, and browser UI — covering the full stack.</p>
+
+  <div style="display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 24px;">
+    <div style="padding: 10px 14px; border-radius: 10px; text-align: center; background: rgba(77,158,255,0.08); border: 1px solid rgba(77,158,255,0.2);">
+      <div style="font-size: 0.5em; font-weight: 700; color: var(--blue);">/plan</div>
+    </div>
+    <div style="color: rgba(124,92,252,0.4); font-size: 1.2em; padding: 0 6px;">→</div>
+    <div style="padding: 10px 14px; border-radius: 10px; text-align: center; background: rgba(255,111,97,0.1); border: 1px solid rgba(255,111,97,0.25);">
+      <div style="font-size: 0.5em; font-weight: 700; color: var(--accent6);">/regression-tests</div>
+    </div>
+    <div style="color: rgba(124,92,252,0.4); font-size: 1.2em; padding: 0 6px;">→</div>
+    <div style="padding: 10px 14px; border-radius: 10px; text-align: center; background: rgba(0,212,170,0.08); border: 1px solid rgba(0,212,170,0.2);">
+      <div style="font-size: 0.5em; font-weight: 700; color: var(--accent2);">/coding</div>
+    </div>
+    <div style="color: rgba(124,92,252,0.4); font-size: 1.2em; padding: 0 6px;">→</div>
+    <div style="padding: 10px 14px; border-radius: 10px; text-align: center; background: rgba(255,201,60,0.1); border: 1px solid rgba(255,201,60,0.25);">
+      <div style="font-size: 0.5em; font-weight: 700; color: var(--accent5);">/local-test</div>
+    </div>
+    <div style="color: rgba(124,92,252,0.4); font-size: 1.2em; padding: 0 6px;">→</div>
+    <div style="padding: 10px 14px; border-radius: 10px; text-align: center; background: rgba(0,180,216,0.1); border: 1px solid rgba(0,180,216,0.25);">
+      <div style="font-size: 0.5em; font-weight: 700; color: var(--accent4);">/ui-test</div>
+    </div>
+    <div style="color: rgba(124,92,252,0.4); font-size: 1.2em; padding: 0 6px;">→</div>
+    <div style="padding: 10px 14px; border-radius: 10px; text-align: center; background: rgba(255,107,157,0.08); border: 1px solid rgba(255,107,157,0.2);">
+      <div style="font-size: 0.5em; font-weight: 700; color: var(--accent3);">/review</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="gap: 24px;">
+    <div class="glass" style="padding: 22px; border-color: rgba(255,111,97,0.2);">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom: 12px;">
+        <strong style="color:var(--accent6); font-size: 1.1em;">/regression-tests</strong>
+        <span class="badge badge-red" style="font-size:0.6em;">AUTO</span>
+      </div>
+      <ul style="font-size: 0.65em; line-height: 2; padding-left: 16px;">
+        <li><strong>Auto-generated from plan</strong> — reads Confluence plan + Jira ACs</li>
+        <li><strong>P0-P3 priority categories</strong> — Happy Path, Edge Case, Error Handling, Integration, Backward Compat, Security</li>
+        <li><strong>Creates Jira sub-tasks</strong> — each test case linked to parent ticket</li>
+        <li><strong>Appends to Confluence</strong> — full test suite documented with priority matrix</li>
+      </ul>
+    </div>
+    <div class="glass" style="padding: 22px; border-color: rgba(0,180,216,0.2);">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom: 12px;">
+        <strong style="color:var(--accent4); font-size: 1.1em;">/ui-test</strong>
+        <span class="badge badge-blue" style="font-size:0.6em;">GUIDED</span>
+        <span class="badge" style="font-size:0.55em; background: rgba(0,180,216,0.1); color: var(--accent4); border-color: rgba(0,180,216,0.25);">PLAYWRIGHT MCP</span>
+      </div>
+      <ul style="font-size: 0.65em; line-height: 2; padding-left: 16px;">
+        <li><strong>Opens real browser</strong> via Playwright MCP — clicks, fills forms, navigates</li>
+        <li><strong>Generates steps from plan</strong> — identifies UI changes from implementation</li>
+        <li><strong>Developer approves before execution</strong> — guided, not autonomous</li>
+        <li><strong>Screenshots as evidence</strong> — visual proof published to Confluence</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout" style="font-size: 0.58em; margin-top: 16px;">
+    <strong>Full testing pipeline:</strong> <span style="color:var(--accent6);">/regression-tests</span> generates the test matrix before coding starts. <span style="color:var(--accent5);">/local-test</span> runs backend API verification. <span style="color:var(--accent4);">/ui-test</span> validates the frontend. All results flow to Confluence — one source of truth.
+  </div>
+  <aside class="notes">Three layers of testing, all automated. Regression tests are generated from the plan before coding even starts — they define the test matrix. After coding, local-test runs backend API verification. Then ui-test opens a real browser via Playwright MCP for visual validation. Every result flows to Confluence — one source of truth for the entire testing lifecycle.</aside>
+</section>
+
+<!-- ============================================ -->
+<!-- SLIDE: AUTONOMOUS DEVELOPMENT PIPELINE -->
+<!-- ============================================ -->
+<section data-background-gradient="radial-gradient(ellipse 800px 500px at 50% 50%, rgba(124,92,252,0.08) 0%, transparent 60%)">
+  <div style="display:flex; align-items:center; gap:12px; margin-bottom: 8px;">
+    <h2 style="margin:0;">Autonomous <span class="glow">Development Pipeline</span></h2>
+    <span class="badge badge-yellow" style="font-size:0.4em;">COMING SOON — VISION</span>
+  </div>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 20px;">One human gate. Everything else is automated.</p>
+
+  <div style="display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 16px;">
+    <div style="padding: 16px 20px; border-radius: 14px; text-align: center; background: rgba(124,92,252,0.12); border: 2px solid rgba(124,92,252,0.4); position: relative;">
+      <div style="font-size: 0.6em; font-weight: 700; color: #B794F6;">Developer<br>Approves Plan</div>
+      <div style="position: absolute; top: -12px; right: -8px; background: rgba(255,201,60,0.2); border: 1px solid rgba(255,201,60,0.4); border-radius: 6px; padding: 2px 8px; font-size: 0.4em; font-weight: 700; color: var(--accent5);">ONLY GATE</div>
+    </div>
+    <div style="color: rgba(124,92,252,0.4); font-size: 1.4em; padding: 0 8px;">→</div>
+    <div style="padding: 14px 16px; border-radius: 12px; text-align: center; background: rgba(0,212,170,0.08); border: 1px solid rgba(0,212,170,0.2);">
+      <div style="font-size: 0.5em; font-weight: 700; color: var(--accent2);">Coding</div>
+      <div style="font-size: 0.38em; color: var(--dim);">auto</div>
+    </div>
+    <div style="color: rgba(124,92,252,0.4); font-size: 1.4em; padding: 0 8px;">→</div>
+    <div style="padding: 14px 16px; border-radius: 12px; text-align: center; background: rgba(255,201,60,0.08); border: 1px solid rgba(255,201,60,0.2);">
+      <div style="font-size: 0.5em; font-weight: 700; color: var(--accent5);">Testing<br><span style="font-size:0.75em;">backend + UI</span></div>
+      <div style="font-size: 0.38em; color: var(--dim);">auto</div>
+    </div>
+    <div style="color: rgba(124,92,252,0.4); font-size: 1.4em; padding: 0 8px;">→</div>
+    <div style="padding: 14px 16px; border-radius: 12px; text-align: center; background: rgba(77,158,255,0.08); border: 1px solid rgba(77,158,255,0.2);">
+      <div style="font-size: 0.5em; font-weight: 700; color: var(--blue);">PR Created</div>
+      <div style="font-size: 0.38em; color: var(--dim);">auto</div>
+    </div>
+    <div style="color: rgba(124,92,252,0.4); font-size: 1.4em; padding: 0 8px;">→</div>
+    <div style="padding: 14px 16px; border-radius: 12px; text-align: center; background: rgba(0,212,170,0.12); border: 2px solid rgba(0,212,170,0.4);">
+      <div style="font-size: 0.5em; font-weight: 700; color: var(--accent2);">Production</div>
+      <div style="font-size: 0.38em; color: var(--dim);">auto-deployed</div>
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: center; justify-content: center; gap: 0; margin: 20px 0 20px; padding: 12px 0; border-top: 1px solid rgba(255,107,157,0.15); border-bottom: 1px solid rgba(255,107,157,0.15);">
+    <div style="font-size: 0.45em; font-weight: 600; color: var(--accent3); margin-right: 12px;">INCIDENT SELF-HEALING:</div>
+    <div style="padding: 8px 12px; border-radius: 8px; background: rgba(255,107,157,0.08); border: 1px solid rgba(255,107,157,0.2);">
+      <div style="font-size: 0.42em; font-weight: 600; color: var(--accent3);">Incident</div>
+    </div>
+    <div style="color: rgba(255,107,157,0.4); font-size: 1em; padding: 0 6px;">→</div>
+    <div style="padding: 8px 12px; border-radius: 8px; background: rgba(255,107,157,0.05); border: 1px solid rgba(255,107,157,0.15);">
+      <div style="font-size: 0.42em; color: var(--dim);">Linked to Confluence</div>
+    </div>
+    <div style="color: rgba(255,107,157,0.4); font-size: 1em; padding: 0 6px;">→</div>
+    <div style="padding: 8px 12px; border-radius: 8px; background: rgba(255,107,157,0.05); border: 1px solid rgba(255,107,157,0.15);">
+      <div style="font-size: 0.42em; color: var(--dim);">Agent auto-fix</div>
+    </div>
+    <div style="color: rgba(255,107,157,0.4); font-size: 1em; padding: 0 6px;">→</div>
+    <div style="padding: 8px 12px; border-radius: 8px; background: rgba(255,107,157,0.05); border: 1px solid rgba(255,107,157,0.15);">
+      <div style="font-size: 0.42em; color: var(--dim);">New PR</div>
+    </div>
+    <div style="color: rgba(255,107,157,0.4); font-size: 1em; padding: 0 6px;">→</div>
+    <div style="padding: 8px 12px; border-radius: 8px; background: rgba(0,212,170,0.08); border: 1px solid rgba(0,212,170,0.2);">
+      <div style="font-size: 0.42em; font-weight: 600; color: var(--accent2);">Resolved</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="gap: 24px;">
+    <div class="glass glass-green" style="padding: 20px;">
+      <h3 style="font-size: 0.9em; color: var(--accent2); margin-bottom: 10px;">Normal Flow</h3>
+      <p style="font-size: 0.62em; color: var(--dim); margin: 0;">Developer reviews and approves the <strong style="color:var(--accent5);">plan</strong> — that's the only human gate. From there, the agent codes, tests (backend + UI), reviews, creates the PR, and the CD pipeline deploys to production. <strong style="color:var(--accent2);">One approval, full automation.</strong></p>
+    </div>
+    <div class="glass glass-warm" style="padding: 20px;">
+      <h3 style="font-size: 0.9em; color: var(--accent3); margin-bottom: 10px;">Incident Self-Healing Loop</h3>
+      <p style="font-size: 0.62em; color: var(--dim); margin: 0;">Production incident triggers alert. The agent reads the incident context from Confluence, diagnoses the issue, generates a fix, tests it, and creates a PR — <strong style="color:var(--accent3);">zero human intervention.</strong> Monitoring closes the loop.</p>
+    </div>
+  </div>
+  <aside class="notes">This is the vision we're building toward. Today, each skill requires the developer to invoke it. Tomorrow, a single plan approval triggers the entire pipeline — coding, testing backend and UI, code review, PR creation, and deployment. The only human gate is approving the plan. And for incidents, we envision a self-healing loop — the agent detects the incident, reads context from Confluence, auto-generates a fix, tests it, and creates a PR. Zero human intervention for production incident remediation.</aside>
 </section>
 
 <!-- ============================================ -->
