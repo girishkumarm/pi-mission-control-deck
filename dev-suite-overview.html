@@ -824,7 +824,58 @@
 </section>
 
 <!-- ============================================ -->
-<!-- SLIDE 9: CLARITY GATE -->
+<!-- SLIDE 9: /plan LIVE DEMO -->
+<!-- ============================================ -->
+<section>
+  <div style="display:flex; align-items:center; gap:12px; margin-bottom: 4px;">
+    <span class="badge badge-blue" style="font-size:0.42em; letter-spacing:2px;">LIVE DEMO — PAI-29180</span>
+  </div>
+  <h2><span class="glow">/plan</span> → Confluence</h2>
+  <p class="dim" style="font-size: 0.62em; margin-bottom: 20px;">Real Jira ticket: <strong style="color:var(--r-main-color);">"Action Output Persistence in Event Payload"</strong> — Agentic product</p>
+
+  <div class="grid-2" style="gap: 28px;">
+    <div>
+      <div class="glass glass-blue" style="padding: 22px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom: 14px;">
+          <span style="font-size:1.2em;">🎫</span>
+          <span class="badge badge-blue" style="font-size:0.55em;">JIRA PAI-29180</span>
+        </div>
+        <p style="font-size: 0.62em; color: var(--r-main-color); margin-bottom: 14px;">Agent-triggered action outputs lost after execution. Chained actions can't access prior outputs.</p>
+        <table style="font-size: 0.95em;">
+          <tr><td style="font-weight:600; width:90px; color:var(--dim);">Status</td><td><span class="badge badge-blue" style="font-size:0.8em;">To Be Picked</span></td></tr>
+          <tr><td style="font-weight:600; color:var(--dim);">Repos</td><td>pi-botcore + pi-rule-engine</td></tr>
+          <tr><td style="font-weight:600; color:var(--dim);">ACs</td><td>7 acceptance criteria</td></tr>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="glass glass-accent" style="padding: 22px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom: 14px;">
+          <span style="font-size:1.2em;">📝</span>
+          <span class="badge badge-accent" style="font-size:0.55em;">CONFLUENCE — AUTO-GENERATED</span>
+        </div>
+        <ul style="font-size: 0.58em; color: var(--r-main-color); line-height: 2; padding-left: 16px;">
+          <li>Ticket summary + acceptance criteria</li>
+          <li>Affected repos table with risk levels</li>
+          <li><strong style="color:#B794F6;">Mermaid sequence diagram</strong> (RE ↔ BE ↔ AE ↔ SM)</li>
+          <li>Per-repo file-level change list (16 files)</li>
+          <li>API schema diffs (streaming + non-streaming)</li>
+          <li>E2E test scenario with expected results</li>
+          <li>5 risks with mitigations + rollback plan</li>
+          <li>Deployment order</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="font-size: 0.6em; margin-top: 16px;">
+    <strong>The plan lives on Confluence — not in the agent's memory.</strong> Developers can review, edit, share with the team, or have a senior engineer validate. The agent reads the latest version when /coding runs.
+  </div>
+  <aside class="notes">Here's a real example. PAI-29180 needed changes across two repos. The agent created a full plan on Confluence — sequence diagrams, file-level changes, risk analysis. The plan is editable by the team. The coding step reads whatever's on Confluence.</aside>
+</section>
+
+<!-- ============================================ -->
+<!-- SLIDE 10: CLARITY GATE -->
 <!-- ============================================ -->
 <section data-background-gradient="radial-gradient(ellipse 600px 400px at 75% 30%, rgba(255,107,157,0.06) 0%, transparent 60%)">
   <h2>Is it <span class="glow-warm">Dev Ready</span>?</h2>
@@ -881,57 +932,6 @@ good enough. Make them better.
     </div>
   </div>
   <aside class="notes">This is a key safety feature. If a Jira ticket is ambiguous, the agent stops and asks questions — first to the developer, and if they don't know, it posts a structured comment on Jira for the product team. No wasted engineering effort.</aside>
-</section>
-
-<!-- ============================================ -->
-<!-- SLIDE 10: /plan LIVE DEMO -->
-<!-- ============================================ -->
-<section>
-  <div style="display:flex; align-items:center; gap:12px; margin-bottom: 4px;">
-    <span class="badge badge-blue" style="font-size:0.42em; letter-spacing:2px;">LIVE DEMO — PAI-29180</span>
-  </div>
-  <h2><span class="glow">/plan</span> → Confluence</h2>
-  <p class="dim" style="font-size: 0.62em; margin-bottom: 20px;">Real Jira ticket: <strong style="color:var(--r-main-color);">"Action Output Persistence in Event Payload"</strong> — Agentic product</p>
-
-  <div class="grid-2" style="gap: 28px;">
-    <div>
-      <div class="glass glass-blue" style="padding: 22px;">
-        <div style="display:flex; align-items:center; gap:8px; margin-bottom: 14px;">
-          <span style="font-size:1.2em;">🎫</span>
-          <span class="badge badge-blue" style="font-size:0.55em;">JIRA PAI-29180</span>
-        </div>
-        <p style="font-size: 0.62em; color: var(--r-main-color); margin-bottom: 14px;">Agent-triggered action outputs lost after execution. Chained actions can't access prior outputs.</p>
-        <table style="font-size: 0.95em;">
-          <tr><td style="font-weight:600; width:90px; color:var(--dim);">Status</td><td><span class="badge badge-blue" style="font-size:0.8em;">To Be Picked</span></td></tr>
-          <tr><td style="font-weight:600; color:var(--dim);">Repos</td><td>pi-botcore + pi-rule-engine</td></tr>
-          <tr><td style="font-weight:600; color:var(--dim);">ACs</td><td>7 acceptance criteria</td></tr>
-        </table>
-      </div>
-    </div>
-    <div>
-      <div class="glass glass-accent" style="padding: 22px;">
-        <div style="display:flex; align-items:center; gap:8px; margin-bottom: 14px;">
-          <span style="font-size:1.2em;">📝</span>
-          <span class="badge badge-accent" style="font-size:0.55em;">CONFLUENCE — AUTO-GENERATED</span>
-        </div>
-        <ul style="font-size: 0.58em; color: var(--r-main-color); line-height: 2; padding-left: 16px;">
-          <li>Ticket summary + acceptance criteria</li>
-          <li>Affected repos table with risk levels</li>
-          <li><strong style="color:#B794F6;">Mermaid sequence diagram</strong> (RE ↔ BE ↔ AE ↔ SM)</li>
-          <li>Per-repo file-level change list (16 files)</li>
-          <li>API schema diffs (streaming + non-streaming)</li>
-          <li>E2E test scenario with expected results</li>
-          <li>5 risks with mitigations + rollback plan</li>
-          <li>Deployment order</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <div class="callout" style="font-size: 0.6em; margin-top: 16px;">
-    <strong>The plan lives on Confluence — not in the agent's memory.</strong> Developers can review, edit, share with the team, or have a senior engineer validate. The agent reads the latest version when /coding runs.
-  </div>
-  <aside class="notes">Here's a real example. PAI-29180 needed changes across two repos. The agent created a full plan on Confluence — sequence diagrams, file-level changes, risk analysis. The plan is editable by the team. The coding step reads whatever's on Confluence.</aside>
 </section>
 
 <!-- ============================================ -->
