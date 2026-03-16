@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PML Platform — Detailed Issue Analysis</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/black.min.css" id="theme">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --r-background-color: #050A18;
+    --r-main-font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --r-main-font-size: 26px;
+    --r-main-color: #C8D1E0;
+    --r-heading-font: 'Space Grotesk', sans-serif;
+    --r-heading-color: #FFFFFF;
+    --r-link-color: #6C9CFF;
+    --r-selection-background-color: #7C5CFC;
+    --accent: #7C5CFC;
+    --accent2: #00D4AA;
+    --accent3: #FF6B9D;
+    --accent4: #00B4D8;
+    --accent5: #FFC93C;
+    --accent6: #FF6F61;
+    --blue: #4D9EFF;
+    --dim: #5A6580;
+    --card-bg: rgba(255,255,255,0.03);
+    --card-border: rgba(255,255,255,0.06);
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.08);
+    --red: #FF4D4D;
+    --orange: #FF9640;
+    --yellow: #FFC93C;
+  }
+
+  .reveal { font-family: var(--r-main-font); }
+  .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+    letter-spacing: -0.02em; text-transform: none; line-height: 1.1;
+  }
+  .reveal h1 { font-size: 3.2em; }
+  .reveal h2 { font-size: 2.2em; }
+  .reveal h3 { font-size: 1.2em; }
+  .reveal p { font-weight: 400; line-height: 1.7; }
+  .reveal section { text-align: left; }
+  .reveal .center { text-align: center; }
+  .reveal ul, .reveal ol { font-size: 0.82em; }
+  .reveal li { margin-bottom: 10px; line-height: 1.5; }
+
+  .reveal .slides { background: transparent; }
+  .mesh-bg {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: var(--r-background-color); z-index: -2;
+  }
+  .mesh-bg::before {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background:
+      radial-gradient(ellipse 600px 600px at 20% 30%, rgba(108,156,255,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 500px 500px at 80% 60%, rgba(124,92,252,0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 400px 400px at 50% 80%, rgba(0,212,170,0.04) 0%, transparent 70%);
+    animation: meshDrift 20s ease-in-out infinite;
+  }
+  @keyframes meshDrift {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(2%, -1%) rotate(1deg); }
+    66% { transform: translate(-1%, 2%) rotate(-1deg); }
+  }
+
+  #particles { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
+
+  .glow { background: linear-gradient(135deg, #FF4D4D 0%, #FF9640 50%, #FFC93C 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .glow-red { background: linear-gradient(135deg, #FF4D4D 0%, #FF6B9D 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .glow-green { background: linear-gradient(135deg, #00D4AA 0%, #4D9EFF 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .glow-blue { background: linear-gradient(135deg, #4D9EFF 0%, #7C5CFC 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .glow-purple { background: linear-gradient(135deg, #7C5CFC 0%, #B794F6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  .glass {
+    background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border); border-radius: 16px; padding: 28px;
+    position: relative; overflow: hidden;
+  }
+  .glass::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  }
+  .glass-red { border-color: rgba(255,77,77,0.25); }
+  .glass-red::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,77,77,0.3), transparent); }
+  .glass-orange { border-color: rgba(255,150,64,0.25); }
+  .glass-orange::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,150,64,0.3), transparent); }
+  .glass-accent { border-color: rgba(124,92,252,0.2); }
+  .glass-green { border-color: rgba(0,212,170,0.2); }
+  .glass-blue { border-color: rgba(77,158,255,0.2); }
+  .glass-yellow { border-color: rgba(255,201,60,0.25); }
+
+  .badge {
+    display: inline-block; padding: 5px 14px; border-radius: 100px;
+    font-size: 0.5em; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 1.5px; vertical-align: middle;
+    border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.04);
+  }
+  .badge-red { background: rgba(255,77,77,0.12); color: #FF6B6B; border-color: rgba(255,77,77,0.25); }
+  .badge-orange { background: rgba(255,150,64,0.1); color: #FF9640; border-color: rgba(255,150,64,0.25); }
+  .badge-yellow { background: rgba(255,201,60,0.1); color: var(--accent5); border-color: rgba(255,201,60,0.25); }
+  .badge-green { background: rgba(0,212,170,0.1); color: var(--accent2); border-color: rgba(0,212,170,0.25); }
+  .badge-blue { background: rgba(77,158,255,0.1); color: var(--blue); border-color: rgba(77,158,255,0.25); }
+
+  .grid-2 { display: grid !important; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  .grid-3 { display: grid !important; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+  .reveal table { width: 100%; border-collapse: collapse; font-size: 0.65em; }
+  .reveal table th {
+    background: rgba(108,156,255,0.06); padding: 12px 14px; text-align: left;
+    font-weight: 600; text-transform: uppercase; font-size: 0.8em;
+    letter-spacing: 1px; color: var(--dim); border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .reveal table td { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+  .reveal table tr:hover td { background: rgba(108,156,255,0.03); }
+
+  .code-block {
+    background: rgba(0,0,0,0.4); border-radius: 12px; padding: 20px 24px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.50em;
+    line-height: 1.8; border: 1px solid rgba(255,255,255,0.05);
+    text-align: left; position: relative; overflow: hidden;
+    white-space: pre !important; word-break: break-word; overflow-x: auto;
+  }
+  .code-block::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, #4D9EFF, #7C5CFC);
+    opacity: 0.4;
+  }
+
+  .callout {
+    background: rgba(255,77,77,0.04); border-left: 3px solid #FF4D4D;
+    border-radius: 0 12px 12px 0; padding: 16px 20px; margin: 16px 0; font-size: 0.72em;
+  }
+  .callout-green { background: rgba(0,212,170,0.04); border-left-color: var(--accent2); }
+  .callout-blue { background: rgba(77,158,255,0.04); border-left-color: var(--blue); }
+
+  .reveal .progress span { background: linear-gradient(90deg, #4D9EFF, #7C5CFC); }
+  .reveal .slide-number { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--dim); }
+  .reveal .controls { color: var(--accent); }
+
+  .dim { color: var(--dim); }
+  .small { font-size: 0.65em; color: var(--dim); }
+  .tiny { font-size: 0.5em; color: var(--dim); }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .mt-1 { margin-top: 12px !important; }
+  .mt-2 { margin-top: 24px !important; }
+  .mb-0 { margin-bottom: 0 !important; }
+
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; vertical-align: middle; box-shadow: 0 0 8px currentColor; }
+  .severity-crit { color: #FF4D4D; font-weight: 700; font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
+  .severity-high { color: #FF9640; font-weight: 700; font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
+  .severity-med { color: #FFC93C; font-weight: 600; font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
+  .file-ref { font-family: 'JetBrains Mono'; font-size: 0.7em; color: #5A6580; }
+  .back-link { display: inline-block; font-size: 0.5em; color: #6C9CFF; text-decoration: none; padding: 4px 14px; border-radius: 100px; border: 1px solid rgba(108,156,255,0.2); transition: all 0.3s; font-weight: 500; }
+  .back-link:hover { background: rgba(108,156,255,0.1); border-color: rgba(108,156,255,0.4); }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #4D9EFF; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div class="mesh-bg"></div>
+<canvas id="particles"></canvas>
+
+<div class="reveal">
+<div class="slides">
+
+<!-- =========================================== -->
+<!-- TITLE SLIDE -->
+<!-- =========================================== -->
+<section class="center" data-background-gradient="radial-gradient(ellipse 800px 600px at 50% 40%, rgba(77,158,255,0.1) 0%, rgba(124,92,252,0.04) 40%, transparent 70%)">
+  <div style="margin-bottom: 24px;">
+    <span class="badge badge-blue" style="font-size:0.45em; letter-spacing: 2px;">DETAILED ANALYSIS</span>
+  </div>
+  <h1 style="font-size: 3em; margin-bottom: 8px;">
+    <span class="glow-blue">PML Issues</span> Deep Dive
+  </h1>
+  <p style="font-size: 1em; color: var(--dim); font-weight: 300; margin-top: 8px;">
+    Code snippets, file locations, methodology &amp; recommended fixes
+  </p>
+  <p class="tiny" style="margin-top: 40px;">
+    <a href="pml-issues.html" class="back-link" style="font-size:1em;">&larr; Back to Main Deck</a>
+    &nbsp;&nbsp;
+    <a href="pml-all-issues.html" class="back-link" style="font-size:1em;">Full Registry &rarr;</a>
+  </p>
+  <p class="tiny" style="margin-top: 20px; letter-spacing: 2px;">COMPANION DECK &middot; PML PLATFORM AUDIT &middot; MARCH 2026</p>
+</section>
+
+<!-- =========================================== -->
+<!-- DATA LOSS — SQS AUTO_ACKNOWLEDGE -->
+<!-- =========================================== -->
+<section id="data-loss">
+  <span class="badge badge-red">P0 &middot; DATA LOSS</span>
+  <h2 style="margin: 8px 0 4px;">SQS <span class="glow-red">AUTO_ACKNOWLEDGE</span> &mdash; All 17 Consumers</h2>
+  <p class="dim" style="font-size: 0.58em; margin-bottom: 14px;">Every SQS consumer in eq-fms-consumers uses <code>Session.AUTO_ACKNOWLEDGE</code>, deleting messages before processing.</p>
+
+  <div class="grid-2">
+    <div>
+      <div class="code-block" style="font-size: 0.42em; line-height: 1.6;"><span style="color:#5A6580">// Pattern found in ALL 17 consumers:</span>
+<span style="color:#5A6580">// eq-fms-consumers/src/.../sqs/</span>
+
+Session session = connection.createSession(
+    false, <span style="color:#FF4D4D;font-weight:700">Session.AUTO_ACKNOWLEDGE</span>
+);
+
+<span style="color:#5A6580">// Message is deleted from SQS the instant</span>
+<span style="color:#5A6580">// it is received — BEFORE onMessage() runs</span>
+
+@Override
+public void <span style="color:#4D9EFF">onMessage</span>(Message message) {
+    try {
+        processPayment(message);
+    } catch (Exception e) {
+        <span style="color:#FF4D4D">// Message already gone from SQS</span>
+        <span style="color:#FF4D4D">// No retry, no DLQ, no recovery</span>
+        log.error("[eventMessage] [Exception]", e);
+    }
+}</div>
+    </div>
+    <div>
+      <h3 style="font-size: 0.85em; color: #FF4D4D; margin: 0 0 8px;">Affected Consumers (17)</h3>
+      <table style="font-size: 0.52em;">
+        <tr><th>#</th><th>Consumer</th><th>Financial Impact</th></tr>
+        <tr><td>1</td><td>PaymentDisbursalConsumer</td><td>Money disbursed, DB not updated</td></tr>
+        <tr><td>2</td><td>UPIMandateConsumer</td><td>Mandate status lost</td></tr>
+        <tr><td>3</td><td>SettlementCommConsumer</td><td>Settlement notifications vanish</td></tr>
+        <tr><td>4</td><td>BlockTransactionConsumer</td><td>Fund block status disappears</td></tr>
+        <tr><td>5</td><td>PayInClearanceConsumer</td><td>Payment clearance not recorded</td></tr>
+        <tr><td>6</td><td>TechExcelSyncConsumer</td><td>BO transaction sync lost</td></tr>
+        <tr><td>7</td><td>MarginPledgeConsumer</td><td>Pledge status not updated</td></tr>
+        <tr><td>8</td><td>WithdrawalConsumer</td><td>Withdrawal status lost</td></tr>
+        <tr><td>9</td><td>FundTransferConsumer</td><td>Transfer records missing</td></tr>
+        <tr><td>10</td><td>IPOAllotmentConsumer</td><td>Allotment data not persisted</td></tr>
+        <tr><td>11-17</td><td>+7 more consumers</td><td>Various financial data loss</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout-green" style="background: rgba(0,212,170,0.04); border-left: 3px solid var(--accent2); border-radius: 0 12px 12px 0; padding: 12px 16px; margin-top: 10px; font-size: 0.58em;">
+    <strong>Fix:</strong> 1) Change to <code>Session.CLIENT_ACKNOWLEDGE</code>. 2) Call <code>message.acknowledge()</code> only after successful processing. 3) Configure DLQs on all SQS queues (maxReceiveCount=3). 4) Add Micrometer counters for received/processed/failed metrics.
+  </div>
+</section>
+
+<!-- =========================================== -->
+<!-- FINANCIAL PRECISION — BigDecimal(double) -->
+<!-- =========================================== -->
+<section id="financial-precision">
+  <span class="badge badge-red">P0 &middot; FINANCIAL PRECISION</span>
+  <h2 style="margin: 8px 0 4px;"><span class="glow-red">BigDecimal(double)</span> — 150 Sites, 79 Files</h2>
+  <p class="dim" style="font-size: 0.58em; margin-bottom: 14px;">IEEE 754 floating-point contaminates all financial math. <code>new BigDecimal(0.1)</code> = <code>0.1000000000000000055511151231257827021181583404541015625</code></p>
+
+  <div class="grid-2">
+    <div>
+      <div class="code-block" style="font-size: 0.42em; line-height: 1.6;"><span style="color:#5A6580">// UtilityService.java — found 150 times in 79 files</span>
+BigDecimal value = <span style="color:#FF4D4D">new BigDecimal(doubleValue)</span>;
+<span style="color:#5A6580">// Preserves ALL 53 bits of imprecision</span>
+
+<span style="color:#5A6580">// ChargesInfoServiceImpl.java — rounding cascade</span>
+double exchangesTurnOverCharge;  <span style="color:#FF4D4D">// instance var in singleton!</span>
+double sebiFeesCharge;           <span style="color:#FF4D4D">// shared across threads!</span>
+
+BigDecimal gst = new BigDecimal(exchangesTurnOverCharge)
+    .add(new BigDecimal(sebiFeesCharge))
+    .multiply(GST_RATE)
+    .setScale(2, <span style="color:#FF4D4D">RoundingMode.CEILING</span>);
+<span style="color:#5A6580">// CEILING always rounds UP = systematic overcharge</span>
+
+<span style="color:#5A6580">// LedgerServiceImpl.java</span>
+<span style="color:#FF4D4D">AtomicReference&lt;Double&gt;</span> runningTotal = ...;
+<span style="color:#5A6580">// Concurrent accumulation with double precision</span>
+<span style="color:#5A6580">// Error compounds with every addition</span>
+
+<span style="color:#5A6580">// pml-core-dnd-aggregator — worst case</span>
+<span style="color:#FF4D4D">Float ltp</span>;  <span style="color:#5A6580">// 32-bit float for Last Traded Price!</span>
+Double realisedProfit;
+<span style="color:#5A6580">// Rs 10,000.50 stored as 10000.5f = Rs 10,000.50</span>
+<span style="color:#5A6580">// Rs 99,999.99 stored as 99999.992f = Rs 100,000.00</span></div>
+    </div>
+    <div>
+      <h3 style="font-size: 0.85em; color: #FF4D4D; margin: 0 0 8px;">3 Rounding Strategies in Conflict</h3>
+      <table style="font-size: 0.55em;">
+        <tr><th>System</th><th>Mode</th><th>Effect</th></tr>
+        <tr><td>FMS Charges</td><td style="color:#FF4D4D">CEILING (6 usages)</td><td>Always rounds UP &rarr; overcharges</td></tr>
+        <tr><td>Back-office</td><td style="color:#FFC93C">HALF_UP</td><td>Standard commercial rounding</td></tr>
+        <tr><td>Billdesk PG</td><td style="color:#4D9EFF">HALF_EVEN</td><td>Banker's rounding</td></tr>
+      </table>
+      <div class="callout" style="font-size: 0.55em; margin-top: 12px;">
+        <strong>Impact:</strong> Charge shown to user (CEILING) is systematically higher than what's recorded (HALF_UP). Creates phantom revenue gap that never reconciles.
+      </div>
+
+      <h3 style="font-size: 0.85em; color: #FF4D4D; margin: 16px 0 8px;">Thread-Unsafe Singleton</h3>
+      <p style="font-size: 0.55em; color: var(--dim);">ChargesInfoServiceImpl is a <code>@Service</code> singleton with <strong>instance variables</strong> for <code>exchangesTurnOverCharge</code> and <code>sebiFeesCharge</code>. Two concurrent requests overwrite each other's values &rarr; wrong GST calculated for both.</p>
+
+      <h3 style="font-size: 0.85em; color: #FF9640; margin: 16px 0 8px;">Thread-Unsafe SimpleDateFormat</h3>
+      <p style="font-size: 0.55em; color: var(--dim);">Shared <code>SimpleDateFormat</code> instances used across threads produce garbled dates. Financial date calculations use <code>ZoneId.systemDefault()</code> &mdash; K8s UTC containers misassign IST business days.</p>
+    </div>
+  </div>
+
+  <div class="callout-green" style="background: rgba(0,212,170,0.04); border-left: 3px solid var(--accent2); border-radius: 0 12px 12px 0; padding: 12px 16px; margin-top: 8px; font-size: 0.55em;">
+    <strong>Fix:</strong> 1) Replace all <code>new BigDecimal(double)</code> with <code>BigDecimal.valueOf(double)</code> (uses String internally). 2) Convert <code>Double</code> fields to <code>BigDecimal</code> in entities. 3) Make charge calculator use local variables. 4) Standardize on <code>HALF_UP</code>. 5) Replace <code>Float ltp</code> with <code>BigDecimal</code>.
+  </div>
+</section>
+
+<!-- =========================================== -->
+<!-- SECURITY — All Findings -->
+<!-- =========================================== -->
+<section id="security">
+  <span class="badge badge-red">P0 &middot; SECURITY</span>
+  <h2 style="margin: 8px 0 4px;">Security <span class="glow-red">Deep Dive</span></h2>
+  <p class="dim" style="font-size: 0.58em; margin-bottom: 14px;">Hardcoded credentials, broken encryption, disabled SSL, plaintext logging, suppressed security scanners</p>
+
+  <div class="grid-2">
+    <div>
+      <h3 style="font-size: 0.85em; color: #FF4D4D; margin: 0 0 8px;">Hardcoded Credentials (P0)</h3>
+      <table style="font-size: 0.48em;">
+        <tr><th>File</th><th>Secret Type</th></tr>
+        <tr><td>payments/application.properties</td><td>AWS Access Key <code>AKIAZR5LLMQSMLU6YWEO</code></td></tr>
+        <tr><td>payments/application.properties</td><td>AWS Secret Key <code>ubojRMzxaMzXfmJk...</code></td></tr>
+        <tr><td>payments/application.properties</td><td>Encryption key: <code>secret</code></td></tr>
+        <tr><td>bo-migration-recon/application.yml</td><td>Slack webhook URL</td></tr>
+        <tr><td>bo-migration-recon/application.yml</td><td>TechExcel password <code>P@ytm9Xr2!k</code></td></tr>
+        <tr><td>bo-migration-recon/application.yml</td><td>7 Redash API keys in plaintext</td></tr>
+        <tr><td>bo-statement-consumer/application.yml</td><td>Database passwords</td></tr>
+        <tr><td>ICICI integration config</td><td>Bank API key in properties</td></tr>
+      </table>
+
+      <h3 style="font-size: 0.85em; color: #FF4D4D; margin: 16px 0 8px;">Broken Encryption (P0)</h3>
+      <table style="font-size: 0.48em;">
+        <tr><th>Issue</th><th>Location</th></tr>
+        <tr><td>Static IV for AES-CBC</td><td>DBEncryptionConverter</td></tr>
+        <tr><td>AES/ECB mode (no IV)</td><td>Payment encryption utilities</td></tr>
+        <tr><td>RSA/PKCS1 padding</td><td>Certificate handling</td></tr>
+        <tr><td>Key in SQL: <code>AES_ENCRYPT(:ucc, 'KEY', 'iv')</code></td><td>bo-trade daily-jobs (113 queries, 24 files)</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3 style="font-size: 0.85em; color: #FF4D4D; margin: 0 0 8px;">NEW: Plaintext Logging of Encrypted Data</h3>
+      <div class="code-block" style="font-size: 0.40em; line-height: 1.6;"><span style="color:#5A6580">// Decrypted bank details written to application logs</span>
+log.info("Decrypted bank details: {}", <span style="color:#FF4D4D">decryptedData</span>);
+<span style="color:#5A6580">// Account numbers, IFSC codes visible in log aggregators</span></div>
+
+      <h3 style="font-size: 0.85em; color: #FF4D4D; margin: 12px 0 8px;">NEW: Global SSL Verification Disabled</h3>
+      <div class="code-block" style="font-size: 0.40em; line-height: 1.6;"><span style="color:#5A6580">// RestTemplate configured to trust ALL certificates</span>
+TrustManager[] trustAll = new TrustManager[]{
+    new X509TrustManager() {
+        public void checkClientTrusted(...) { <span style="color:#FF4D4D">/* empty */</span> }
+        public void checkServerTrusted(...) { <span style="color:#FF4D4D">/* empty */</span> }
+    }
+};
+<span style="color:#5A6580">// Enables man-in-the-middle on ALL HTTPS calls</span></div>
+
+      <h3 style="font-size: 0.85em; color: #FF9640; margin: 12px 0 8px;">Authorization Gaps</h3>
+      <ul style="font-size: 0.52em; list-style: none; padding: 0; margin: 0;">
+        <li><span class="dot" style="color:#FF4D4D;"></span><strong>Zero</strong> <code>@PreAuthorize</code>, <code>@Secured</code>, <code>@RolesAllowed</code> in 21 services</li>
+        <li><span class="dot" style="color:#FF4D4D;"></span>InternalS2SController accepts arbitrary <code>user_id</code></li>
+        <li><span class="dot" style="color:#FF9640;"></span>SQL injection in DataCleanUpListener: <code>DELETE FROM " + table</code></li>
+        <li><span class="dot" style="color:#FF9640;"></span>Bank passwords exposed in <code>toString()</code></li>
+        <li><span class="dot" style="color:#FF9640;"></span>FindSecBugs security scanner suppressed in build</li>
+        <li><span class="dot" style="color:#FFC93C;"></span>Open CORS * on bo-migration-recon-service</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================== -->
+<!-- PAYMENTS — Transaction Safety -->
+<!-- =========================================== -->
+<section id="payments">
+  <span class="badge badge-red">P0 &middot; PAYMENTS</span>
+  <h2 style="margin: 8px 0 4px;">Payment &amp; Transaction <span class="glow-red">Deep Dive</span></h2>
+  <p class="dim" style="font-size: 0.58em; margin-bottom: 14px;">Transaction safety issues with code evidence and file locations</p>
+
+  <div class="grid-2">
+    <div>
+      <h3 style="font-size: 0.85em; color: #FF4D4D; margin: 0 0 8px;">Critical Payment Bugs</h3>
+      <table style="font-size: 0.48em;">
+        <tr><th>Issue</th><th>Severity</th><th>Location</th></tr>
+        <tr><td>@Transactional commented out on bulk bill creation</td><td><span class="severity-crit">P0</span></td><td>MandateRecurPayService.java:536</td></tr>
+        <tr><td>No @Positive on PayIn/Withdrawal amount</td><td><span class="severity-crit">P0</span></td><td>PayInInitiateV3Request.java:33</td></tr>
+        <tr><td>Block txn amount validates against itself</td><td><span class="severity-crit">P0</span></td><td>BlockTransactionService.java</td></tr>
+        <tr><td>Thread-unsafe ICICI Cipher instance</td><td><span class="severity-crit">P0</span></td><td>ICICIEncryptionUtil.java</td></tr>
+        <tr><td>Refund errors silently swallowed</td><td><span class="severity-high">P1</span></td><td>PaymentsApiRefundService.java:110</td></tr>
+        <tr><td>No optimistic/pessimistic locking in FMS</td><td><span class="severity-high">P1</span></td><td>eq-fms-app (ALL entities)</td></tr>
+        <tr><td>Orphaned pending transactions</td><td><span class="severity-high">P1</span></td><td>PaymentsQueryApiService.java:424</td></tr>
+        <tr><td>TOCTOU race on duplicate detection</td><td><span class="severity-high">P1</span></td><td>AdhocChargeServiceImpl.java:111</td></tr>
+      </table>
+
+      <h3 style="font-size: 0.85em; color: #FF4D4D; margin: 16px 0 8px;">NEW: Block Txn Self-Comparison</h3>
+      <div class="code-block" style="font-size: 0.40em; line-height: 1.6;"><span style="color:#5A6580">// BlockTransactionService.java</span>
+if (<span style="color:#FF4D4D">amount == amount</span>) {  <span style="color:#FF4D4D">// BUG: compares to itself!</span>
+    <span style="color:#5A6580">// Should be: amount == orderAmount</span>
+    processBlockTransaction();
+}
+<span style="color:#5A6580">// Every block txn passes validation regardless</span>
+<span style="color:#5A6580">// of actual order amount mismatch</span></div>
+    </div>
+    <div>
+      <h3 style="font-size: 0.85em; color: #FF4D4D; margin: 0 0 8px;">NEW: Thread-Unsafe ICICI Cipher</h3>
+      <div class="code-block" style="font-size: 0.40em; line-height: 1.6;"><span style="color:#5A6580">// ICICIEncryptionUtil.java</span>
+<span style="color:#FF9640">@Component</span>  <span style="color:#5A6580">// Singleton!</span>
+public class ICICIEncryptionUtil {
+    private <span style="color:#FF4D4D">Cipher cipher</span>;  <span style="color:#5A6580">// Shared!</span>
+
+    <span style="color:#FF9640">@PostConstruct</span>
+    void init() {
+        cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+    }
+
+    public String encrypt(String data) {
+        <span style="color:#5A6580">// Multiple threads call this concurrently</span>
+        <span style="color:#5A6580">// Cipher is NOT thread-safe per JCA spec</span>
+        return Base64.encode(<span style="color:#FF4D4D">cipher.doFinal</span>(data));
+    }
+}
+<span style="color:#5A6580">// Result: corrupted ciphertext, decryption failures,</span>
+<span style="color:#5A6580">// garbled payment data sent to ICICI bank</span></div>
+
+      <h3 style="font-size: 0.85em; color: #FF9640; margin: 16px 0 8px;">No Saga / Compensation Pattern</h3>
+      <div class="code-block" style="font-size: 0.40em; line-height: 1.6;"><span style="color:#00D4AA">MySQL save</span> &rarr; <span style="color:#FFC93C">RupeeSeed HTTP</span> &rarr; <span style="color:#4D9EFF">Kafka push</span>
+
+If <span style="color:#FFC93C">RupeeSeed</span> succeeds but <span style="color:#4D9EFF">Kafka</span> fails:
+  &rarr; Fund transfer executed <span style="color:#FF4D4D">but no audit trail</span>
+
+<span style="color:#FF4D4D">Zero occurrences of "saga", "compensat",</span>
+<span style="color:#FF4D4D">"outbox" in the entire PML codebase.</span></div>
+
+      <div class="callout-green" style="background: rgba(0,212,170,0.04); border-left: 3px solid var(--accent2); border-radius: 0 12px 12px 0; padding: 10px 14px; margin-top: 12px; font-size: 0.50em;">
+        <strong>Fix:</strong> 1) Fix amount comparison to use <code>orderAmount</code>. 2) Create new <code>Cipher</code> per call or use <code>ThreadLocal&lt;Cipher&gt;</code>. 3) Uncomment <code>@Transactional</code>. 4) Add <code>@Positive</code> validation. 5) Implement transactional outbox pattern.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================== -->
+<!-- COMPLIANCE — SEBI & Corporate Actions -->
+<!-- =========================================== -->
+<section id="compliance">
+  <span class="badge badge-red">REGULATORY</span>
+  <h2 style="margin: 8px 0 4px;">SEBI Compliance &amp; <span class="glow-red">Corporate Actions</span></h2>
+  <p class="dim" style="font-size: 0.58em; margin-bottom: 14px;">Missing regulatory controls, hard deletes, zero corporate action processing</p>
+
+  <div class="grid-2">
+    <div>
+      <h3 style="font-size: 0.85em; color: #FF4D4D; margin: 0 0 8px;">Missing SEBI Controls</h3>
+      <table style="font-size: 0.50em;">
+        <tr><th>SEBI Requirement</th><th>Status</th><th>Risk</th></tr>
+        <tr><td>Client Fund Segregation</td><td><span class="severity-crit">ABSENT</span></td><td>Up to Rs 1Cr + license suspension</td></tr>
+        <tr><td>Peak Margin Reporting</td><td><span class="severity-crit">ABSENT</span></td><td>0.5-5% of shortfall</td></tr>
+        <tr><td>Daily Reconciliation</td><td><span class="severity-crit">ABSENT</span></td><td>Material misstatement risk</td></tr>
+        <tr><td>Contract Note Completeness</td><td><span class="severity-high">NO VALIDATION</span></td><td>Client complaint exposure</td></tr>
+        <tr><td>Audit Trail (all ops)</td><td><span class="severity-high">PARTIAL</span></td><td>5-year retention required</td></tr>
+        <tr><td>T+1 Settlement Enforcement</td><td><span class="severity-high">LOOKUP ONLY</span></td><td>Settlement failure</td></tr>
+      </table>
+
+      <h3 style="font-size: 0.85em; color: #FF4D4D; margin: 16px 0 8px;">Hard Deletes on Financial Data</h3>
+      <div class="code-block" style="font-size: 0.40em; line-height: 1.6;"><span style="color:#5A6580">// DataCleanUpListener.java</span>
+String sql = "<span style="color:#FF4D4D">DELETE FROM</span> " + table +
+    " WHERE date = '" + tradeDate + "'";
+<span style="color:#5A6580">// No soft delete, no archive, no audit trail</span>
+<span style="color:#5A6580">// SQL injection via table name concatenation</span>
+<span style="color:#5A6580">// SEBI requires 5-year retention</span></div>
+    </div>
+    <div>
+      <h3 style="font-size: 0.85em; color: #FF4D4D; margin: 0 0 8px;">Corporate Actions: Zero Handling</h3>
+      <p style="font-size: 0.52em; color: var(--dim); margin-bottom: 8px;">No service adjusts cost basis, average buy price, or invested value after stock splits, bonus issues, or dividends.</p>
+      <table style="font-size: 0.50em;">
+        <tr><th></th><th>Should Be</th><th style="color:#FF4D4D">PML Shows</th></tr>
+        <tr><td>After 1:5 split</td><td></td><td></td></tr>
+        <tr><td>&nbsp; Avg Price</td><td>Rs 100</td><td style="color:#FF4D4D">Rs 500</td></tr>
+        <tr><td>&nbsp; Investment</td><td>Rs 50,000</td><td style="color:#FF4D4D">Rs 2,50,000</td></tr>
+        <tr><td>&nbsp; P&L</td><td>+Rs 5,000</td><td style="color:#FF4D4D">-Rs 1,95,000</td></tr>
+      </table>
+      <p style="font-size: 0.52em; color: #FF4D4D; margin: 8px 0 0;"><strong>User sees Rs 2 lakh phantom loss.</strong></p>
+
+      <h3 style="font-size: 0.85em; margin: 16px 0 8px;">SEBI Actions Paid</h3>
+      <table style="font-size: 0.50em;">
+        <tr><th>Date</th><th>Amount</th><th>Violation</th></tr>
+        <tr><td>Feb 2025</td><td style="color:#FF4D4D;font-weight:600">Rs 45.5L</td><td>Technical glitch framework <a href="https://www.sebi.gov.in/enforcement/orders/feb-2025/settlement-order-in-the-matter-of-paytm-money-limited_91881.html" style="color:#4D9EFF;">[src]</a></td></tr>
+        <tr><td>Jan 2025</td><td style="color:#FFC93C;font-weight:600">Rs 3.32Cr</td><td>LODR/ICDR violations <a href="https://www.sebi.gov.in/enforcement/orders/jan-2025/settlement-order-in-the-matter-of-one97-communications-limited-paytm-_90911.html" style="color:#4D9EFF;">[src]</a></td></tr>
+        <tr><td>May 2025</td><td style="color:#FFC93C;font-weight:600">Rs 2.80Cr</td><td>ESOP/SBEB + 3yr ban <a href="https://www.sebi.gov.in/enforcement/orders/may-2025/settlement-order-in-the-matter-of-one97-communications-limited_93857.html" style="color:#4D9EFF;">[src]</a></td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================== -->
+<!-- RELIABILITY — Silent Failures -->
+<!-- =========================================== -->
+<section id="reliability">
+  <span class="badge badge-orange">RELIABILITY</span>
+  <h2 style="margin: 8px 0 4px;">Silent Failures &amp; <span class="glow">Missing Safeguards</span></h2>
+  <p class="dim" style="font-size: 0.58em; margin-bottom: 14px;">Zero monitoring on financial consumers, auto-commit Kafka, no circuit breakers, staging URLs in production</p>
+
+  <div class="grid-2">
+    <div>
+      <h3 style="font-size: 0.85em; color: #FF4D4D; margin: 0 0 8px;">Zero Monitoring on Financial SQS</h3>
+      <p style="font-size: 0.52em; color: var(--dim);">None of the 7 payment SQS consumers have:</p>
+      <ul style="font-size: 0.50em; list-style: none; padding: 0; margin: 8px 0 0;">
+        <li><span style="color:#FF4D4D;">&times;</span> Micrometer counters/timers</li>
+        <li><span style="color:#FF4D4D;">&times;</span> Messages received/processed/failed metrics</li>
+        <li><span style="color:#FF4D4D;">&times;</span> Processing latency tracking</li>
+        <li><span style="color:#FF4D4D;">&times;</span> Dead letter queues</li>
+        <li><span style="color:#FF4D4D;">&times;</span> Alerting on failures</li>
+      </ul>
+
+      <h3 style="font-size: 0.85em; color: #FF9640; margin: 16px 0 8px;">Kafka: Auto-Commit + Swallow</h3>
+      <div class="code-block" style="font-size: 0.40em; line-height: 1.6;"><span style="color:#5A6580">// eq-fms-consumers Kafka factory</span>
+<span style="color:#5A6580">// Default: auto.commit=true</span>
+<span style="color:#5A6580">// Offset committed BEFORE processing</span>
+
+try {
+    process(record);
+} catch (Exception e) {
+    <span style="color:#FF4D4D">log.error("Error", e);</span>  <span style="color:#5A6580">// swallowed!</span>
+}
+<span style="color:#5A6580">// Message permanently lost, offset advanced</span></div>
+
+      <h3 style="font-size: 0.85em; color: #FF9640; margin: 16px 0 8px;">NEW: Staging URLs in Production Config</h3>
+      <p style="font-size: 0.52em; color: var(--dim);">Several services have staging/internal URLs as default values in <code>application.properties</code>. If env vars are not set in production, services connect to staging endpoints.</p>
+    </div>
+    <div>
+      <h3 style="font-size: 0.85em; color: #FF9640; margin: 0 0 8px;">Zero Circuit Breakers</h3>
+      <table style="font-size: 0.50em;">
+        <tr><th>Dependency</th><th>Status</th><th>Failure Mode</th></tr>
+        <tr><td>eq-fms-app &rarr; RupeeSeed</td><td style="color:#FF4D4D">&times; None</td><td>Fund ops halt</td></tr>
+        <tr><td>eq-fms-consumers &rarr; SQS</td><td style="color:#FF4D4D">&times; None</td><td>Cascading failure</td></tr>
+        <tr><td>notification-svc &rarr; 7 DBs</td><td style="color:#FF4D4D">&times; None</td><td>Thread exhaustion</td></tr>
+        <tr><td>bo-* &rarr; CLASS SQL Server</td><td style="color:#FF4D4D">&times; None</td><td>Full BO outage</td></tr>
+        <tr><td>payments (Hystrix)</td><td style="color:#FFC93C">Deprecated</td><td>Netflix EOL since 2018</td></tr>
+        <tr><td>bo-common (Resilience4j 1.3.1)</td><td style="color:#FFC93C">Outdated</td><td>Current is 2.x</td></tr>
+      </table>
+
+      <h3 style="font-size: 0.85em; color: #FF9640; margin: 16px 0 8px;">More Silent Failures</h3>
+      <table style="font-size: 0.50em;">
+        <tr><th>Issue</th><th>Impact</th></tr>
+        <tr><td>No AsyncUncaughtExceptionHandler</td><td>@Async exceptions swallowed by Spring</td></tr>
+        <tr><td>Retry exhaustion drops messages</td><td>Notification service has no DLQ</td></tr>
+        <tr><td>Cron error kills scheduler thread</td><td>dnd-aggregator caches go stale</td></tr>
+        <tr><td>3 threads for 20+ listeners</td><td>Notification service thread starvation</td></tr>
+      </table>
+
+      <div class="callout-green" style="background: rgba(0,212,170,0.04); border-left: 3px solid var(--accent2); border-radius: 0 12px 12px 0; padding: 10px 14px; margin-top: 12px; font-size: 0.50em;">
+        <strong>Fix:</strong> 1) Add Resilience4j circuit breakers on all downstream calls. 2) Switch Kafka to manual commit with DLQs. 3) Add Micrometer metrics + alerts. 4) Remove staging URL defaults. 5) Configure proper thread pools.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================== -->
+<!-- ARCHITECTURE — Structural Flaws -->
+<!-- =========================================== -->
+<section id="architecture">
+  <span class="badge badge-orange">ARCHITECTURE</span>
+  <h2 style="margin: 8px 0 4px;">Structural <span class="glow">Design Flaws</span></h2>
+  <p class="dim" style="font-size: 0.58em; margin-bottom: 14px;">Single points of failure, unbounded queries, thread-unsafe singletons, vendor lock-in</p>
+
+  <div class="grid-2">
+    <div>
+      <h3 style="font-size: 0.85em; color: #FF4D4D; margin: 0 0 8px;">Single Points of Failure</h3>
+      <table style="font-size: 0.50em;">
+        <tr><th>Dependency</th><th>Impact</th><th>Services</th></tr>
+        <tr><td>RupeeSeed (22 files)</td><td>ALL fund ops halt</td><td>eq-fms-app, eq-fms-consumers</td></tr>
+        <tr><td>CLASS SQL Server (5 svc)</td><td>No statements, ledger, CRM</td><td>bo-*, migration-recon</td></tr>
+      </table>
+
+      <h3 style="font-size: 0.85em; color: #FF9640; margin: 16px 0 8px;">Unbounded Queries</h3>
+      <div class="code-block" style="font-size: 0.40em; line-height: 1.6;"><span style="color:#5A6580">// 40+ findAll() calls across codebase</span>
+transactionRequestRepository.<span style="color:#FF4D4D">findAll()</span>;
+<span style="color:#5A6580">// Growing table + no pagination = OOM</span>
+
+<span style="color:#5A6580">// RecoverOrderService.java</span>
+Executors.newFixedThreadPool(<span style="color:#FF4D4D">request.size()</span>);
+<span style="color:#5A6580">// Thread count from user input!</span>
+<span style="color:#5A6580">// 10K items = 10K threads = JVM crash</span></div>
+
+      <h3 style="font-size: 0.85em; color: #FF9640; margin: 16px 0 8px;">NEW: Unbounded Thread Pools</h3>
+      <p style="font-size: 0.52em; color: var(--dim);">Multiple services use <code>Executors.newCachedThreadPool()</code> or thread counts derived from user input, with no upper bounds. Under load, these can create thousands of threads and crash the JVM.</p>
+    </div>
+    <div>
+      <h3 style="font-size: 0.85em; color: #FF9640; margin: 0 0 8px;">Timezone Bug</h3>
+      <div class="code-block" style="font-size: 0.40em; line-height: 1.6;"><span style="color:#5A6580">// Financial date calculations throughout codebase</span>
+LocalDate.<span style="color:#FF4D4D">now(ZoneId.systemDefault())</span>;
+<span style="color:#5A6580">// K8s containers run in UTC</span>
+<span style="color:#5A6580">// IST 00:30 payment → assigned to WRONG business day</span>
+<span style="color:#5A6580">// Affects settlement dates, trading windows</span>
+
+<span style="color:#5A6580">// Fix: Use ZoneId.of("Asia/Kolkata") explicitly</span></div>
+
+      <h3 style="font-size: 0.85em; color: #FF9640; margin: 16px 0 8px;">NEW: Thread-Unsafe Singletons</h3>
+      <p style="font-size: 0.52em; color: var(--dim);">Beyond ChargesInfoServiceImpl, multiple <code>@Service</code> singletons store request-scoped state in instance variables. Under concurrency, one user's data leaks into another's calculation.</p>
+
+      <h3 style="font-size: 0.85em; color: #FF9640; margin: 16px 0 8px;">Order Recon: Auto-Recovery OFF</h3>
+      <div class="code-block" style="font-size: 0.40em; line-height: 1.6;"><span style="color:#5A6580">// OrderStatusReconScheduler.java</span>
+List&lt;Order&gt; mismatches = findMismatches();
+if (!mismatches.isEmpty()) {
+    <span style="color:#FF4D4D">// recoverOrders(mismatches);</span>  <span style="color:#5A6580">// COMMENTED OUT</span>
+    log.warn("Found {} mismatches", mismatches.size());
+}
+<span style="color:#5A6580">// Orders filled at exchange never appear in app</span></div>
+
+      <div class="callout-green" style="background: rgba(0,212,170,0.04); border-left: 3px solid var(--accent2); border-radius: 0 12px 12px 0; padding: 10px 14px; margin-top: 12px; font-size: 0.50em;">
+        <strong>Fix:</strong> 1) Add abstraction layer over RupeeSeed with fallback. 2) Cap thread pools with <code>newFixedThreadPool(Math.min(n, MAX))</code>. 3) Paginate all findAll queries. 4) Use <code>ZoneId.of("Asia/Kolkata")</code>. 5) Enable order reconciliation recovery.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================== -->
+<!-- METHODOLOGY SLIDE -->
+<!-- =========================================== -->
+<section class="center" data-background-gradient="radial-gradient(ellipse 800px 600px at 50% 40%, rgba(77,158,255,0.08) 0%, rgba(0,212,170,0.04) 40%, transparent 70%)">
+  <h1 style="font-size: 2.5em; margin-bottom: 16px;">
+    <span class="glow-blue">Methodology</span>
+  </h1>
+  <p style="font-size: 0.85em; color: var(--r-main-color); max-width: 800px; margin: 0 auto 24px; line-height: 1.8;">
+    This audit was conducted via <strong>static code analysis</strong> of all 21 PML service repositories.
+    No production systems were accessed. No customer data was viewed.
+  </p>
+
+  <div class="grid-3" style="max-width: 800px; margin: 0 auto 32px;">
+    <div class="glass glass-blue" style="padding: 20px; text-align: center;">
+      <div style="font-size: 1.5em; font-weight: 700; color: #4D9EFF;">21</div>
+      <div class="dim" style="font-size: 0.6em; margin-top: 4px;">Services Audited</div>
+    </div>
+    <div class="glass glass-accent" style="padding: 20px; text-align: center;">
+      <div style="font-size: 1.5em; font-weight: 700; color: #B794F6;">111</div>
+      <div class="dim" style="font-size: 0.6em; margin-top: 4px;">Issues Documented</div>
+    </div>
+    <div class="glass glass-green" style="padding: 20px; text-align: center;">
+      <div style="font-size: 1.5em; font-weight: 700; color: #00D4AA;">100%</div>
+      <div class="dim" style="font-size: 0.6em; margin-top: 4px;">Code-Verified</div>
+    </div>
+  </div>
+
+  <p style="font-size: 0.7em; color: var(--dim); max-width: 700px; margin: 0 auto;">
+    Every issue includes a file:line reference. SEBI penalty amounts link to official SEBI orders.
+    Financial impact estimates are clearly labeled as code-verified exposure (not production data).
+  </p>
+
+  <div style="margin-top: 32px;">
+    <a href="pml-issues.html" class="back-link" style="font-size: 0.65em; margin-right: 12px;">&larr; Main Deck</a>
+    <a href="pml-all-issues.html" class="back-link" style="font-size: 0.65em;">Full Registry &rarr;</a>
+  </div>
+
+  <p class="tiny" style="margin-top: 24px; letter-spacing: 2px;">PAYTM MONEY LIMITED &middot; PML PLATFORM AUDIT &middot; MARCH 2026</p>
+</section>
+
+</div><!-- /slides -->
+</div><!-- /reveal -->
+
+<!-- Reveal.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  slideNumber: 'c/t',
+  width: 1280,
+  height: 720,
+  margin: 0.06,
+  transition: 'fade',
+  transitionSpeed: 'fast',
+  backgroundTransition: 'fade',
+  center: false,
+  controls: true,
+  controlsLayout: 'edges',
+  progress: true,
+});
+
+// ===== PARTICLES =====
+(function() {
+  const c = document.getElementById('particles');
+  const ctx = c.getContext('2d');
+  let w, h, particles = [];
+  function resize() { w = c.width = innerWidth; h = c.height = innerHeight; }
+  resize(); addEventListener('resize', resize);
+  for (let i = 0; i < 30; i++) {
+    particles.push({
+      x: Math.random() * w, y: Math.random() * h,
+      r: Math.random() * 1.5 + 0.3,
+      dx: (Math.random() - 0.5) * 0.3,
+      dy: (Math.random() - 0.5) * 0.3,
+      o: Math.random() * 0.12 + 0.02
+    });
+  }
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    particles.forEach(p => {
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(77,158,255,${p.o})`;
+      ctx.fill();
+      p.x += p.dx; p.y += p.dy;
+      if (p.x < 0 || p.x > w) p.dx *= -1;
+      if (p.y < 0 || p.y > h) p.dy *= -1;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>

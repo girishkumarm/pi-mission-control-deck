@@ -191,6 +191,9 @@
   .money-tag-yellow { background: rgba(255,201,60,0.08); color: #FFC93C; border-color: rgba(255,201,60,0.2); }
   .file-ref { font-family: 'JetBrains Mono'; font-size: 0.7em; color: #5A6580; }
 
+  .detail-link { display: inline-block; font-size: 0.5em; color: #6C9CFF; text-decoration: none; padding: 4px 14px; border-radius: 100px; border: 1px solid rgba(108,156,255,0.2); transition: all 0.3s; font-weight: 500; letter-spacing: 0.5px; }
+  .detail-link:hover { background: rgba(108,156,255,0.1); border-color: rgba(108,156,255,0.4); }
+
   .impact-bar { height: 6px; border-radius: 3px; margin-top: 8px; }
   .impact-crit { background: linear-gradient(90deg, #FF4D4D, #FF6B6B); }
   .impact-high { background: linear-gradient(90deg, #FF9640, #FFB060); }
@@ -236,15 +239,15 @@
 
   <div class="grid-4" style="max-width: 780px; margin: 48px auto 0;">
     <div class="stat-card stat-card-red">
-      <div class="stat-num glow-red">99</div>
+      <div class="stat-num glow-red">111</div>
       <div class="stat-label">Issues Found</div>
     </div>
     <div class="stat-card stat-card-red">
-      <div class="stat-num glow-red">42</div>
+      <div class="stat-num glow-red">49</div>
       <div class="stat-label">Critical</div>
     </div>
     <div class="stat-card stat-card-orange">
-      <div class="stat-num" style="color:#FF9640;">47</div>
+      <div class="stat-num" style="color:#FF9640;">52</div>
       <div class="stat-label">High</div>
     </div>
     <div class="stat-card stat-card-red">
@@ -254,6 +257,7 @@
   </div>
 
   <p class="tiny" style="margin-top: 52px; letter-spacing: 2px;">21 SERVICES &middot; 5 TEAMS &middot; DEEP CODEBASE AUDIT &middot; MARCH 2026</p>
+  <p class="tiny" style="margin-top: 12px;"><a href="pml-all-issues.html" class="detail-link" style="font-size:1em;">View Full Issue Registry (111 issues) &rarr;</a></p>
 </section>
 
 <!-- =========================================== -->
@@ -344,6 +348,7 @@ public void <span style="color:#4D9EFF">onMessage</span>(Message message) {
     </div>
   </div>
   <div class="callout" style="margin-top: 12px; font-size: 0.6em;"><strong>Fix:</strong> Change to <code>Session.CLIENT_ACKNOWLEDGE</code> and call <code>message.acknowledge()</code> only AFTER successful processing. Add DLQs for all queues.</div>
+  <a href="pml-issues-detail.html#data-loss" class="detail-link" target="_blank">View Details &rarr;</a>
 </section>
 
 <!-- =========================================== -->
@@ -388,6 +393,7 @@ public void <span style="color:#4D9EFF">onMessage</span>(Message message) {
       </div>
     </div>
   </div>
+  <a href="pml-issues-detail.html#financial-precision" class="detail-link" target="_blank">View Details &rarr;</a>
 </section>
 
 <!-- =========================================== -->
@@ -429,6 +435,7 @@ public void <span style="color:#4D9EFF">onMessage</span>(Message message) {
       </div>
     </div>
   </div>
+  <a href="pml-issues-detail.html#compliance" class="detail-link" target="_blank">View Details &rarr;</a>
 </section>
 
 <!-- =========================================== -->
@@ -476,8 +483,18 @@ redash-api-key: <span style="color:#FF4D4D">DaxhWCPYmIXqGcDW...</span>
         <h3 style="margin:0; font-size: 0.85em; color: #FF9640;">Encryption Key in SQL Strings</h3>
         <p style="font-size:0.58em; color:var(--dim); margin:4px 0 0;">bo-trade daily-jobs: <code>AES_ENCRYPT(:ucc, 'SECRET_KEY', 'iv_paytmmoney_bo')</code> &mdash; key appears in slow query logs, error logs, MySQL general log.</p>
       </div>
+      <div class="glass glass-red" style="padding: 14px; margin-top: 12px;">
+        <h3 style="margin:0; font-size: 0.85em; color: #FF4D4D;">NEW: 4 More Critical Security Findings</h3>
+        <ul style="font-size: 0.56em; list-style: none; padding: 0; margin: 4px 0 0;">
+          <li><span class="dot" style="color:#FF4D4D;"></span><strong>Plaintext logging of encrypted data</strong> &mdash; decrypted bank details written to application logs</li>
+          <li><span class="dot" style="color:#FF4D4D;"></span><strong>Global SSL verification disabled</strong> &mdash; <code>RestTemplate</code> trusts all certs, enables MITM</li>
+          <li><span class="dot" style="color:#FF4D4D;"></span><strong>AES/ECB mode</strong> in payment encryption &mdash; identical blocks produce identical ciphertext</li>
+          <li><span class="dot" style="color:#FF9640;"></span><strong>Bank passwords exposed in toString()</strong> &mdash; sensitive fields in debug/error logs</li>
+        </ul>
+      </div>
     </div>
   </div>
+  <a href="pml-issues-detail.html#security" class="detail-link" target="_blank">View Details &rarr;</a>
 </section>
 
 <!-- =========================================== -->
@@ -525,6 +542,7 @@ redash-api-key: <span style="color:#FF4D4D">DaxhWCPYmIXqGcDW...</span>
       </div>
     </div>
   </div>
+  <a href="pml-issues-detail.html#compliance" class="detail-link" target="_blank">View Details &rarr;</a>
 </section>
 
 <!-- =========================================== -->
@@ -595,8 +613,16 @@ If <span style="color:#00D4AA">MySQL</span> succeeds but <span style="color:#FFC
         <h3 style="margin:0; font-size: 0.85em; color: #FF9640;">Payments Health Checks DISABLED</h3>
         <p style="font-size:0.58em; color:var(--dim); margin:4px 0 0;"><code>management.health.db.enabled=false</code><br><code>management.health.redis.enabled=false</code><br><code>management.health.mongo.enabled=false</code><br>K8s routes traffic to dead service.</p>
       </div>
+      <div class="glass glass-red" style="padding: 14px; margin-top: 12px;">
+        <h3 style="margin:0; font-size: 0.85em; color: #FF4D4D;">NEW: Block Txn &amp; ICICI Cipher Bugs</h3>
+        <ul style="font-size: 0.56em; list-style: none; padding: 0; margin: 4px 0 0;">
+          <li><span class="dot" style="color:#FF4D4D;"></span><strong>Block txn amount validates against itself</strong> &mdash; <code>amount == amount</code> instead of comparing with order amount</li>
+          <li><span class="dot" style="color:#FF4D4D;"></span><strong>Thread-unsafe ICICI Cipher</strong> &mdash; shared <code>Cipher</code> instance across threads, corrupts encrypted payment data under concurrency</li>
+        </ul>
+      </div>
     </div>
   </div>
+  <a href="pml-issues-detail.html#payments" class="detail-link" target="_blank">View Details &rarr;</a>
 </section>
 
 <!-- =========================================== -->
@@ -647,6 +673,7 @@ If <span style="color:#00D4AA">MySQL</span> succeeds but <span style="color:#FFC
       </div>
     </div>
   </div>
+  <a href="pml-issues-detail.html#reliability" class="detail-link" target="_blank">View Details &rarr;</a>
 </section>
 
 <!-- =========================================== -->
@@ -683,6 +710,7 @@ If <span style="color:#00D4AA">MySQL</span> succeeds but <span style="color:#FFC
       <p style="font-size:0.55em; color:var(--dim); margin:0;">OrderStatusReconScheduler detects mismatches but <code>recoverOrders()</code> is <strong>commented out</strong>. Orders filled at exchange never appear in app.</p>
     </div>
   </div>
+  <a href="pml-issues-detail.html#architecture" class="detail-link" target="_blank">View Details &rarr;</a>
 </section>
 
 <!-- =========================================== -->
@@ -842,7 +870,7 @@ If <span style="color:#00D4AA">MySQL</span> succeeds but <span style="color:#FFC
       <div class="stat-label">SEBI Fines Paid (verified)</div>
     </div>
     <div class="stat-card stat-card-red" style="padding: 18px;">
-      <div class="stat-num glow-red" style="font-size: 1.8em;">42</div>
+      <div class="stat-num glow-red" style="font-size: 1.8em;">49</div>
       <div class="stat-label">Critical Code Issues</div>
     </div>
     <div class="stat-card stat-card-orange" style="padding: 18px;">
@@ -912,6 +940,22 @@ If <span style="color:#00D4AA">MySQL</span> succeeds but <span style="color:#FFC
     </tr>
     <tr>
       <td>6</td>
+      <td><span class="severity-crit">P0</span></td>
+      <td><strong>Fix block txn self-comparison &amp; ICICI thread-unsafe Cipher</strong></td>
+      <td>eq-fms-app, payments</td>
+      <td>Payment data corruption</td>
+      <td>1 day</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td><span class="severity-crit">P0</span></td>
+      <td><strong>Disable plaintext logging of decrypted data &amp; re-enable SSL</strong></td>
+      <td>payments, bo-migration-recon</td>
+      <td>Stop credential leakage</td>
+      <td>1 day</td>
+    </tr>
+    <tr>
+      <td>8</td>
       <td><span class="severity-high">P1</span></td>
       <td><strong>Make ChargesInfoServiceImpl thread-safe</strong> (local vars)</td>
       <td>eq-fms-app</td>
@@ -919,7 +963,7 @@ If <span style="color:#00D4AA">MySQL</span> succeeds but <span style="color:#FFC
       <td>1 day</td>
     </tr>
     <tr>
-      <td>7</td>
+      <td>9</td>
       <td><span class="severity-high">P1</span></td>
       <td><strong>Standardize rounding to HALF_UP across platform</strong></td>
       <td>eq-fms-app, bo-*, payments</td>
@@ -927,7 +971,7 @@ If <span style="color:#00D4AA">MySQL</span> succeeds but <span style="color:#FFC
       <td>1 week</td>
     </tr>
     <tr>
-      <td>8</td>
+      <td>10</td>
       <td><span class="severity-high">P1</span></td>
       <td><strong>Replace <code>new BigDecimal(double)</code> with <code>BigDecimal.valueOf()</code></strong></td>
       <td>bo-statements-api, bo-crm-api</td>
@@ -935,7 +979,7 @@ If <span style="color:#00D4AA">MySQL</span> succeeds but <span style="color:#FFC
       <td>2-3 days</td>
     </tr>
     <tr>
-      <td>9</td>
+      <td>11</td>
       <td><span class="severity-high">P1</span></td>
       <td><strong>Add Resilience4j circuit breakers on all downstream calls</strong></td>
       <td>ALL services</td>
@@ -943,7 +987,7 @@ If <span style="color:#00D4AA">MySQL</span> succeeds but <span style="color:#FFC
       <td>1-2 weeks</td>
     </tr>
     <tr>
-      <td>10</td>
+      <td>12</td>
       <td><span class="severity-high">P1</span></td>
       <td><strong>Build corporate action processing pipeline</strong></td>
       <td>New service or eq-fms module</td>
@@ -951,7 +995,7 @@ If <span style="color:#00D4AA">MySQL</span> succeeds but <span style="color:#FFC
       <td>4-6 weeks</td>
     </tr>
     <tr>
-      <td>11</td>
+      <td>13</td>
       <td><span class="severity-high">P1</span></td>
       <td><strong>Add optimistic locking (@Version) to FMS entities</strong></td>
       <td>eq-fms-common, eq-fms-app</td>
@@ -959,7 +1003,7 @@ If <span style="color:#00D4AA">MySQL</span> succeeds but <span style="color:#FFC
       <td>1 week</td>
     </tr>
     <tr>
-      <td>12</td>
+      <td>14</td>
       <td><span class="severity-high">P2</span></td>
       <td><strong>Migrate financial entities from Double to BigDecimal</strong></td>
       <td>ALL services</td>
@@ -986,7 +1030,7 @@ If <span style="color:#00D4AA">MySQL</span> succeeds but <span style="color:#FFC
 
   <div class="grid-3" style="max-width: 700px; margin: 0 auto 32px;">
     <div class="glass glass-red" style="padding: 20px; text-align: center;">
-      <div style="font-size: 2em; font-weight: 700; color: #FF4D4D;">5</div>
+      <div style="font-size: 2em; font-weight: 700; color: #FF4D4D;">7</div>
       <div class="stat-label">P0 fixes (1-3 days)</div>
     </div>
     <div class="glass glass-orange" style="padding: 20px; text-align: center;">
@@ -994,14 +1038,20 @@ If <span style="color:#00D4AA">MySQL</span> succeeds but <span style="color:#FFC
       <div class="stat-label">P1 fixes (2-8 weeks)</div>
     </div>
     <div class="glass glass-green" style="padding: 20px; text-align: center;">
-      <div style="font-size: 2em; font-weight: 700; color: #00D4AA;">99</div>
+      <div style="font-size: 2em; font-weight: 700; color: #00D4AA;">111</div>
       <div class="stat-label">Total issues tracked</div>
     </div>
   </div>
 
   <p style="font-size: 0.75em; color: var(--dim); margin-bottom: 0;">
-    The 5 P0 fixes can be done in <strong style="color: #00D4AA;">1-3 days</strong> and prevent the highest-impact failures.
+    The 7 P0 fixes can be done in <strong style="color: #00D4AA;">1-3 days</strong> and prevent the highest-impact failures.
   </p>
+
+  <div style="margin-top: 24px;">
+    <a href="pml-issues-detail.html" class="detail-link" style="font-size: 0.65em; margin-right: 12px;" target="_blank">Deep-Dive Details &rarr;</a>
+    <a href="pml-all-issues.html" class="detail-link" style="font-size: 0.65em;" target="_blank">Full Issue Registry (111) &rarr;</a>
+  </div>
+
   <p class="tiny" style="margin-top: 36px; letter-spacing: 2px;">PAYTM MONEY LIMITED &middot; PML PLATFORM AUDIT &middot; MARCH 2026</p>
 </section>
 

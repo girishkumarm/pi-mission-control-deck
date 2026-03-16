@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PML Platform — Full Issue Registry</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #050A18;
+    --surface: #0A1628;
+    --card: rgba(255,255,255,0.03);
+    --border: rgba(255,255,255,0.06);
+    --text: #C8D1E0;
+    --dim: #5A6580;
+    --heading: #FFFFFF;
+    --red: #FF4D4D;
+    --orange: #FF9640;
+    --yellow: #FFC93C;
+    --green: #00D4AA;
+    --blue: #4D9EFF;
+    --purple: #7C5CFC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .container { max-width: 1400px; margin: 0 auto; padding: 40px 32px; }
+
+  header {
+    text-align: center;
+    padding: 48px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  header h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.4em;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #FF4D4D 0%, #FF9640 50%, #FFC93C 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+  header p { color: var(--dim); font-size: 0.9em; }
+  header .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 0.7em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    background: rgba(255,77,77,0.12);
+    color: #FF6B6B;
+    border: 1px solid rgba(255,77,77,0.25);
+    margin-bottom: 16px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .nav-link {
+    display: inline-block;
+    font-size: 0.85em;
+    color: var(--blue);
+    text-decoration: none;
+    padding: 6px 18px;
+    border-radius: 100px;
+    border: 1px solid rgba(108,156,255,0.2);
+    transition: all 0.3s;
+    font-weight: 500;
+  }
+  .nav-link:hover { background: rgba(108,156,255,0.1); border-color: rgba(108,156,255,0.4); }
+
+  .stats-bar {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin: 24px 0 32px;
+    flex-wrap: wrap;
+  }
+  .stat-item {
+    text-align: center;
+    padding: 16px 28px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    min-width: 120px;
+  }
+  .stat-item .num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.8em;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .stat-item .label {
+    font-size: 0.7em;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  .controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .search-box {
+    flex: 1;
+    min-width: 260px;
+    padding: 10px 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9em;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .search-box:focus { border-color: rgba(108,156,255,0.4); }
+  .search-box::placeholder { color: var(--dim); }
+
+  .filter-btn {
+    padding: 8px 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--dim);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+  }
+  .filter-btn:hover, .filter-btn.active { background: rgba(108,156,255,0.1); border-color: rgba(108,156,255,0.3); color: var(--blue); }
+
+  .category-section {
+    margin-bottom: 32px;
+  }
+  .category-header {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--heading);
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .category-header .count {
+    font-size: 0.6em;
+    font-weight: 500;
+    color: var(--dim);
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 2px 10px;
+    border-radius: 100px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85em;
+  }
+  th {
+    background: rgba(255,77,77,0.04);
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75em;
+    letter-spacing: 1px;
+    color: var(--dim);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+  th:hover { color: var(--blue); }
+  th .sort-indicator { font-size: 0.8em; margin-left: 4px; }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.02);
+    vertical-align: top;
+  }
+  tr:hover td { background: rgba(255,77,77,0.02); }
+  tr.hidden { display: none; }
+
+  .sev-p0 { color: #FF4D4D; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  .sev-p1 { color: #FF9640; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  .sev-p2 { color: #FFC93C; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+
+  .cat-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.75em;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .cat-data-loss { background: rgba(255,77,77,0.1); color: #FF6B6B; border: 1px solid rgba(255,77,77,0.2); }
+  .cat-financial { background: rgba(255,150,64,0.1); color: #FF9640; border: 1px solid rgba(255,150,64,0.2); }
+  .cat-security { background: rgba(255,77,77,0.1); color: #FF6B6B; border: 1px solid rgba(255,77,77,0.2); }
+  .cat-payments { background: rgba(255,107,157,0.1); color: #FF6B9D; border: 1px solid rgba(255,107,157,0.2); }
+  .cat-compliance { background: rgba(255,201,60,0.1); color: #FFC93C; border: 1px solid rgba(255,201,60,0.2); }
+  .cat-reliability { background: rgba(255,150,64,0.1); color: #FF9640; border: 1px solid rgba(255,150,64,0.2); }
+  .cat-architecture { background: rgba(124,92,252,0.1); color: #B794F6; border: 1px solid rgba(124,92,252,0.2); }
+
+  .file-ref { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: var(--dim); }
+  .detail-link { color: var(--blue); text-decoration: none; font-size: 0.85em; }
+  .detail-link:hover { text-decoration: underline; }
+
+  footer {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+    color: var(--dim);
+    font-size: 0.8em;
+  }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,77,77,0.3); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,77,77,0.5); }
+
+  @media (max-width: 768px) {
+    .container { padding: 20px 16px; }
+    header h1 { font-size: 1.8em; }
+    .stats-bar { gap: 12px; }
+    .stat-item { min-width: 90px; padding: 12px 16px; }
+    table { font-size: 0.75em; }
+    td, th { padding: 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <span class="badge">CONFIDENTIAL &middot; INTERNAL AUDIT</span>
+  <h1>PML Platform — Full Issue Registry</h1>
+  <p>Comprehensive list of all 111 issues discovered across 21 services &middot; March 2026</p>
+  <div class="nav-links">
+    <a href="pml-issues.html" class="nav-link">&larr; Main Deck</a>
+    <a href="pml-issues-detail.html" class="nav-link">Deep-Dive Details</a>
+  </div>
+</header>
+
+<div class="stats-bar">
+  <div class="stat-item"><div class="num" style="color:#FF4D4D;">111</div><div class="label">Total Issues</div></div>
+  <div class="stat-item"><div class="num" style="color:#FF4D4D;">49</div><div class="label">Critical (P0)</div></div>
+  <div class="stat-item"><div class="num" style="color:#FF9640;">52</div><div class="label">High (P1)</div></div>
+  <div class="stat-item"><div class="num" style="color:#FFC93C;">10</div><div class="label">Medium (P2)</div></div>
+  <div class="stat-item"><div class="num" style="color:#4D9EFF;">21</div><div class="label">Services</div></div>
+  <div class="stat-item"><div class="num" style="color:#FF4D4D;">Rs 6.57Cr</div><div class="label">SEBI Fines Paid</div></div>
+</div>
+
+<div class="controls">
+  <input type="text" class="search-box" id="searchBox" placeholder="Search issues by title, file, category, description...">
+  <button class="filter-btn active" data-filter="all">All (111)</button>
+  <button class="filter-btn" data-filter="P0">P0 (49)</button>
+  <button class="filter-btn" data-filter="P1">P1 (52)</button>
+  <button class="filter-btn" data-filter="P2">P2 (10)</button>
+</div>
+
+<!-- ============ P0 — CRITICAL ============ -->
+<div class="category-section" id="section-p0">
+<div class="category-header" style="color: #FF4D4D;">P0 — Critical Issues <span class="count">49 issues</span></div>
+<table>
+  <thead>
+    <tr>
+      <th style="width:4%;">ID</th>
+      <th style="width:8%;">Sev</th>
+      <th style="width:10%;">Category</th>
+      <th style="width:25%;">Title</th>
+      <th style="width:18%;">File / Location</th>
+      <th style="width:30%;">Description</th>
+      <th style="width:5%;">Detail</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr data-sev="P0" data-cat="data-loss"><td>1</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-data-loss">Data Loss</span></td><td>SQS AUTO_ACKNOWLEDGE on PaymentDisbursalConsumer</td><td class="file-ref">eq-fms-consumers/.../sqs/</td><td>Message deleted before processing. Money disbursed but DB never updated.</td><td><a href="pml-issues-detail.html#data-loss" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="data-loss"><td>2</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-data-loss">Data Loss</span></td><td>SQS AUTO_ACKNOWLEDGE on UPIMandateConsumer</td><td class="file-ref">eq-fms-consumers/.../sqs/</td><td>Mandate status permanently lost on processing failure.</td><td><a href="pml-issues-detail.html#data-loss" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="data-loss"><td>3</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-data-loss">Data Loss</span></td><td>SQS AUTO_ACKNOWLEDGE on SettlementCommConsumer</td><td class="file-ref">eq-fms-consumers/.../sqs/</td><td>Settlement notifications vanish on failure.</td><td><a href="pml-issues-detail.html#data-loss" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="data-loss"><td>4</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-data-loss">Data Loss</span></td><td>SQS AUTO_ACKNOWLEDGE on BlockTransactionConsumer</td><td class="file-ref">eq-fms-consumers/.../sqs/</td><td>Fund block status disappears on error.</td><td><a href="pml-issues-detail.html#data-loss" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="data-loss"><td>5</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-data-loss">Data Loss</span></td><td>SQS AUTO_ACKNOWLEDGE on PayInClearanceConsumer</td><td class="file-ref">eq-fms-consumers/.../sqs/</td><td>Payment clearance not recorded.</td><td><a href="pml-issues-detail.html#data-loss" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="data-loss"><td>6</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-data-loss">Data Loss</span></td><td>SQS AUTO_ACKNOWLEDGE on TechExcelSyncConsumer</td><td class="file-ref">eq-fms-consumers/.../sqs/</td><td>BO transaction sync lost.</td><td><a href="pml-issues-detail.html#data-loss" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="data-loss"><td>7</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-data-loss">Data Loss</span></td><td>SQS AUTO_ACKNOWLEDGE on MarginPledgeConsumer</td><td class="file-ref">eq-fms-consumers/.../sqs/</td><td>Pledge status not updated.</td><td><a href="pml-issues-detail.html#data-loss" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="data-loss"><td>8</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-data-loss">Data Loss</span></td><td>SQS AUTO_ACKNOWLEDGE on WithdrawalConsumer</td><td class="file-ref">eq-fms-consumers/.../sqs/</td><td>Withdrawal status lost.</td><td><a href="pml-issues-detail.html#data-loss" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="data-loss"><td>9</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-data-loss">Data Loss</span></td><td>SQS AUTO_ACKNOWLEDGE on FundTransferConsumer</td><td class="file-ref">eq-fms-consumers/.../sqs/</td><td>Fund transfer records missing.</td><td><a href="pml-issues-detail.html#data-loss" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="data-loss"><td>10</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-data-loss">Data Loss</span></td><td>SQS AUTO_ACKNOWLEDGE on IPOAllotmentConsumer</td><td class="file-ref">eq-fms-consumers/.../sqs/</td><td>IPO allotment data not persisted.</td><td><a href="pml-issues-detail.html#data-loss" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="data-loss"><td>11-17</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-data-loss">Data Loss</span></td><td>SQS AUTO_ACKNOWLEDGE on 7 more consumers</td><td class="file-ref">eq-fms-consumers/.../sqs/</td><td>Same pattern across all remaining SQS consumers. Total: 17 consumers.</td><td><a href="pml-issues-detail.html#data-loss" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="financial"><td>18</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-financial">Financial</span></td><td>new BigDecimal(double) — 150 sites in 79 files</td><td class="file-ref">UtilityService.java (+ 78 files)</td><td>IEEE 754 precision loss contaminates all financial math.</td><td><a href="pml-issues-detail.html#financial-precision" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="financial"><td>19</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-financial">Financial</span></td><td>RoundingMode.CEILING in charge calculations</td><td class="file-ref">ChargesInfoServiceImpl.java</td><td>6 usages. Always rounds UP = systematic overcharge vs HALF_UP in BO.</td><td><a href="pml-issues-detail.html#financial-precision" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="financial"><td>20</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-financial">Financial</span></td><td>Thread-unsafe ChargesInfoServiceImpl singleton</td><td class="file-ref">ChargesInfoServiceImpl.java</td><td>Instance vars exchangesTurnOverCharge/sebiFeesCharge shared across threads.</td><td><a href="pml-issues-detail.html#financial-precision" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="financial"><td>21</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-financial">Financial</span></td><td>Float used for Last Traded Price</td><td class="file-ref">pml-core-dnd-aggregator</td><td>32-bit Float for LTP. Rs 99,999.99 becomes Rs 100,000.00.</td><td><a href="pml-issues-detail.html#financial-precision" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="financial"><td>22</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-financial">Financial</span></td><td>AtomicReference&lt;Double&gt; for ledger aggregation</td><td class="file-ref">LedgerServiceImpl.java</td><td>Concurrent accumulation with double precision. Error compounds with every addition.</td><td><a href="pml-issues-detail.html#financial-precision" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="compliance"><td>23</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-compliance">Compliance</span></td><td>Zero corporate action handling across 21 services</td><td class="file-ref">ALL services</td><td>No cost basis adjustment after splits, bonuses, dividends. Users see phantom losses.</td><td><a href="pml-issues-detail.html#compliance" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="compliance"><td>24</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-compliance">Compliance</span></td><td>No client fund segregation</td><td class="file-ref">ALL services</td><td>SEBI requires client funds to be segregated. Up to Rs 1Cr fine + license suspension.</td><td><a href="pml-issues-detail.html#compliance" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="compliance"><td>25</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-compliance">Compliance</span></td><td>No peak margin reporting</td><td class="file-ref">ALL services</td><td>SEBI penalty: 0.5% to 5% of shortfall amount.</td><td><a href="pml-issues-detail.html#compliance" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="compliance"><td>26</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-compliance">Compliance</span></td><td>No automated daily reconciliation</td><td class="file-ref">ALL services</td><td>Manual recon only. Material misstatement risk.</td><td><a href="pml-issues-detail.html#compliance" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="compliance"><td>27</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-compliance">Compliance</span></td><td>Hard DELETE on financial data</td><td class="file-ref">DataCleanUpListener.java</td><td>No soft delete, no archive, no audit trail. SEBI requires 5-year retention.</td><td><a href="pml-issues-detail.html#compliance" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="security"><td>28</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-security">Security</span></td><td>AWS Access Key hardcoded in source</td><td class="file-ref">payments/application.properties</td><td>AKIAZR5LLMQSMLU6YWEO in plaintext. Active key.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="security"><td>29</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-security">Security</span></td><td>AWS Secret Key hardcoded in source</td><td class="file-ref">payments/application.properties</td><td>Secret key in plaintext alongside access key.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="security"><td>30</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-security">Security</span></td><td>Encryption secret key = "secret"</td><td class="file-ref">payments/application.properties</td><td>Trivially guessable encryption key for payment data.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="security"><td>31</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-security">Security</span></td><td>TechExcel password in application.yml</td><td class="file-ref">bo-migration-recon/application.yml</td><td>P@ytm9Xr2!k in plaintext.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="security"><td>32</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-security">Security</span></td><td>7 Redash API keys in plaintext</td><td class="file-ref">bo-migration-recon/application.yml</td><td>Multiple analytics API keys exposed.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="security"><td>33</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-security">Security</span></td><td>Slack webhook URL hardcoded</td><td class="file-ref">bo-migration-recon/application.yml</td><td>Allows unauthorized posting to internal Slack channel.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="security"><td>34</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-security">Security</span></td><td>Zero @PreAuthorize / @Secured in all services</td><td class="file-ref">ALL 21 services</td><td>No method-level authorization anywhere. Any caller can access any endpoint.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="security"><td>35</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-security">Security</span></td><td>InternalS2SController — no ownership check</td><td class="file-ref">eq-fms-app/.../controller/</td><td>Accepts arbitrary user_id. Any caller can operate on any account.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="security"><td>36</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-security">Security</span></td><td>Static IV for AES-CBC encryption</td><td class="file-ref">DBEncryptionConverter.java</td><td>Same plaintext always produces same ciphertext. Pattern analysis on bank data.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="security"><td>37</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-security">Security</span></td><td>NEW: Plaintext logging of encrypted data</td><td class="file-ref">Multiple services</td><td>Decrypted bank details written to application logs. Visible in log aggregators.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="security"><td>38</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-security">Security</span></td><td>NEW: Global SSL verification disabled</td><td class="file-ref">RestTemplate configuration</td><td>TrustManager trusts ALL certificates. Enables MITM on all HTTPS calls.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="security"><td>39</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-security">Security</span></td><td>NEW: AES/ECB mode in payment encryption</td><td class="file-ref">Payment encryption utilities</td><td>Identical plaintext blocks produce identical ciphertext. No IV used.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="payments"><td>40</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-payments">Payments</span></td><td>@Transactional commented out on bulk bill creation</td><td class="file-ref">MandateRecurPayService.java:536</td><td>Partial failure in batch = double-charging SIP customers.</td><td><a href="pml-issues-detail.html#payments" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="payments"><td>41</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-payments">Payments</span></td><td>No @Positive validation on PayIn amount</td><td class="file-ref">PayInInitiateV3Request.java:33</td><td>Negative amount could create free credits.</td><td><a href="pml-issues-detail.html#payments" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="payments"><td>42</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-payments">Payments</span></td><td>No @Positive validation on Withdrawal amount</td><td class="file-ref">WithdrawalRequest.java</td><td>Same issue as PayIn — negative amounts accepted.</td><td><a href="pml-issues-detail.html#payments" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="payments"><td>43</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-payments">Payments</span></td><td>Health checks disabled on payments service</td><td class="file-ref">payments/application.properties</td><td>management.health.db/redis/mongo.enabled=false. K8s routes to dead service.</td><td><a href="pml-issues-detail.html#payments" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="payments"><td>44</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-payments">Payments</span></td><td>NEW: Block txn amount validates against itself</td><td class="file-ref">BlockTransactionService.java</td><td>amount == amount instead of amount == orderAmount. Every block txn passes.</td><td><a href="pml-issues-detail.html#payments" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="payments"><td>45</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-payments">Payments</span></td><td>NEW: Thread-unsafe ICICI Cipher singleton</td><td class="file-ref">ICICIEncryptionUtil.java</td><td>Shared Cipher instance. Concurrent calls corrupt encrypted payment data.</td><td><a href="pml-issues-detail.html#payments" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="payments"><td>46</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-payments">Payments</span></td><td>@Transactional missing on payment reconciliation</td><td class="file-ref">PaymentsQueryApiService.java</td><td>Partial updates on recon failure leave inconsistent state.</td><td><a href="pml-issues-detail.html#payments" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="payments"><td>47</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-payments">Payments</span></td><td>@Transactional missing on mandate status update</td><td class="file-ref">MandateStatusService.java</td><td>Mandate status and payment records can get out of sync.</td><td><a href="pml-issues-detail.html#payments" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="reliability"><td>48</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-reliability">Reliability</span></td><td>No saga/compensation for distributed fund ops</td><td class="file-ref">eq-fms-app (ALL fund ops)</td><td>MySQL save > RupeeSeed HTTP > Kafka push. No rollback if middle step fails.</td><td><a href="pml-issues-detail.html#reliability" class="detail-link">View</a></td></tr>
+    <tr data-sev="P0" data-cat="architecture"><td>49</td><td class="sev-p0">P0</td><td><span class="cat-tag cat-architecture">Architecture</span></td><td>RupeeSeed SPOF — 22 files, no abstraction</td><td class="file-ref">eq-fms-app (22 files)</td><td>If RupeeSeed is down, ALL fund ops halt. No fallback.</td><td><a href="pml-issues-detail.html#architecture" class="detail-link">View</a></td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ============ P1 — HIGH ============ -->
+<div class="category-section" id="section-p1">
+<div class="category-header" style="color: #FF9640;">P1 — High Severity Issues <span class="count">52 issues</span></div>
+<table>
+  <thead>
+    <tr>
+      <th style="width:4%;">ID</th>
+      <th style="width:8%;">Sev</th>
+      <th style="width:10%;">Category</th>
+      <th style="width:25%;">Title</th>
+      <th style="width:18%;">File / Location</th>
+      <th style="width:30%;">Description</th>
+      <th style="width:5%;">Detail</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr data-sev="P1" data-cat="financial"><td>50</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-financial">Financial</span></td><td>Double brokerage, stt, cgst, sgst in bo-statements-api</td><td class="file-ref">bo-statements-api/model/</td><td>Trade charges stored as java.lang.Double instead of BigDecimal.</td><td><a href="pml-issues-detail.html#financial-precision" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="financial"><td>51</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-financial">Financial</span></td><td>Double chargeAmount in eq-fms-common</td><td class="file-ref">eq-fms-common/model/</td><td>Transaction charges stored as Double.</td><td><a href="pml-issues-detail.html#financial-precision" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="financial"><td>52</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-financial">Financial</span></td><td>BigDecimal > double > BigDecimal conversion chain</td><td class="file-ref">ChargesInfoServiceImpl.java</td><td>GST calculation converts BigDecimal to double and back. Precision lost in transit.</td><td><a href="pml-issues-detail.html#financial-precision" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="financial"><td>53</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-financial">Financial</span></td><td>3 different rounding strategies in conflict</td><td class="file-ref">eq-fms-app, bo-*, payments</td><td>CEILING vs HALF_UP vs HALF_EVEN creates irreconcilable charge differences.</td><td><a href="pml-issues-detail.html#financial-precision" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="financial"><td>54</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-financial">Financial</span></td><td>NEW: Thread-unsafe SimpleDateFormat across services</td><td class="file-ref">Multiple services</td><td>Shared SimpleDateFormat instances produce garbled dates under concurrency.</td><td><a href="pml-issues-detail.html#financial-precision" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="financial"><td>55</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-financial">Financial</span></td><td>Frontend-driven P&L calculation</td><td class="file-ref">pml-core-dnd-aggregator</td><td>P&L computed in frontend JavaScript. All competitors do this server-side.</td><td><a href="pml-issues-detail.html#financial-precision" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="security"><td>56</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-security">Security</span></td><td>SQL injection in DataCleanUpListener</td><td class="file-ref">DataCleanUpListener.java</td><td>DELETE FROM " + table — table name from variable, not parameterized.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="security"><td>57</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-security">Security</span></td><td>SSL disabled on TechExcel API client</td><td class="file-ref">bo-migration-recon/config/</td><td>HTTPS verification disabled for TechExcel calls.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="security"><td>58</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-security">Security</span></td><td>SSL disabled on Ledger API client</td><td class="file-ref">eq-fms-app/config/</td><td>HTTPS verification disabled for Ledger calls.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="security"><td>59</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-security">Security</span></td><td>SSL disabled on Migration API client</td><td class="file-ref">bo-migration-recon/config/</td><td>HTTPS verification disabled for Migration calls.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="security"><td>60</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-security">Security</span></td><td>Open CORS * on bo-migration-recon</td><td class="file-ref">bo-migration-recon/config/</td><td>All origins allowed. Cross-site request forgery risk.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="security"><td>61</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-security">Security</span></td><td>AES encryption key in SQL strings</td><td class="file-ref">bo-trade daily-jobs (24 files)</td><td>AES_ENCRYPT(:ucc, 'KEY', 'iv') — key in slow query/error/general logs.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="security"><td>62</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-security">Security</span></td><td>Database passwords in application configs</td><td class="file-ref">bo-statement-consumer/application.yml</td><td>Database credentials in committed config files.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="security"><td>63</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-security">Security</span></td><td>NEW: Bank passwords exposed in toString()</td><td class="file-ref">ICICI/Bank integration models</td><td>Sensitive bank credentials included in toString(), visible in debug/error logs.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="security"><td>64</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-security">Security</span></td><td>NEW: RSA/PKCS1 padding (weak)</td><td class="file-ref">Certificate handling</td><td>RSA PKCS1v1.5 padding vulnerable to Bleichenbacher attack. Use OAEP.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="security"><td>65</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-security">Security</span></td><td>NEW: FindSecBugs security scanner suppressed</td><td class="file-ref">Build configuration</td><td>Security scan findings suppressed in build. Known vulns not flagged.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="payments"><td>66</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-payments">Payments</span></td><td>Refund gateway errors silently swallowed</td><td class="file-ref">PaymentsApiRefundService.java:110</td><td>Failed refunds not retried or alerted. Customer stuck.</td><td><a href="pml-issues-detail.html#payments" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="payments"><td>67</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-payments">Payments</span></td><td>No optimistic/pessimistic locking in FMS</td><td class="file-ref">eq-fms-app (ALL)</td><td>Concurrent withdrawals can overdraft. No @Version on any entity.</td><td><a href="pml-issues-detail.html#payments" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="payments"><td>68</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-payments">Payments</span></td><td>Orphaned pending transactions</td><td class="file-ref">PaymentsQueryApiService.java:424</td><td>Money debited, never reconciled. No auto-recon.</td><td><a href="pml-issues-detail.html#payments" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="payments"><td>69</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-payments">Payments</span></td><td>TOCTOU race on duplicate detection</td><td class="file-ref">AdhocChargeServiceImpl.java:111</td><td>Check-then-act race condition. Double-debit on concurrent requests.</td><td><a href="pml-issues-detail.html#payments" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="compliance"><td>70</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-compliance">Compliance</span></td><td>No contract note completeness validation</td><td class="file-ref">bo-statements-api</td><td>Contract notes generated without validating all required SEBI fields.</td><td><a href="pml-issues-detail.html#compliance" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="compliance"><td>71</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-compliance">Compliance</span></td><td>Partial audit trail coverage</td><td class="file-ref">Multiple services</td><td>Some financial operations not logged. SEBI requires complete audit trail.</td><td><a href="pml-issues-detail.html#compliance" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="compliance"><td>72</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-compliance">Compliance</span></td><td>T+1 settlement — lookup only, no enforcement</td><td class="file-ref">eq-fms-app</td><td>Settlement date checked but not enforced in fund operations.</td><td><a href="pml-issues-detail.html#compliance" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="reliability"><td>73</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-reliability">Reliability</span></td><td>Zero monitoring on 7 payment SQS consumers</td><td class="file-ref">eq-fms-consumers</td><td>No Micrometer counters, no DLQs, no alerting.</td><td><a href="pml-issues-detail.html#reliability" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="reliability"><td>74</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-reliability">Reliability</span></td><td>Kafka auto-commit + exception swallowing</td><td class="file-ref">eq-fms-consumers/.../kafka/</td><td>Offset committed before processing. Exceptions caught and swallowed.</td><td><a href="pml-issues-detail.html#reliability" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="reliability"><td>75</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-reliability">Reliability</span></td><td>Zero circuit breakers — eq-fms-app > RupeeSeed</td><td class="file-ref">eq-fms-app</td><td>If RupeeSeed is slow, all fund op threads block and JVM starves.</td><td><a href="pml-issues-detail.html#reliability" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="reliability"><td>76</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-reliability">Reliability</span></td><td>Zero circuit breakers — eq-fms-consumers > SQS</td><td class="file-ref">eq-fms-consumers</td><td>SQS connection failure cascades to all consumers.</td><td><a href="pml-issues-detail.html#reliability" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="reliability"><td>77</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-reliability">Reliability</span></td><td>Zero circuit breakers — notification-svc > 7 DBs</td><td class="file-ref">notification-service</td><td>Thread exhaustion when any of 7 databases is slow.</td><td><a href="pml-issues-detail.html#reliability" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="reliability"><td>78</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-reliability">Reliability</span></td><td>Zero circuit breakers — bo-* > CLASS SQL Server</td><td class="file-ref">bo-* services</td><td>If CLASS SQL Server is down, all BO services hang.</td><td><a href="pml-issues-detail.html#reliability" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="reliability"><td>79</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-reliability">Reliability</span></td><td>Deprecated Hystrix in payments</td><td class="file-ref">payments/pom.xml</td><td>Netflix Hystrix EOL since 2018. No longer maintained.</td><td><a href="pml-issues-detail.html#reliability" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="reliability"><td>80</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-reliability">Reliability</span></td><td>Outdated Resilience4j 1.3.1 in bo-common</td><td class="file-ref">bo-common/pom.xml</td><td>Current version is 2.x. Old version may have bugs.</td><td><a href="pml-issues-detail.html#reliability" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="reliability"><td>81</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-reliability">Reliability</span></td><td>No AsyncUncaughtExceptionHandler</td><td class="file-ref">ALL services</td><td>Spring swallows @Async exceptions silently. No logging or alerting.</td><td><a href="pml-issues-detail.html#reliability" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="reliability"><td>82</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-reliability">Reliability</span></td><td>Retry exhaustion drops notification messages</td><td class="file-ref">notification-service</td><td>No DLQ. Failed messages permanently lost after retry exhaustion.</td><td><a href="pml-issues-detail.html#reliability" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="reliability"><td>83</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-reliability">Reliability</span></td><td>NEW: Staging URLs as default config values</td><td class="file-ref">Multiple application.properties</td><td>If env vars not set, services connect to staging in production.</td><td><a href="pml-issues-detail.html#reliability" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="architecture"><td>84</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-architecture">Architecture</span></td><td>CLASS SQL Server SPOF — 5 services</td><td class="file-ref">bo-* services</td><td>No circuit breaker, no timeout config. If down, all BO services fail.</td><td><a href="pml-issues-detail.html#architecture" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="architecture"><td>85</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-architecture">Architecture</span></td><td>40+ findAll() unbounded queries</td><td class="file-ref">Multiple repositories</td><td>Including transactionRequestRepository.findAll(). Growing table = OOM.</td><td><a href="pml-issues-detail.html#architecture" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="architecture"><td>86</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-architecture">Architecture</span></td><td>ZoneId.systemDefault() for financial dates</td><td class="file-ref">Multiple services</td><td>K8s UTC containers misassign IST business days. Affects settlement.</td><td><a href="pml-issues-detail.html#architecture" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="architecture"><td>87</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-architecture">Architecture</span></td><td>Thread pool from user input</td><td class="file-ref">RecoverOrderService.java</td><td>newFixedThreadPool(request.size()). 10K items = 10K threads = JVM crash.</td><td><a href="pml-issues-detail.html#architecture" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="architecture"><td>88</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-architecture">Architecture</span></td><td>Order recon auto-recovery commented out</td><td class="file-ref">OrderStatusReconScheduler.java</td><td>Detects mismatches but recoverOrders() is commented. Orders lost.</td><td><a href="pml-issues-detail.html#architecture" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="architecture"><td>89</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-architecture">Architecture</span></td><td>NEW: Unbounded thread pools (newCachedThreadPool)</td><td class="file-ref">Multiple services</td><td>No upper bound on threads. Under load, JVM runs out of memory.</td><td><a href="pml-issues-detail.html#architecture" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="architecture"><td>90</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-architecture">Architecture</span></td><td>NEW: Thread-unsafe singletons beyond ChargesInfo</td><td class="file-ref">Multiple @Service classes</td><td>Request-scoped state in instance variables. Data leaks between users.</td><td><a href="pml-issues-detail.html#architecture" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="reliability"><td>91</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-reliability">Reliability</span></td><td>Cron job error kills scheduler thread</td><td class="file-ref">dnd-aggregator, cache reload</td><td>Uncaught exception in cron kills the thread. No restart, caches go stale.</td><td><a href="pml-issues-detail.html#reliability" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="reliability"><td>92</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-reliability">Reliability</span></td><td>Notification service: 3 threads for 20+ listeners</td><td class="file-ref">notification-service/config/</td><td>Thread starvation. Kafka listeners + cron compete for 3 threads.</td><td><a href="pml-issues-detail.html#reliability" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="security"><td>93</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-security">Security</span></td><td>No rate limiting on payments API</td><td class="file-ref">payments/config/</td><td>No request throttling. Brute-force and abuse possible.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="security"><td>94</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-security">Security</span></td><td>No rate limiting on bo-statements-api</td><td class="file-ref">bo-statements-api/config/</td><td>Unbounded API access. Data scraping possible.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="security"><td>95</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-security">Security</span></td><td>No rate limiting on bo-crm-api</td><td class="file-ref">bo-crm-api/config/</td><td>CRM data accessible without throttling.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="security"><td>96</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-security">Security</span></td><td>NEW: Bank API key in ICICI integration properties</td><td class="file-ref">ICICI integration config</td><td>Bank-issued API key committed to source control.</td><td><a href="pml-issues-detail.html#security" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="payments"><td>97</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-payments">Payments</span></td><td>PG fallback silently switches to Billdesk</td><td class="file-ref">PaymentGatewayService.java:226</td><td>Revenue leakage via suboptimal payment gateway selection.</td><td><a href="pml-issues-detail.html#payments" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="compliance"><td>98</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-compliance">Compliance</span></td><td>LAMA system monitoring failure (SEBI fined)</td><td class="file-ref">Infrastructure</td><td>SEBI fined PML Rs 45.5L for technical glitch framework failures.</td><td><a href="pml-issues-detail.html#compliance" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="compliance"><td>99</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-compliance">Compliance</span></td><td>DR drill skipped in 2023</td><td class="file-ref">Infrastructure</td><td>Disaster recovery drill compliance gap. Part of SEBI settlement.</td><td><a href="pml-issues-detail.html#compliance" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="architecture"><td>100</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-architecture">Architecture</span></td><td>No abstraction over fund operations vendor</td><td class="file-ref">eq-fms-app</td><td>Direct RupeeSeed API calls in 22 files. No interface/adapter pattern.</td><td><a href="pml-issues-detail.html#architecture" class="detail-link">View</a></td></tr>
+    <tr data-sev="P1" data-cat="financial"><td>101</td><td class="sev-p1">P1</td><td><span class="cat-tag cat-financial">Financial</span></td><td>Double realisedProfit in positions aggregator</td><td class="file-ref">pml-core-dnd-aggregator</td><td>Realised profit stored as Double. Accumulates IEEE 754 errors over trades.</td><td><a href="pml-issues-detail.html#financial-precision" class="detail-link">View</a></td></tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ============ P2 — MEDIUM ============ -->
+<div class="category-section" id="section-p2">
+<div class="category-header" style="color: #FFC93C;">P2 — Medium Severity Issues <span class="count">10 issues</span></div>
+<table>
+  <thead>
+    <tr>
+      <th style="width:4%;">ID</th>
+      <th style="width:8%;">Sev</th>
+      <th style="width:10%;">Category</th>
+      <th style="width:25%;">Title</th>
+      <th style="width:18%;">File / Location</th>
+      <th style="width:30%;">Description</th>
+      <th style="width:5%;">Detail</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr data-sev="P2" data-cat="payments"><td>102</td><td class="sev-p2">P2</td><td><span class="cat-tag cat-payments">Payments</span></td><td>PG fallback silently switches gateway</td><td class="file-ref">PaymentGatewayService.java:226</td><td>Revenue leakage via suboptimal PG routing without logging.</td><td><a href="pml-issues-detail.html#payments" class="detail-link">View</a></td></tr>
+    <tr data-sev="P2" data-cat="architecture"><td>103</td><td class="sev-p2">P2</td><td><span class="cat-tag cat-architecture">Architecture</span></td><td>No connection pool tuning for SQL Server</td><td class="file-ref">bo-* services</td><td>Default HikariCP settings for CLASS DB connections. Suboptimal under load.</td><td><a href="pml-issues-detail.html#architecture" class="detail-link">View</a></td></tr>
+    <tr data-sev="P2" data-cat="architecture"><td>104</td><td class="sev-p2">P2</td><td><span class="cat-tag cat-architecture">Architecture</span></td><td>No request/response logging middleware</td><td class="file-ref">Multiple services</td><td>Difficult to debug production issues without structured request logs.</td><td><a href="pml-issues-detail.html#architecture" class="detail-link">View</a></td></tr>
+    <tr data-sev="P2" data-cat="reliability"><td>105</td><td class="sev-p2">P2</td><td><span class="cat-tag cat-reliability">Reliability</span></td><td>No graceful shutdown handlers</td><td class="file-ref">eq-fms-consumers</td><td>In-flight SQS messages lost during deployment. Need shutdown hooks.</td><td><a href="pml-issues-detail.html#reliability" class="detail-link">View</a></td></tr>
+    <tr data-sev="P2" data-cat="reliability"><td>106</td><td class="sev-p2">P2</td><td><span class="cat-tag cat-reliability">Reliability</span></td><td>No health check for SQS connectivity</td><td class="file-ref">eq-fms-consumers</td><td>Service reports healthy even when SQS connection is dead.</td><td><a href="pml-issues-detail.html#reliability" class="detail-link">View</a></td></tr>
+    <tr data-sev="P2" data-cat="financial"><td>107</td><td class="sev-p2">P2</td><td><span class="cat-tag cat-financial">Financial</span></td><td>No idempotency keys on payment operations</td><td class="file-ref">payments/.../controller/</td><td>Retried requests can cause duplicate payments.</td><td><a href="pml-issues-detail.html#payments" class="detail-link">View</a></td></tr>
+    <tr data-sev="P2" data-cat="compliance"><td>108</td><td class="sev-p2">P2</td><td><span class="cat-tag cat-compliance">Compliance</span></td><td>No data retention policy enforcement</td><td class="file-ref">ALL services</td><td>SEBI 5-year retention not programmatically enforced.</td><td><a href="pml-issues-detail.html#compliance" class="detail-link">View</a></td></tr>
+    <tr data-sev="P2" data-cat="architecture"><td>109</td><td class="sev-p2">P2</td><td><span class="cat-tag cat-architecture">Architecture</span></td><td>No distributed tracing</td><td class="file-ref">ALL services</td><td>Cannot trace a request across microservices. Debugging is manual.</td><td><a href="pml-issues-detail.html#architecture" class="detail-link">View</a></td></tr>
+    <tr data-sev="P2" data-cat="architecture"><td>110</td><td class="sev-p2">P2</td><td><span class="cat-tag cat-architecture">Architecture</span></td><td>No centralized configuration management</td><td class="file-ref">ALL services</td><td>Config scattered across properties files. No Spring Cloud Config.</td><td><a href="pml-issues-detail.html#architecture" class="detail-link">View</a></td></tr>
+    <tr data-sev="P2" data-cat="financial"><td>111</td><td class="sev-p2">P2</td><td><span class="cat-tag cat-financial">Financial</span></td><td>Migrate all Double fields to BigDecimal in entities</td><td class="file-ref">ALL services</td><td>Long-term migration needed for regulatory-grade financial precision.</td><td><a href="pml-issues-detail.html#financial-precision" class="detail-link">View</a></td></tr>
+  </tbody>
+</table>
+</div>
+
+<footer>
+  <p>PML Platform Critical Issues Audit &middot; 111 Issues &middot; 21 Services &middot; March 2026</p>
+  <p style="margin-top: 8px;">CONFIDENTIAL &mdash; INTERNAL USE ONLY</p>
+  <div class="nav-links" style="margin-top: 16px;">
+    <a href="pml-issues.html" class="nav-link">&larr; Main Deck</a>
+    <a href="pml-issues-detail.html" class="nav-link">Deep-Dive Details</a>
+  </div>
+</footer>
+
+</div><!-- /container -->
+
+<script>
+// Search functionality
+const searchBox = document.getElementById('searchBox');
+const allRows = document.querySelectorAll('tbody tr');
+const filterBtns = document.querySelectorAll('.filter-btn');
+let activeFilter = 'all';
+
+function applyFilters() {
+  const query = searchBox.value.toLowerCase();
+  allRows.forEach(row => {
+    const text = row.textContent.toLowerCase();
+    const sev = row.getAttribute('data-sev');
+    const matchesSearch = !query || text.includes(query);
+    const matchesFilter = activeFilter === 'all' || sev === activeFilter;
+    row.classList.toggle('hidden', !(matchesSearch && matchesFilter));
+  });
+}
+
+searchBox.addEventListener('input', applyFilters);
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.getAttribute('data-filter');
+    applyFilters();
+  });
+});
+</script>
+</body>
+</html>
