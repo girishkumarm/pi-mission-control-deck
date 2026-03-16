@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Pi Mission Control — Dev Suite Overview</title>
+<title>Pi Mission Control — PI Dev Suite Overview</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/black.min.css" id="theme">
 <style>
@@ -389,10 +389,10 @@
 </section>
 
 <!-- ============================================ -->
-<!-- SLIDE 2: WHAT IS DEV SUITE -->
+<!-- SLIDE 2: WHAT IS PI DEV SUITE -->
 <!-- ============================================ -->
 <section>
-  <h2 style="margin-bottom: 4px;">What is <span class="glow">Dev Suite</span>?</h2>
+  <h2 style="margin-bottom: 4px;">What is <span class="glow">PI Dev Suite</span>?</h2>
   <p class="dim" style="font-size: 0.7em; margin-bottom: 28px;">A unified command center for the entire Pi Platform engineering workflow</p>
 
   <div class="grid-2">
@@ -431,7 +431,7 @@
   <div class="callout-blue" style="margin-top: 20px; font-size: 0.65em;">
     <strong>Two layers working in tandem.</strong> The web dashboard handles infrastructure. The AI agent automates the complete SDLC — from Jira ticket to merged PR.
   </div>
-  <aside class="notes">Dev Suite has two layers. Layer 1 is the web dashboard — the cockpit. Layer 2 is the AI agent that automates the complete software development lifecycle.</aside>
+  <aside class="notes">PI Dev Suite has two layers. Layer 1 is the web dashboard — the cockpit. Layer 2 is the AI agent that automates the complete software development lifecycle.</aside>
 </section>
 
 <!-- ============================================ -->
@@ -501,7 +501,7 @@
 <!-- ============================================ -->
 <section>
   <h2>MCP Servers — <span class="glow">The Integration Layer</span></h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 24px;">Two MCP servers power the 8 Dev Suite skills — Atlassian for SDLC, Playwright for UI testing</p>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 24px;">Two MCP servers power the 8 PI Dev Suite skills — Atlassian for SDLC, Playwright for UI testing</p>
 
   <div class="grid-2" style="gap: 28px;">
     <div>
@@ -551,7 +551,7 @@
       </div>
     </div>
   </div>
-  <aside class="notes">Two MCP servers. Atlassian MCP gives Claude direct access to Jira and Confluence — powers all 8 SDLC skills. Playwright MCP gives Claude a real browser for UI testing — navigate, click, fill forms, take screenshots. Everything else — Git, Docker, databases, builds — is handled through Claude Code's built-in tools and the Dev Suite server API.</aside>
+  <aside class="notes">Two MCP servers. Atlassian MCP gives Claude direct access to Jira and Confluence — powers all 8 SDLC skills. Playwright MCP gives Claude a real browser for UI testing — navigate, click, fill forms, take screenshots. Everything else — Git, Docker, databases, builds — is handled through Claude Code's built-in tools and the PI Dev Suite server API.</aside>
 </section>
 
 <!-- ============================================ -->
@@ -587,7 +587,7 @@
 <!-- ============================================ -->
 <section data-background-gradient="radial-gradient(ellipse 900px 500px at 50% 50%, rgba(124,92,252,0.06) 0%, transparent 70%)">
   <h2>8 <span class="glow">Claude Code Skills</span></h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 24px;">Custom slash commands that ship with Dev Suite. Each automates a complete workflow step.</p>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 24px;">Custom slash commands that ship with PI Dev Suite. Each automates a complete workflow step.</p>
 
   <div class="pipeline" style="margin-bottom: 28px;">
     <div class="pipe-step">
@@ -798,9 +798,9 @@
   </div>
 
   <div class="callout-blue" style="font-size: 0.58em; margin-top: 14px;">
-    <strong>Because of Foundry (Claude Code), Dev Suite can do things by itself</strong> — start services, run tests, diagnose failures, and fix code without manual intervention. The dashboard + AI agent work in tandem.
+    <strong>Because of Foundry (Claude Code), PI Dev Suite can do things by itself</strong> — start services, run tests, diagnose failures, and fix code without manual intervention. The dashboard + AI agent work in tandem.
   </div>
-  <aside class="notes">This is the web dashboard. Real-time logs, testing playgrounds for both Risk and Agentic, and full configuration management. Because of Claude Code integration, Dev Suite can operate autonomously.</aside>
+  <aside class="notes">This is the web dashboard. Real-time logs, testing playgrounds for both Risk and Agentic, and full configuration management. Because of Claude Code integration, PI Dev Suite can operate autonomously.</aside>
 </section>
 
 <!-- ============================================ -->
@@ -1189,7 +1189,7 @@ good enough. Make them better.
 
   <div style="display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 24px; flex-wrap: nowrap;">
     <div style="padding: 14px 18px; border-radius: 12px; text-align: center; background: rgba(0,212,170,0.08); border: 1px solid rgba(0,212,170,0.2); min-width: 130px;">
-      <div style="font-size: 0.55em; font-weight: 700; color: var(--accent2);">CI (Dev Suite)</div>
+      <div style="font-size: 0.55em; font-weight: 700; color: var(--accent2);">CI (PI Dev Suite)</div>
       <div style="font-size: 0.42em; color: var(--dim); margin-top: 4px;">/plan → /regression-tests → /coding → /local-test → /ui-test → /review → /pr</div>
     </div>
     <div style="color: rgba(124,92,252,0.4); font-size: 1.4em; padding: 0 10px;">→</div>
