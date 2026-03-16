@@ -610,7 +610,7 @@ fix:["Add DLQ for failed notifications","Persist failed messages for manual retr
 
 {id:"83",sev:"P1",cat:"reliability",title:"Staging URLs as default config values",file:"Multiple application.properties",
 problem:"Several services have staging/internal URLs as default values in config files. If environment variables are not set in production deployment, services silently connect to staging endpoints — mixing production and staging data.",
-code:`# application.properties\nservice.url=${SERVICE_URL:http://staging-internal.example.com}\n# If SERVICE_URL not set → connects to staging!`,
+code:`# application.properties\nservice.url=\${SERVICE_URL:http://staging-internal.example.com}\n# If SERVICE_URL not set → connects to staging!`,
 fix:["Remove default URLs — fail fast if env var missing","Add startup validation for required config","Use Spring profiles to prevent staging config in prod"]},
 
 {id:"84",sev:"P1",cat:"architecture",title:"CLASS SQL Server SPOF — 5 services",file:"bo-* services",
@@ -776,7 +776,7 @@ issues.forEach((issue, idx) => {
 
   const codeHtml = issue.code
     ? '<div class="code-block" style="font-size:0.40em; line-height:1.6; margin-top:10px;">' +
-      issue.code.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>'
+      issue.code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>'
     : '';
 
   section.innerHTML = `
