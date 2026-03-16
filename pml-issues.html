@@ -357,7 +357,7 @@ public void <span style="color:#4D9EFF">onMessage</span>(Message message) {
   <div class="grid-2">
     <div>
       <div class="glass glass-red" style="padding: 18px;">
-        <h3 style="margin:0 0 10px; font-size: 0.9em;">The Problem <span class="money-tag">~INR 36L/yr display gap</span></h3>
+        <h3 style="margin:0 0 10px; font-size: 0.9em;">The Problem <span class="money-tag">systematic overcharge + recon drift</span></h3>
         <table style="font-size: 0.72em;">
           <tr><th>Service</th><th>What's wrong</th></tr>
           <tr><td>bo-statements-api</td><td>Trade charges: <code>Double brokerage, stt, cgst, sgst</code></td></tr>
@@ -542,7 +542,7 @@ redash-api-key: <span style="color:#FF4D4D">DaxhWCPYmIXqGcDW...</span>
         <tr>
           <td><strong>@Transactional commented out</strong> on bulk bill creation<br><span class="file-ref">MandateRecurPayService.java:536</span></td>
           <td><span class="severity-crit">CRIT</span></td>
-          <td>Double-charging SIP customers <span class="money-tag">INR 60K/yr</span></td>
+          <td>Double-charging SIP customers <span class="money-tag">risk per failed batch</span></td>
         </tr>
         <tr>
           <td><strong>No @Positive validation</strong> on PayIn/Withdrawal amount<br><span class="file-ref">PayInInitiateV3Request.java:33</span></td>
@@ -552,7 +552,7 @@ redash-api-key: <span style="color:#FF4D4D">DaxhWCPYmIXqGcDW...</span>
         <tr>
           <td><strong>Refund gateway errors silently swallowed</strong><br><span class="file-ref">PaymentsApiRefundService.java:110</span></td>
           <td><span class="severity-high">HIGH</span></td>
-          <td>Stuck refunds <span class="money-tag-orange">INR 60K/yr</span></td>
+          <td>Stuck refunds <span class="money-tag-orange">silent failure</span></td>
         </tr>
         <tr>
           <td><strong>No optimistic/pessimistic locking</strong> in FMS<br><span class="file-ref">eq-fms-app (ALL)</span></td>
@@ -562,7 +562,7 @@ redash-api-key: <span style="color:#FF4D4D">DaxhWCPYmIXqGcDW...</span>
         <tr>
           <td><strong>Orphaned pending transactions</strong><br><span class="file-ref">PaymentsQueryApiService.java:424</span></td>
           <td><span class="severity-high">HIGH</span></td>
-          <td>Money debited, never reconciled <span class="money-tag">INR 2.5L/day at risk</span></td>
+          <td>Money debited, never reconciled <span class="money-tag">no auto-recon</span></td>
         </tr>
         <tr>
           <td><strong>TOCTOU race on duplicate detection</strong><br><span class="file-ref">AdhocChargeServiceImpl.java:111</span></td>
