@@ -248,8 +248,8 @@
       <div class="stat-label">High</div>
     </div>
     <div class="stat-card stat-card-red">
-      <div class="stat-num glow-red">~50Cr+</div>
-      <div class="stat-label">Annual Risk (INR)</div>
+      <div class="stat-num glow-red">Rs 6.6Cr</div>
+      <div class="stat-label">SEBI Fines Paid</div>
     </div>
   </div>
 
@@ -365,7 +365,7 @@ public void <span style="color:#4D9EFF">onMessage</span>(Message message) {
           <tr><td>eq-fms-common</td><td>Transaction charges: <code>Double chargeAmount</code></td></tr>
           <tr><td>ChargesInfoServiceImpl</td><td>GST calc: BigDecimal &rarr; double &rarr; BigDecimal</td></tr>
           <tr><td>LedgerServiceImpl</td><td>Aggregation: <code>AtomicReference&lt;Double&gt;</code></td></tr>
-          <tr><td>UtilityService</td><td><code>new BigDecimal(double)</code> &mdash; 50+ call sites</td></tr>
+          <tr><td>UtilityService</td><td><code>new BigDecimal(double)</code> &mdash; 150 occurrences in 79 files</td></tr>
         </table>
       </div>
     </div>
@@ -486,7 +486,7 @@ redash-api-key: <span style="color:#FF4D4D">DaxhWCPYmIXqGcDW...</span>
 <section>
   <span class="badge badge-red">REGULATORY</span>
   <h2 style="margin: 8px 0 4px;">SEBI Compliance <span class="glow-red">Gaps</span></h2>
-  <p class="dim" style="font-size: 0.62em; margin-bottom: 16px;">PML settled Rs 45.5L with SEBI (Feb 2025). Parent co One97 paid Rs 3.3Cr + Rs 1.1Cr separately. More code-level violations found.</p>
+  <p class="dim" style="font-size: 0.62em; margin-bottom: 16px;">PML settled Rs 45.5L with SEBI (Feb 2025). Parent co One97 paid Rs 3.32Cr + Rs 2.80Cr separately. Total: Rs 6.57Cr in SEBI fines.</p>
 
   <div class="grid-2">
     <div>
@@ -510,11 +510,11 @@ redash-api-key: <span style="color:#FF4D4D">DaxhWCPYmIXqGcDW...</span>
         <h3 style="margin: 0 0 10px; font-size: 0.9em;">SEBI Actions</h3>
         <table style="font-size: 0.68em;">
           <tr><th>Date</th><th>Amount</th><th>Entity</th><th>Violation</th></tr>
-          <tr><td>Feb 2025</td><td style="color:#FF4D4D;font-weight:600">Rs 45.5L</td><td><strong>PML</strong></td><td>Technical glitch framework (LAMA, DR drill)</td></tr>
-          <tr><td>Jan 2025</td><td style="color:#FFC93C;font-weight:600">Rs 3.32Cr</td><td>One97 (parent)</td><td>LODR/ICDR violations</td></tr>
-          <tr><td>May 2025</td><td style="color:#FFC93C;font-weight:600">Rs 1.11Cr</td><td>CEO personal</td><td>ESOP misclassification + 3yr ban</td></tr>
+          <tr><td>Feb 2025</td><td style="color:#FF4D4D;font-weight:600">Rs 45.5L</td><td><strong>PML</strong></td><td>Technical glitch framework <a href="https://www.sebi.gov.in/enforcement/orders/feb-2025/settlement-order-in-the-matter-of-paytm-money-limited_91881.html" style="color:#4D9EFF;" title="SEBI Order">[src]</a></td></tr>
+          <tr><td>Jan 2025</td><td style="color:#FFC93C;font-weight:600">Rs 3.32Cr</td><td>One97 (8 directors)</td><td>LODR/ICDR violations <a href="https://www.sebi.gov.in/enforcement/orders/jan-2025/settlement-order-in-the-matter-of-one97-communications-limited-paytm-_90911.html" style="color:#4D9EFF;" title="SEBI Order">[src]</a></td></tr>
+          <tr><td>May 2025</td><td style="color:#FFC93C;font-weight:600">Rs 2.80Cr</td><td>One97 + CEO + CBO</td><td>ESOP/SBEB + 3yr ban <a href="https://www.sebi.gov.in/enforcement/orders/may-2025/settlement-order-in-the-matter-of-one97-communications-limited_93857.html" style="color:#4D9EFF;" title="SEBI Order">[src]</a></td></tr>
         </table>
-        <p style="font-size:0.52em; color:var(--dim); margin:6px 0 0;">Only the Rs 45.5L was against Paytm Money Ltd directly. Source: <a href="https://www.sebi.gov.in/enforcement/orders/feb-2025/settlement-order-in-the-matter-of-paytm-money-limited_91881.html" style="color:#4D9EFF;">SEBI Order</a></p>
+        <p style="font-size:0.52em; color:var(--dim); margin:6px 0 0;"><strong>Total: Rs 6.57Cr</strong> in SEBI settlements. Only Rs 45.5L was against PML directly. All links go to official SEBI orders.</p>
       </div>
       <div class="glass glass-red" style="padding: 14px; margin-top: 12px;">
         <h3 style="margin:0; font-size: 0.85em; color: #FF4D4D;">Hard Deletes on Financial Data</h3>
@@ -756,80 +756,101 @@ If <span style="color:#00D4AA">MySQL</span> succeeds but <span style="color:#FFC
 <!-- =========================================== -->
 <section>
   <span class="badge badge-red">FINANCIAL IMPACT</span>
-  <h2 style="margin: 8px 0 4px;">Estimated <span class="glow">Annual Risk</span></h2>
-  <p class="dim" style="font-size: 0.62em; margin-bottom: 16px;">Conservative estimates based on codebase analysis and industry benchmarks</p>
+  <h2 style="margin: 8px 0 4px;">Verified <span class="glow">Losses</span> &amp; Code-Level <span class="glow-red">Exposure</span></h2>
+  <p class="dim" style="font-size: 0.58em; margin-bottom: 12px;">Tier 1 = verified SEBI orders (links to sebi.gov.in). Tier 2 = code-verified issues (file:line in repo). No production data was used for estimates.</p>
 
-  <table style="font-size: 0.6em;">
-    <tr>
-      <th>Category</th>
-      <th>Issue</th>
-      <th>Est. Annual Impact</th>
-      <th>Severity</th>
-    </tr>
-    <tr>
-      <td>Rounding (CEILING)</td>
-      <td>Systematic overcharge display across all trades</td>
-      <td><span style="color:#FF4D4D; font-weight:700;">INR 36 lakh</span></td>
-      <td><span class="severity-crit">CRIT</span></td>
-    </tr>
-    <tr>
-      <td>Orphaned payments</td>
-      <td>Pending transactions never reconciled (INR 2.5L/day at risk)</td>
-      <td><span style="color:#FF4D4D; font-weight:700;">INR 9+ crore exposure</span></td>
-      <td><span class="severity-crit">CRIT</span></td>
-    </tr>
-    <tr>
-      <td>Reconciliation noise</td>
-      <td><code>new BigDecimal(double)</code> across 50+ call sites</td>
-      <td><span style="color:#FF4D4D; font-weight:700;">INR 1.5 crore drift</span></td>
-      <td><span class="severity-high">HIGH</span></td>
-    </tr>
-    <tr>
-      <td>SEBI penalties</td>
-      <td>Rs 45.5L paid (PML) + potential new violations</td>
-      <td><span style="color:#FF4D4D; font-weight:700;">INR 45.5L paid + 1Cr+ exposure</span></td>
-      <td><span class="severity-crit">CRIT</span></td>
-    </tr>
-    <tr>
-      <td>Stuck refunds</td>
-      <td>Silently swallowed PG refund errors</td>
-      <td><span style="color:#FF9640; font-weight:700;">INR 60K</span></td>
-      <td><span class="severity-high">HIGH</span></td>
-    </tr>
-    <tr>
-      <td>Double-charge SIP</td>
-      <td>@Transactional commented out on bulk bill</td>
-      <td><span style="color:#FF9640; font-weight:700;">INR 60K+</span></td>
-      <td><span class="severity-crit">CRIT</span></td>
-    </tr>
-    <tr>
-      <td>Ledger drift</td>
-      <td>double arithmetic in ledger aggregation</td>
-      <td><span style="color:#FFC93C; font-weight:700;">INR 6 lakh (trust)</span></td>
-      <td><span class="severity-high">HIGH</span></td>
-    </tr>
-    <tr>
-      <td>Customer trust</td>
-      <td>Wrong P&L display &rarr; support tickets &rarr; churn</td>
-      <td><span style="color:#FF9640; font-weight:700;">Unquantifiable</span></td>
-      <td><span class="severity-crit">CRIT</span></td>
-    </tr>
-  </table>
+  <div style="margin-bottom: 12px;">
+    <h3 style="color:#FF4D4D; margin: 0 0 6px; font-size: 0.8em;">Tier 1: Verified SEBI Penalties (Paid)</h3>
+    <table style="font-size: 0.58em;">
+      <tr><th>Date</th><th>Amount</th><th>Entity</th><th>Violation</th><th>Source</th></tr>
+      <tr>
+        <td>Feb 2025</td>
+        <td><span style="color:#FF4D4D; font-weight:700;">Rs 45.50L</span></td>
+        <td><strong>Paytm Money Ltd</strong></td>
+        <td>Technical Glitch Framework (LAMA, DR drill skipped)</td>
+        <td><a href="https://www.sebi.gov.in/enforcement/orders/feb-2025/settlement-order-in-the-matter-of-paytm-money-limited_91881.html" style="color:#4D9EFF;">SEBI Order</a></td>
+      </tr>
+      <tr>
+        <td>Jan 2025</td>
+        <td><span style="color:#FFC93C; font-weight:700;">Rs 3.32Cr</span></td>
+        <td>One97 (8 directors)</td>
+        <td>LODR/ICDR &mdash; NRC independence, IPO disclosure</td>
+        <td><a href="https://www.sebi.gov.in/enforcement/orders/jan-2025/settlement-order-in-the-matter-of-one97-communications-limited-paytm-_90911.html" style="color:#4D9EFF;">SEBI Order</a></td>
+      </tr>
+      <tr>
+        <td>May 2025</td>
+        <td><span style="color:#FFC93C; font-weight:700;">Rs 2.80Cr</span></td>
+        <td>One97 + CEO + CBO</td>
+        <td>SBEB &mdash; ESOP to promoter post-listing + 3yr ban</td>
+        <td><a href="https://www.sebi.gov.in/enforcement/orders/may-2025/settlement-order-in-the-matter-of-one97-communications-limited_93857.html" style="color:#4D9EFF;">SEBI Order</a></td>
+      </tr>
+    </table>
+  </div>
 
-  <div class="grid-3" style="margin-top: 16px; gap: 12px;">
-    <div class="stat-card stat-card-red" style="padding: 20px;">
-      <div class="stat-num glow-red" style="font-size: 2em;">~4Cr+</div>
-      <div class="stat-label">Annual Financial Risk</div>
+  <div>
+    <h3 style="color:#FF9640; margin: 0 0 6px; font-size: 0.8em;">Tier 2: Code-Verified Risk Exposure</h3>
+    <table style="font-size: 0.58em;">
+      <tr><th>Category</th><th>Code Evidence</th><th>Scope</th><th>Risk Type</th></tr>
+      <tr>
+        <td>SQS data loss</td>
+        <td><code>Session.AUTO_ACKNOWLEDGE</code> &mdash; msg deleted before processing</td>
+        <td>17 consumers</td>
+        <td><span class="severity-crit">DATA LOSS</span></td>
+      </tr>
+      <tr>
+        <td>BigDecimal(double)</td>
+        <td>IEEE 754 float contaminating financial math</td>
+        <td>150 sites, 79 files</td>
+        <td><span class="severity-high">RECON DRIFT</span></td>
+      </tr>
+      <tr>
+        <td>CEILING rounding</td>
+        <td>Systematic overcharge: <code>RoundingMode.CEILING</code> in charges</td>
+        <td>6 usages</td>
+        <td><span class="severity-crit">OVERCHARGE</span></td>
+      </tr>
+      <tr>
+        <td>Hardcoded AWS keys</td>
+        <td>Active AKIA keys + secrets in <code>application.properties</code></td>
+        <td>4+ files</td>
+        <td><span class="severity-crit">SECURITY</span></td>
+      </tr>
+      <tr>
+        <td>No auth anywhere</td>
+        <td>Zero <code>@PreAuthorize</code> / <code>@EnableWebSecurity</code> in 21 services</td>
+        <td>All services</td>
+        <td><span class="severity-crit">ACCESS</span></td>
+      </tr>
+      <tr>
+        <td>@Transactional off</td>
+        <td>Commented out on bulk bill creation &rarr; double-charge risk</td>
+        <td>3 locations</td>
+        <td><span class="severity-crit">FINANCIAL</span></td>
+      </tr>
+      <tr>
+        <td>Encryption key in SQL</td>
+        <td><code>AES_ENCRYPT</code> with hardcoded IV in SQL strings</td>
+        <td>113 queries, 24 files</td>
+        <td><span class="severity-high">SECURITY</span></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="grid-3" style="margin-top: 14px; gap: 12px;">
+    <div class="stat-card stat-card-red" style="padding: 18px;">
+      <div class="stat-num glow-red" style="font-size: 1.8em;">Rs 6.57Cr</div>
+      <div class="stat-label">SEBI Fines Paid (verified)</div>
     </div>
-    <div class="stat-card stat-card-red" style="padding: 20px;">
-      <div class="stat-num glow-red" style="font-size: 2em;">45.5L</div>
-      <div class="stat-label">Paid in SEBI Fines (PML directly)</div>
+    <div class="stat-card stat-card-red" style="padding: 18px;">
+      <div class="stat-num glow-red" style="font-size: 1.8em;">42</div>
+      <div class="stat-label">Critical Code Issues</div>
     </div>
-    <div class="stat-card stat-card-orange" style="padding: 20px;">
-      <div class="stat-num" style="color:#FF9640; font-size: 2em;">1Cr+</div>
-      <div class="stat-label">Potential New SEBI Fines</div>
+    <div class="stat-card stat-card-orange" style="padding: 18px;">
+      <div class="stat-num" style="color:#FF9640; font-size: 1.8em;">1Cr+</div>
+      <div class="stat-label">New SEBI Fine Exposure</div>
     </div>
   </div>
+  <p class="dim" style="font-size: 0.48em; margin-top: 8px;">Tier 2 financial amounts are not estimated &mdash; they require production transaction data to quantify. What is verified: the code defects exist at the file/line locations cited.</p>
 </section>
 
 <!-- =========================================== -->
