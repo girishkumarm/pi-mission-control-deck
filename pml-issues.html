@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PML Platform — Critical Issues Audit</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/black.min.css" id="theme">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --r-background-color: #050A18;
+    --r-main-font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --r-main-font-size: 26px;
+    --r-main-color: #C8D1E0;
+    --r-heading-font: 'Space Grotesk', sans-serif;
+    --r-heading-color: #FFFFFF;
+    --r-link-color: #6C9CFF;
+    --r-selection-background-color: #7C5CFC;
+    --accent: #7C5CFC;
+    --accent2: #00D4AA;
+    --accent3: #FF6B9D;
+    --accent4: #00B4D8;
+    --accent5: #FFC93C;
+    --accent6: #FF6F61;
+    --blue: #4D9EFF;
+    --dim: #5A6580;
+    --card-bg: rgba(255,255,255,0.03);
+    --card-border: rgba(255,255,255,0.06);
+    --glass: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.08);
+    --red: #FF4D4D;
+    --orange: #FF9640;
+    --yellow: #FFC93C;
+  }
+
+  .reveal { font-family: var(--r-main-font); }
+  .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+    letter-spacing: -0.02em; text-transform: none; line-height: 1.1;
+  }
+  .reveal h1 { font-size: 3.2em; }
+  .reveal h2 { font-size: 2.2em; }
+  .reveal h3 { font-size: 1.2em; }
+  .reveal p { font-weight: 400; line-height: 1.7; }
+  .reveal section { text-align: left; }
+  .reveal .center { text-align: center; }
+  .reveal ul, .reveal ol { font-size: 0.82em; }
+  .reveal li { margin-bottom: 10px; line-height: 1.5; }
+
+  .reveal .slides { background: transparent; }
+  .mesh-bg {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: var(--r-background-color); z-index: -2;
+  }
+  .mesh-bg::before {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background:
+      radial-gradient(ellipse 600px 600px at 20% 30%, rgba(255,77,77,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 500px 500px at 80% 60%, rgba(255,150,64,0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 400px 400px at 50% 80%, rgba(124,92,252,0.04) 0%, transparent 70%);
+    animation: meshDrift 20s ease-in-out infinite;
+  }
+  @keyframes meshDrift {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(2%, -1%) rotate(1deg); }
+    66% { transform: translate(-1%, 2%) rotate(-1deg); }
+  }
+
+  #particles { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
+
+  .glow { background: linear-gradient(135deg, #FF4D4D 0%, #FF9640 50%, #FFC93C 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .glow-red { background: linear-gradient(135deg, #FF4D4D 0%, #FF6B9D 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .glow-green { background: linear-gradient(135deg, #00D4AA 0%, #4D9EFF 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .glow-blue { background: linear-gradient(135deg, #4D9EFF 0%, #7C5CFC 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .glow-purple { background: linear-gradient(135deg, #7C5CFC 0%, #B794F6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  .glass {
+    background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border); border-radius: 16px; padding: 28px;
+    position: relative; overflow: hidden;
+  }
+  .glass::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  }
+  .glass-red { border-color: rgba(255,77,77,0.25); }
+  .glass-red::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,77,77,0.3), transparent); }
+  .glass-orange { border-color: rgba(255,150,64,0.25); }
+  .glass-orange::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,150,64,0.3), transparent); }
+  .glass-accent { border-color: rgba(124,92,252,0.2); }
+  .glass-accent::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, rgba(124,92,252,0.3), transparent); }
+  .glass-green { border-color: rgba(0,212,170,0.2); }
+  .glass-green::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, rgba(0,212,170,0.3), transparent); }
+  .glass-blue { border-color: rgba(77,158,255,0.2); }
+  .glass-blue::after { content: ''; position: absolute; bottom: 0; left: 20%; right: 20%; height: 1px; background: linear-gradient(90deg, transparent, rgba(77,158,255,0.3), transparent); }
+  .glass-warm { border-color: rgba(255,107,157,0.2); }
+  .glass-yellow { border-color: rgba(255,201,60,0.25); }
+
+  .badge {
+    display: inline-block; padding: 5px 14px; border-radius: 100px;
+    font-size: 0.5em; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 1.5px; vertical-align: middle;
+    border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.04);
+  }
+  .badge-red { background: rgba(255,77,77,0.12); color: #FF6B6B; border-color: rgba(255,77,77,0.25); }
+  .badge-orange { background: rgba(255,150,64,0.1); color: #FF9640; border-color: rgba(255,150,64,0.25); }
+  .badge-yellow { background: rgba(255,201,60,0.1); color: var(--accent5); border-color: rgba(255,201,60,0.25); }
+  .badge-green { background: rgba(0,212,170,0.1); color: var(--accent2); border-color: rgba(0,212,170,0.25); }
+  .badge-accent { background: rgba(124,92,252,0.12); color: #B794F6; border-color: rgba(124,92,252,0.25); }
+  .badge-blue { background: rgba(77,158,255,0.1); color: var(--blue); border-color: rgba(77,158,255,0.25); }
+
+  .grid-2 { display: grid !important; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  .grid-3 { display: grid !important; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .grid-4 { display: grid !important; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; }
+
+  .stat-card {
+    text-align: center; padding: 28px 20px;
+    background: var(--glass); border: 1px solid var(--glass-border);
+    border-radius: 16px; position: relative; overflow: hidden;
+  }
+  .stat-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    opacity: 0.6;
+  }
+  .stat-card-red::before { background: linear-gradient(90deg, #FF4D4D, #FF9640); }
+  .stat-card-orange::before { background: linear-gradient(90deg, #FF9640, #FFC93C); }
+  .stat-card-green::before { background: linear-gradient(90deg, #00D4AA, #4D9EFF); }
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.5em; font-weight: 700; line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.55em; color: var(--dim); margin-top: 8px;
+    text-transform: uppercase; letter-spacing: 1px; font-weight: 500;
+  }
+
+  .reveal table { width: 100%; border-collapse: collapse; font-size: 0.65em; }
+  .reveal table th {
+    background: rgba(255,77,77,0.06); padding: 12px 14px; text-align: left;
+    font-weight: 600; text-transform: uppercase; font-size: 0.8em;
+    letter-spacing: 1px; color: var(--dim); border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .reveal table td { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+  .reveal table tr:hover td { background: rgba(255,77,77,0.03); }
+
+  .code-block {
+    background: rgba(0,0,0,0.4); border-radius: 12px; padding: 20px 24px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.55em;
+    line-height: 1.8; border: 1px solid rgba(255,255,255,0.05);
+    text-align: left; position: relative; overflow: hidden;
+    white-space: pre !important; word-break: break-word; overflow-x: auto;
+  }
+  .code-block::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, #FF4D4D, #FF9640);
+    opacity: 0.4;
+  }
+
+  .callout {
+    background: rgba(255,77,77,0.04); border-left: 3px solid #FF4D4D;
+    border-radius: 0 12px 12px 0; padding: 16px 20px; margin: 16px 0; font-size: 0.72em;
+  }
+  .callout-orange { background: rgba(255,150,64,0.04); border-left-color: #FF9640; }
+  .callout-green { background: rgba(0,212,170,0.04); border-left-color: var(--accent2); }
+  .callout-blue { background: rgba(77,158,255,0.04); border-left-color: var(--blue); }
+
+  .reveal .progress span { background: linear-gradient(90deg, #FF4D4D, #FF9640); }
+  .reveal .slide-number { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--dim); }
+  .reveal .controls { color: var(--accent); }
+
+  .dim { color: var(--dim); }
+  .small { font-size: 0.65em; color: var(--dim); }
+  .tiny { font-size: 0.5em; color: var(--dim); }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .mt-0 { margin-top: 0 !important; }
+  .mt-1 { margin-top: 12px !important; }
+  .mt-2 { margin-top: 24px !important; }
+  .mt-3 { margin-top: 36px !important; }
+  .mb-0 { margin-bottom: 0 !important; }
+  .mb-1 { margin-bottom: 12px !important; }
+
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; vertical-align: middle; box-shadow: 0 0 8px currentColor; }
+  .chip { display: inline-block; padding: 6px 14px; border-radius: 100px; font-size: 0.6em; font-weight: 500; margin: 3px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--r-main-color); }
+
+  .severity-crit { color: #FF4D4D; font-weight: 700; font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
+  .severity-high { color: #FF9640; font-weight: 700; font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
+  .severity-med { color: #FFC93C; font-weight: 600; font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
+  .money-tag { display: inline-block; padding: 3px 10px; border-radius: 8px; font-family: 'JetBrains Mono'; font-size: 0.75em; font-weight: 600; background: rgba(255,77,77,0.08); color: #FF6B6B; border: 1px solid rgba(255,77,77,0.2); margin-left: 8px; }
+  .money-tag-orange { background: rgba(255,150,64,0.08); color: #FF9640; border-color: rgba(255,150,64,0.2); }
+  .money-tag-yellow { background: rgba(255,201,60,0.08); color: #FFC93C; border-color: rgba(255,201,60,0.2); }
+  .file-ref { font-family: 'JetBrains Mono'; font-size: 0.7em; color: #5A6580; }
+
+  .impact-bar { height: 6px; border-radius: 3px; margin-top: 8px; }
+  .impact-crit { background: linear-gradient(90deg, #FF4D4D, #FF6B6B); }
+  .impact-high { background: linear-gradient(90deg, #FF9640, #FFB060); }
+
+  .vs-table th:first-child { width: 30%; }
+  .vs-good { color: #00D4AA; }
+  .vs-bad { color: #FF4D4D; }
+  .vs-partial { color: #FFC93C; }
+
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  .animate-in { animation: fadeInUp 0.7s cubic-bezier(0.4, 0, 0.2, 1) both; }
+  .pulse { animation: pulse 2s ease-in-out infinite; }
+  .d1 { animation-delay: 0.1s; } .d2 { animation-delay: 0.2s; } .d3 { animation-delay: 0.3s; }
+  .d4 { animation-delay: 0.4s; } .d5 { animation-delay: 0.5s; } .d6 { animation-delay: 0.6s; }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #FF4D4D; border-radius: 4px; }
+  .reveal .speaker-notes { font-family: 'Inter', sans-serif; font-size: 16px; }
+</style>
+</head>
+<body>
+<div class="mesh-bg"></div>
+<canvas id="particles"></canvas>
+
+<div class="reveal">
+<div class="slides">
+
+<!-- =========================================== -->
+<!-- SLIDE 1: TITLE -->
+<!-- =========================================== -->
+<section class="center" data-background-gradient="radial-gradient(ellipse 800px 600px at 50% 40%, rgba(255,77,77,0.1) 0%, rgba(255,150,64,0.04) 40%, transparent 70%)">
+  <div style="margin-bottom: 24px;">
+    <span class="badge badge-red" style="font-size:0.45em; letter-spacing: 2px;">CONFIDENTIAL &middot; INTERNAL AUDIT</span>
+  </div>
+  <h1 style="font-size: 3.6em; margin-bottom: 8px;">
+    <span class="glow">PML Platform</span>
+  </h1>
+  <p style="font-size: 1.1em; color: var(--dim); font-weight: 300; margin-top: 8px;">
+    Critical Issues, Financial Leakage &amp; Compliance Gaps
+  </p>
+
+  <div class="grid-4" style="max-width: 780px; margin: 48px auto 0;">
+    <div class="stat-card stat-card-red">
+      <div class="stat-num glow-red">99</div>
+      <div class="stat-label">Issues Found</div>
+    </div>
+    <div class="stat-card stat-card-red">
+      <div class="stat-num glow-red">42</div>
+      <div class="stat-label">Critical</div>
+    </div>
+    <div class="stat-card stat-card-orange">
+      <div class="stat-num" style="color:#FF9640;">47</div>
+      <div class="stat-label">High</div>
+    </div>
+    <div class="stat-card stat-card-red">
+      <div class="stat-num glow-red">~50Cr+</div>
+      <div class="stat-label">Annual Risk (INR)</div>
+    </div>
+  </div>
+
+  <p class="tiny" style="margin-top: 52px; letter-spacing: 2px;">21 SERVICES &middot; 5 TEAMS &middot; DEEP CODEBASE AUDIT &middot; MARCH 2026</p>
+</section>
+
+<!-- =========================================== -->
+<!-- SLIDE 2: EXECUTIVE SUMMARY -->
+<!-- =========================================== -->
+<section>
+  <h2 style="margin-bottom: 4px;">Executive <span class="glow">Summary</span></h2>
+  <p class="dim" style="font-size: 0.65em; margin-bottom: 20px;">Deep audit of 21 PML services across eq-fms, equities-backoffice, payments, eq-frontoffice, refer-n-earn</p>
+
+  <div class="grid-2">
+    <div>
+      <div class="glass glass-red" style="padding: 20px; margin-bottom: 16px;">
+        <h3 style="color: #FF4D4D; margin: 0 0 12px;">What We Found</h3>
+        <ul style="font-size: 0.72em; list-style: none; padding: 0; margin: 0;">
+          <li><span class="dot" style="color:#FF4D4D;"></span><strong>SQS messages permanently lost</strong> on processing failure</li>
+          <li><span class="dot" style="color:#FF4D4D;"></span><strong>All financial math uses <code>double</code></strong> instead of BigDecimal</li>
+          <li><span class="dot" style="color:#FF4D4D;"></span><strong>Zero corporate action handling</strong> across 21 services</li>
+          <li><span class="dot" style="color:#FF4D4D;"></span><strong>AWS credentials hardcoded</strong> in source control</li>
+          <li><span class="dot" style="color:#FF4D4D;"></span><strong>No SEBI compliance framework</strong> (fund segregation, peak margin)</li>
+          <li><span class="dot" style="color:#FF9640;"></span><strong>No circuit breakers</strong> in any service</li>
+          <li><span class="dot" style="color:#FF9640;"></span><strong>No optimistic locking</strong> in Fund Management</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="glass glass-orange" style="padding: 20px; margin-bottom: 16px;">
+        <h3 style="color: #FF9640; margin: 0 0 12px;">vs Competitors</h3>
+        <table class="vs-table" style="font-size: 0.72em;">
+          <tr><td style="font-weight:600;">P&L Calculation</td><td class="vs-good">Zerodha/Upstox: Server-side</td></tr>
+          <tr><td></td><td class="vs-bad">PML: Frontend-driven</td></tr>
+          <tr><td style="font-weight:600;">Corp Actions</td><td class="vs-good">Angel One: Spark, 6 min</td></tr>
+          <tr><td></td><td class="vs-bad">PML: No processing at all</td></tr>
+          <tr><td style="font-weight:600;">Active Users</td><td class="vs-good">Groww: 12.9M | Zerodha: 9.5M</td></tr>
+          <tr><td></td><td class="vs-bad">PML: 724K (<span style="color:#FF4D4D">18x fewer</span>)</td></tr>
+          <tr><td style="font-weight:600;">SEBI Fines</td><td class="vs-partial">Groww: Rs 34L (2025)</td></tr>
+          <tr><td></td><td class="vs-bad">PML: Rs 45.5L (Feb 2025, technical glitch framework)</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================== -->
+<!-- SLIDE 3: THE SCARIEST BUG — SQS AUTO_ACKNOWLEDGE -->
+<!-- =========================================== -->
+<section>
+  <span class="badge badge-red">P0 &middot; DATA LOSS</span>
+  <h2 style="margin: 8px 0 4px;">SQS Messages <span class="glow-red">Permanently Lost</span></h2>
+  <p class="dim" style="font-size: 0.62em; margin-bottom: 16px;">17 SQS consumers delete messages BEFORE processing. Any failure = money moves but records don't update.</p>
+
+  <div class="code-block" style="font-size: 0.48em; line-height: 1.7; margin-bottom: 16px;"><span style="color:#5A6580">// eq-fms-consumers — EVERY SQS consumer follows this pattern:</span>
+Session session = connection.createSession(false, <span style="color:#FF4D4D;font-weight:700">Session.AUTO_ACKNOWLEDGE</span>);  <span style="color:#FF4D4D">// Message deleted on receive!</span>
+
+<span style="color:#5A6580">@Override</span>
+public void <span style="color:#4D9EFF">onMessage</span>(Message message) {
+    <span style="color:#5A6580">// Message is ALREADY DELETED from SQS at this point</span>
+    try {
+        processPayment(message);  <span style="color:#5A6580">// If this throws...</span>
+    } catch (Exception e) {
+        log.error("[eventMessage] [Exception]", e);  <span style="color:#FF4D4D">// ...message is gone forever</span>
+    }
+}</div>
+
+  <div class="grid-3" style="gap: 12px;">
+    <div class="glass glass-red" style="padding: 14px;">
+      <h3 style="color:#FF4D4D; margin:0; font-size:0.85em;">Payment Disbursals</h3>
+      <p style="font-size:0.58em; color:var(--dim); margin:4px 0 0;">Money disbursed but DB never updated</p>
+    </div>
+    <div class="glass glass-red" style="padding: 14px;">
+      <h3 style="color:#FF4D4D; margin:0; font-size:0.85em;">UPI Mandates</h3>
+      <p style="font-size:0.58em; color:var(--dim); margin:4px 0 0;">Mandate status permanently lost</p>
+    </div>
+    <div class="glass glass-red" style="padding: 14px;">
+      <h3 style="color:#FF4D4D; margin:0; font-size:0.85em;">Settlement Comms</h3>
+      <p style="font-size:0.58em; color:var(--dim); margin:4px 0 0;">Settlement notifications vanish</p>
+    </div>
+    <div class="glass glass-red" style="padding: 14px;">
+      <h3 style="color:#FF4D4D; margin:0; font-size:0.85em;">Block Transactions</h3>
+      <p style="font-size:0.58em; color:var(--dim); margin:4px 0 0;">Fund block status disappears</p>
+    </div>
+    <div class="glass glass-red" style="padding: 14px;">
+      <h3 style="color:#FF4D4D; margin:0; font-size:0.85em;">Pay-in Clearance</h3>
+      <p style="font-size:0.58em; color:var(--dim); margin:4px 0 0;">Payment clearance not recorded</p>
+    </div>
+    <div class="glass glass-red" style="padding: 14px;">
+      <h3 style="color:#FF4D4D; margin:0; font-size:0.85em;">TechExcel Sync</h3>
+      <p style="font-size:0.58em; color:var(--dim); margin:4px 0 0;">BO transaction sync lost</p>
+    </div>
+  </div>
+  <div class="callout" style="margin-top: 12px; font-size: 0.6em;"><strong>Fix:</strong> Change to <code>Session.CLIENT_ACKNOWLEDGE</code> and call <code>message.acknowledge()</code> only AFTER successful processing. Add DLQs for all queues.</div>
+</section>
+
+<!-- =========================================== -->
+<!-- SLIDE 4: FINANCIAL PRECISION — double vs BigDecimal -->
+<!-- =========================================== -->
+<section>
+  <span class="badge badge-red">P0 &middot; FINANCIAL PRECISION</span>
+  <h2 style="margin: 8px 0 4px;">Every Rupee Calculated with <span class="glow-red">double</span></h2>
+  <p class="dim" style="font-size: 0.62em; margin-bottom: 16px;">All 21 services use IEEE 754 double for financial math. 0.1 + 0.2 = 0.30000000000000004</p>
+
+  <div class="grid-2">
+    <div>
+      <div class="glass glass-red" style="padding: 18px;">
+        <h3 style="margin:0 0 10px; font-size: 0.9em;">The Problem <span class="money-tag">~INR 36L/yr display gap</span></h3>
+        <table style="font-size: 0.72em;">
+          <tr><th>Service</th><th>What's wrong</th></tr>
+          <tr><td>bo-statements-api</td><td>Trade charges: <code>Double brokerage, stt, cgst, sgst</code></td></tr>
+          <tr><td>pml-core-dnd-aggregator</td><td>Positions P&L: <code>Double realisedProfit</code>, <strong style="color:#FF4D4D">Float ltp</strong></td></tr>
+          <tr><td>eq-fms-common</td><td>Transaction charges: <code>Double chargeAmount</code></td></tr>
+          <tr><td>ChargesInfoServiceImpl</td><td>GST calc: BigDecimal &rarr; double &rarr; BigDecimal</td></tr>
+          <tr><td>LedgerServiceImpl</td><td>Aggregation: <code>AtomicReference&lt;Double&gt;</code></td></tr>
+          <tr><td>UtilityService</td><td><code>new BigDecimal(double)</code> &mdash; 50+ call sites</td></tr>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="glass glass-orange" style="padding: 18px;">
+        <h3 style="margin:0 0 10px; font-size: 0.9em;">3 Different Rounding Strategies</h3>
+        <table style="font-size: 0.72em;">
+          <tr><th>System</th><th>Rounding</th><th>Impact</th></tr>
+          <tr><td>FMS Charges</td><td style="color:#FF4D4D">CEILING</td><td>Always rounds UP (overcharges)</td></tr>
+          <tr><td>Back-office</td><td style="color:#FFC93C">HALF_UP</td><td>Standard rounding</td></tr>
+          <tr><td>Billdesk PG</td><td style="color:#4D9EFF">HALF_EVEN</td><td>Banker's rounding</td></tr>
+        </table>
+        <div class="callout-orange" style="background: rgba(255,150,64,0.04); border-left: 3px solid #FF9640; border-radius: 0 12px 12px 0; padding: 12px 16px; margin-top: 12px; font-size: 0.65em;">
+          Charge shown to user (CEILING) is systematically higher than what's collected (HALF_UP). Creates phantom revenue gap that can never be reconciled.
+        </div>
+      </div>
+      <div class="glass glass-red" style="padding: 14px; margin-top: 12px;">
+        <h3 style="margin:0; font-size: 0.85em; color: #FF4D4D;">Thread-Unsafe Charge Calculator</h3>
+        <p style="font-size:0.58em; color:var(--dim); margin:4px 0 0;">ChargesInfoServiceImpl stores <code>exchangesTurnOverCharge</code> and <code>sebiFeesCharge</code> as <strong>instance variables</strong> in a singleton @Service. Two concurrent users = wrong GST.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================== -->
+<!-- SLIDE 5: CORPORATE ACTIONS — ZERO HANDLING -->
+<!-- =========================================== -->
+<section>
+  <span class="badge badge-red">P0 &middot; MISSING FEATURE</span>
+  <h2 style="margin: 8px 0 4px;">Corporate Actions: <span class="glow-red">Not Handled</span></h2>
+  <p class="dim" style="font-size: 0.62em; margin-bottom: 16px;">No service in the entire PML codebase adjusts cost basis, average buy price, or invested value after stock splits, bonus issues, or dividends.</p>
+
+  <div class="grid-2">
+    <div>
+      <div class="glass glass-red" style="padding: 18px;">
+        <h3 style="margin: 0 0 12px; font-size: 0.9em;">What Happens After a 1:5 Stock Split</h3>
+        <table style="font-size: 0.72em;">
+          <tr><th></th><th>Should Be</th><th style="color:#FF4D4D">PML Shows</th></tr>
+          <tr><td>Quantity</td><td>500 shares</td><td>500 shares (CDSL updates)</td></tr>
+          <tr><td>Avg Price</td><td>Rs 100</td><td style="color:#FF4D4D">Rs 500 (unadjusted!)</td></tr>
+          <tr><td>Investment</td><td>Rs 50,000</td><td style="color:#FF4D4D">Rs 2,50,000</td></tr>
+          <tr><td>LTP</td><td>Rs 110</td><td>Rs 110 (exchange adjusts)</td></tr>
+          <tr><td>P&L</td><td>+Rs 5,000</td><td style="color:#FF4D4D">-Rs 1,95,000</td></tr>
+        </table>
+        <p style="font-size: 0.6em; color: #FF4D4D; margin: 10px 0 0; font-weight: 600;">User sees Rs 2 lakh phantom loss. Calls support. Loses trust.</p>
+      </div>
+    </div>
+    <div>
+      <div class="glass glass-green" style="padding: 18px;">
+        <h3 style="margin: 0 0 12px; font-size: 0.9em; color: #00D4AA;">How Competitors Handle This</h3>
+        <table style="font-size: 0.72em;">
+          <tr><th>Platform</th><th>Approach</th></tr>
+          <tr><td><strong style="color:#00D4AA">Angel One</strong></td><td>Apache Spark FIFO recalculation. Processes in <strong>6 minutes</strong> (was 1 hour on SQL)</td></tr>
+          <tr><td><strong style="color:#00D4AA">Zerodha</strong></td><td>Server-side auto-adjustment. Corrected within 2 working days</td></tr>
+          <tr><td><strong style="color:#FFC93C">Upstox</strong></td><td>Manual user correction via discrepancy form (complaints ongoing)</td></tr>
+          <tr><td><strong style="color:#FFC93C">Groww</strong></td><td>Partial &mdash; pre-computed server-side but had display bugs (Rs 24K user loss)</td></tr>
+        </table>
+      </div>
+      <div class="callout" style="margin-top: 12px; font-size: 0.6em;">
+        <strong>Only finding in PML:</strong> <code>pml-core-badge-service</code> fetches corporate actions from an external API &mdash; but <strong>only for displaying notification badges</strong>. The data exists but is never used for financial adjustments.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================== -->
+<!-- SLIDE 6: SECURITY — Hardcoded Creds & No Auth -->
+<!-- =========================================== -->
+<section>
+  <span class="badge badge-red">P0 &middot; SECURITY</span>
+  <h2 style="margin: 8px 0 4px;">Hardcoded Secrets & <span class="glow-red">Zero Auth</span></h2>
+  <p class="dim" style="font-size: 0.62em; margin-bottom: 16px;">AWS credentials in source code. No @PreAuthorize anywhere. Static IV for encryption. SEBI Cybersecurity Framework violation.</p>
+
+  <div class="grid-2">
+    <div>
+      <div class="glass glass-red" style="padding: 18px;">
+        <h3 style="margin: 0 0 10px; font-size: 0.9em; color: #FF4D4D;">Hardcoded in Source Control</h3>
+        <div class="code-block" style="font-size: 0.44em; line-height: 1.6;"><span style="color:#5A6580"># payments/application.properties</span>
+mandate.aws.access.key=<span style="color:#FF4D4D">AKIAZR5LLMQSMLU6YWEO</span>
+mandate.aws.secret.key=<span style="color:#FF4D4D">ubojRMzxaMzXfmJk...</span>
+encryption.secret.key=<span style="color:#FF4D4D">secret</span>
+
+<span style="color:#5A6580"># bo-migration-recon-service/application.yml</span>
+slack-webhook-url: <span style="color:#FF4D4D">https://hooks.slack.com/services/...</span>
+techexcel-password: <span style="color:#FF4D4D">P@ytm9Xr2!k</span>
+redash-api-key: <span style="color:#FF4D4D">DaxhWCPYmIXqGcDW...</span>
+<span style="color:#5A6580"># + 6 more Redash API keys in plaintext</span></div>
+      </div>
+      <div class="glass glass-red" style="padding: 14px; margin-top: 12px;">
+        <h3 style="margin:0; font-size: 0.85em; color: #FF4D4D;">Static IV for AES-CBC Encryption</h3>
+        <p style="font-size:0.58em; color:var(--dim); margin:4px 0 0;">DBEncryptionConverter uses a config-loaded IV. Same plaintext always = same ciphertext. Bank account data vulnerable to pattern analysis.</p>
+      </div>
+    </div>
+    <div>
+      <div class="glass glass-orange" style="padding: 18px;">
+        <h3 style="margin: 0 0 10px; font-size: 0.9em; color: #FF9640;">Authorization Gaps</h3>
+        <ul style="font-size: 0.68em; list-style: none; padding: 0; margin: 0;">
+          <li><span class="dot" style="color:#FF4D4D;"></span><strong>Zero</strong> <code>@PreAuthorize</code>, <code>@Secured</code>, <code>@RolesAllowed</code> in 21 services</li>
+          <li><span class="dot" style="color:#FF4D4D;"></span><strong>InternalS2SController</strong> accepts arbitrary <code>user_id</code> &mdash; no ownership check</li>
+          <li><span class="dot" style="color:#FF4D4D;"></span><strong>Fund summary, withdrawal, charges</strong> &mdash; any caller can operate on any account</li>
+          <li><span class="dot" style="color:#FF9640;"></span><strong>SQL injection</strong> in DataCleanUpListener: <code>DELETE FROM " + table</code></li>
+          <li><span class="dot" style="color:#FF9640;"></span><strong>SSL disabled</strong> on TechExcel, Ledger, Migration API clients</li>
+          <li><span class="dot" style="color:#FF9640;"></span><strong>Open CORS *</strong> on bo-migration-recon-service</li>
+          <li><span class="dot" style="color:#FFC93C;"></span><strong>No rate limiting</strong> on payments, bo-statements-api, bo-crm-api</li>
+        </ul>
+      </div>
+      <div class="glass glass-orange" style="padding: 14px; margin-top: 12px;">
+        <h3 style="margin:0; font-size: 0.85em; color: #FF9640;">Encryption Key in SQL Strings</h3>
+        <p style="font-size:0.58em; color:var(--dim); margin:4px 0 0;">bo-trade daily-jobs: <code>AES_ENCRYPT(:ucc, 'SECRET_KEY', 'iv_paytmmoney_bo')</code> &mdash; key appears in slow query logs, error logs, MySQL general log.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================== -->
+<!-- SLIDE 7: SEBI COMPLIANCE -->
+<!-- =========================================== -->
+<section>
+  <span class="badge badge-red">REGULATORY</span>
+  <h2 style="margin: 8px 0 4px;">SEBI Compliance <span class="glow-red">Gaps</span></h2>
+  <p class="dim" style="font-size: 0.62em; margin-bottom: 16px;">PML settled Rs 45.5L with SEBI (Feb 2025). Parent co One97 paid Rs 3.3Cr + Rs 1.1Cr separately. More code-level violations found.</p>
+
+  <div class="grid-2">
+    <div>
+      <div class="glass glass-red" style="padding: 18px;">
+        <h3 style="margin: 0 0 10px; font-size: 0.9em;">Missing Compliance Controls</h3>
+        <table style="font-size: 0.68em;">
+          <tr><th>SEBI Requirement</th><th>Status</th></tr>
+          <tr><td>Client Fund Segregation</td><td><span class="severity-crit">ABSENT</span></td></tr>
+          <tr><td>Peak Margin Reporting</td><td><span class="severity-crit">ABSENT</span></td></tr>
+          <tr><td>Daily Reconciliation (automated)</td><td><span class="severity-crit">ABSENT</span></td></tr>
+          <tr><td>Contract Note Completeness</td><td><span class="severity-high">NO VALIDATION</span></td></tr>
+          <tr><td>Audit Trail (all financial ops)</td><td><span class="severity-high">PARTIAL</span></td></tr>
+          <tr><td>T+1 Settlement Enforcement</td><td><span class="severity-high">LOOKUP ONLY</span></td></tr>
+          <tr><td>LAMA System Monitoring</td><td><span class="severity-med">FINED Rs 45.5L</span></td></tr>
+          <tr><td>DR Drill Compliance</td><td><span class="severity-med">SKIPPED 2023</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <div>
+      <div class="glass glass-orange" style="padding: 18px;">
+        <h3 style="margin: 0 0 10px; font-size: 0.9em;">SEBI Actions</h3>
+        <table style="font-size: 0.68em;">
+          <tr><th>Date</th><th>Amount</th><th>Entity</th><th>Violation</th></tr>
+          <tr><td>Feb 2025</td><td style="color:#FF4D4D;font-weight:600">Rs 45.5L</td><td><strong>PML</strong></td><td>Technical glitch framework (LAMA, DR drill)</td></tr>
+          <tr><td>Jan 2025</td><td style="color:#FFC93C;font-weight:600">Rs 3.32Cr</td><td>One97 (parent)</td><td>LODR/ICDR violations</td></tr>
+          <tr><td>May 2025</td><td style="color:#FFC93C;font-weight:600">Rs 1.11Cr</td><td>CEO personal</td><td>ESOP misclassification + 3yr ban</td></tr>
+        </table>
+        <p style="font-size:0.52em; color:var(--dim); margin:6px 0 0;">Only the Rs 45.5L was against Paytm Money Ltd directly. Source: <a href="https://www.sebi.gov.in/enforcement/orders/feb-2025/settlement-order-in-the-matter-of-paytm-money-limited_91881.html" style="color:#4D9EFF;">SEBI Order</a></p>
+      </div>
+      <div class="glass glass-red" style="padding: 14px; margin-top: 12px;">
+        <h3 style="margin:0; font-size: 0.85em; color: #FF4D4D;">Hard Deletes on Financial Data</h3>
+        <p style="font-size:0.58em; color:var(--dim); margin:4px 0 0;">DataCleanUpListener: <code>DELETE FROM {table} WHERE date = '{tradeDate}'</code> &mdash; no soft delete, no archive, no audit trail. SEBI requires 5-year retention.</p>
+      </div>
+      <div class="callout" style="margin-top: 12px; font-size: 0.6em;">
+        <strong>Penalty framework:</strong> 0.5% to 5% of shortfall amount for margin violations. Up to Rs 1 Crore per violation + license suspension for fund segregation.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================== -->
+<!-- SLIDE 8: PAYMENT & TRANSACTION SAFETY -->
+<!-- =========================================== -->
+<section>
+  <span class="badge badge-red">PAYMENTS</span>
+  <h2 style="margin: 8px 0 4px;">Payment &amp; Transaction <span class="glow-red">Risks</span></h2>
+  <p class="dim" style="font-size: 0.62em; margin-bottom: 16px;">Double-debit potential, orphaned transactions, missing validations, silent refund failures</p>
+
+  <div class="grid-2">
+    <div>
+      <table style="font-size: 0.62em;">
+        <tr><th>Issue</th><th>Severity</th><th>Impact</th></tr>
+        <tr>
+          <td><strong>@Transactional commented out</strong> on bulk bill creation<br><span class="file-ref">MandateRecurPayService.java:536</span></td>
+          <td><span class="severity-crit">CRIT</span></td>
+          <td>Double-charging SIP customers <span class="money-tag">INR 60K/yr</span></td>
+        </tr>
+        <tr>
+          <td><strong>No @Positive validation</strong> on PayIn/Withdrawal amount<br><span class="file-ref">PayInInitiateV3Request.java:33</span></td>
+          <td><span class="severity-crit">CRIT</span></td>
+          <td>Negative amount could create free credits</td>
+        </tr>
+        <tr>
+          <td><strong>Refund gateway errors silently swallowed</strong><br><span class="file-ref">PaymentsApiRefundService.java:110</span></td>
+          <td><span class="severity-high">HIGH</span></td>
+          <td>Stuck refunds <span class="money-tag-orange">INR 60K/yr</span></td>
+        </tr>
+        <tr>
+          <td><strong>No optimistic/pessimistic locking</strong> in FMS<br><span class="file-ref">eq-fms-app (ALL)</span></td>
+          <td><span class="severity-high">HIGH</span></td>
+          <td>Concurrent withdrawals can overdraft</td>
+        </tr>
+        <tr>
+          <td><strong>Orphaned pending transactions</strong><br><span class="file-ref">PaymentsQueryApiService.java:424</span></td>
+          <td><span class="severity-high">HIGH</span></td>
+          <td>Money debited, never reconciled <span class="money-tag">INR 2.5L/day at risk</span></td>
+        </tr>
+        <tr>
+          <td><strong>TOCTOU race on duplicate detection</strong><br><span class="file-ref">AdhocChargeServiceImpl.java:111</span></td>
+          <td><span class="severity-high">HIGH</span></td>
+          <td>Double-debit on concurrent requests</td>
+        </tr>
+        <tr>
+          <td><strong>PG fallback silently switches to Billdesk</strong><br><span class="file-ref">PaymentGatewayService.java:226</span></td>
+          <td><span class="severity-med">MED</span></td>
+          <td>Revenue leakage via suboptimal PG</td>
+        </tr>
+      </table>
+    </div>
+    <div>
+      <div class="glass glass-red" style="padding: 18px;">
+        <h3 style="margin: 0 0 10px; font-size: 0.9em; color: #FF4D4D;">No Saga / Compensation Pattern</h3>
+        <p style="font-size: 0.6em; color: var(--dim); margin-bottom: 10px;">Fund operations span MySQL + RupeeSeed HTTP + Kafka. No distributed transaction.</p>
+        <div class="code-block" style="font-size: 0.44em; line-height: 1.6;"><span style="color:#00D4AA">MySQL save</span> &rarr; <span style="color:#FFC93C">RupeeSeed HTTP</span> &rarr; <span style="color:#4D9EFF">Kafka push</span>
+
+If <span style="color:#FFC93C">RupeeSeed</span> succeeds but <span style="color:#4D9EFF">Kafka</span> fails:
+  &rarr; Fund transfer in front-office <span style="color:#FF4D4D">but no audit trail</span>
+
+If <span style="color:#00D4AA">MySQL</span> succeeds but <span style="color:#FFC93C">RupeeSeed</span> fails:
+  &rarr; Internal ledger shows transfer <span style="color:#FF4D4D">but exchange doesn't</span>
+
+<span style="color:#FF4D4D">Zero occurrences of "saga", "compensat", "outbox"</span>
+<span style="color:#FF4D4D">in the entire PML codebase.</span></div>
+      </div>
+      <div class="glass glass-orange" style="padding: 14px; margin-top: 12px;">
+        <h3 style="margin:0; font-size: 0.85em; color: #FF9640;">Payments Health Checks DISABLED</h3>
+        <p style="font-size:0.58em; color:var(--dim); margin:4px 0 0;"><code>management.health.db.enabled=false</code><br><code>management.health.redis.enabled=false</code><br><code>management.health.mongo.enabled=false</code><br>K8s routes traffic to dead service.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================== -->
+<!-- SLIDE 9: SILENT FAILURES -->
+<!-- =========================================== -->
+<section>
+  <span class="badge badge-orange">RELIABILITY</span>
+  <h2 style="margin: 8px 0 4px;">Silent Failures & <span class="glow">Missing Safeguards</span></h2>
+  <p class="dim" style="font-size: 0.62em; margin-bottom: 16px;">Bugs that fail without anyone knowing. No circuit breakers. No DLQs. No monitoring on payment consumers.</p>
+
+  <div class="grid-2">
+    <div>
+      <div class="glass glass-red" style="padding: 18px; margin-bottom: 12px;">
+        <h3 style="margin: 0 0 10px; font-size: 0.9em; color: #FF4D4D;">Zero Monitoring on Financial SQS</h3>
+        <p style="font-size: 0.6em; color: var(--dim);">None of the 7 payment SQS consumers have:</p>
+        <ul style="font-size: 0.62em; list-style: none; padding: 0; margin: 8px 0 0;">
+          <li><span style="color:#FF4D4D;">&times;</span> Micrometer counters/timers</li>
+          <li><span style="color:#FF4D4D;">&times;</span> Messages received/processed/failed metrics</li>
+          <li><span style="color:#FF4D4D;">&times;</span> Processing latency tracking</li>
+          <li><span style="color:#FF4D4D;">&times;</span> Dead letter queues</li>
+          <li><span style="color:#FF4D4D;">&times;</span> Alerting on failures</li>
+        </ul>
+      </div>
+      <div class="glass glass-orange" style="padding: 18px;">
+        <h3 style="margin: 0 0 10px; font-size: 0.9em; color: #FF9640;">Kafka: Auto-Commit + Swallow</h3>
+        <p style="font-size: 0.6em; color: var(--dim);">eq-fms-consumers Kafka factory defaults <code>auto.commit=true</code>. Offset committed before processing. Exception caught and swallowed. Messages permanently lost.</p>
+      </div>
+    </div>
+    <div>
+      <div class="glass glass-orange" style="padding: 18px; margin-bottom: 12px;">
+        <h3 style="margin: 0 0 10px; font-size: 0.9em; color: #FF9640;">Zero Circuit Breakers</h3>
+        <p style="font-size: 0.6em; color: var(--dim); margin-bottom: 8px;">Only payments (deprecated Hystrix) and bo-common (outdated Resilience4j 1.3.1). All other services have none.</p>
+        <table style="font-size: 0.62em;">
+          <tr><td>eq-fms-app &rarr; RupeeSeed</td><td style="color:#FF4D4D">&times; No breaker</td></tr>
+          <tr><td>eq-fms-consumers &rarr; 7+ SQS queues</td><td style="color:#FF4D4D">&times; No breaker</td></tr>
+          <tr><td>notification-svc &rarr; 7 databases</td><td style="color:#FF4D4D">&times; No breaker</td></tr>
+          <tr><td>bo-* &rarr; CLASS SQL Server</td><td style="color:#FF4D4D">&times; No breaker</td></tr>
+        </table>
+      </div>
+      <div class="glass glass-orange" style="padding: 14px;">
+        <h3 style="margin:0 0 8px; font-size: 0.85em; color: #FF9640;">More Silent Failures</h3>
+        <ul style="font-size: 0.58em; list-style: none; padding: 0; margin: 0;">
+          <li><span class="dot" style="color:#FF9640;"></span><strong>No AsyncUncaughtExceptionHandler</strong> in any service (Spring swallows @Async exceptions)</li>
+          <li><span class="dot" style="color:#FF9640;"></span><strong>Retry exhaustion drops messages</strong> in notification service (no DLQ)</li>
+          <li><span class="dot" style="color:#FFC93C;"></span><strong>Cron job error kills scheduler thread</strong> (dnd-aggregator, cache reload)</li>
+          <li><span class="dot" style="color:#FFC93C;"></span><strong>Notification service: 3 threads</strong> for 20+ Kafka listeners + cron jobs</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================== -->
+<!-- SLIDE 10: ARCHITECTURE DESIGN FLAWS -->
+<!-- =========================================== -->
+<section>
+  <span class="badge badge-orange">ARCHITECTURE</span>
+  <h2 style="margin: 8px 0 4px;">Structural <span class="glow">Design Flaws</span></h2>
+  <p class="dim" style="font-size: 0.62em; margin-bottom: 16px;">Single points of failure, vendor lock-in, unbounded queries, timezone bugs</p>
+
+  <div class="grid-3" style="gap: 12px;">
+    <div class="glass glass-red" style="padding: 16px;">
+      <h3 style="margin:0 0 8px; font-size: 0.85em; color: #FF4D4D;">RupeeSeed Lock-in</h3>
+      <p style="font-size:0.55em; color:var(--dim); margin:0;">22 files depend on RupeeSeed. No abstraction, no fallback. If down, ALL fund ops halt &mdash; users can't add/withdraw funds or trade.</p>
+    </div>
+    <div class="glass glass-red" style="padding: 16px;">
+      <h3 style="margin:0 0 8px; font-size: 0.85em; color: #FF4D4D;">CLASS System SPOF</h3>
+      <p style="font-size:0.55em; color:var(--dim); margin:0;">5 services depend on SQL Server CLASS DB. No circuit breaker, no timeout config. If down: no statements, no ledger, no CRM, no data sync.</p>
+    </div>
+    <div class="glass glass-orange" style="padding: 16px;">
+      <h3 style="margin:0 0 8px; font-size: 0.85em; color: #FF9640;">40+ findAll() Calls</h3>
+      <p style="font-size:0.55em; color:var(--dim); margin:0;">Unbounded queries including <code>transactionRequestRepository.findAll()</code> in payments. Growing table + no pagination = OOM.</p>
+    </div>
+    <div class="glass glass-orange" style="padding: 16px;">
+      <h3 style="margin:0 0 8px; font-size: 0.85em; color: #FF9640;">Timezone: ZoneId.systemDefault()</h3>
+      <p style="font-size:0.55em; color:var(--dim); margin:0;">Financial date calcs use system timezone. K8s containers in UTC = IST 00:30 payment assigned to wrong business day. Affects settlement dates.</p>
+    </div>
+    <div class="glass glass-orange" style="padding: 16px;">
+      <h3 style="margin:0 0 8px; font-size: 0.85em; color: #FF9640;">Thread Pool from User Input</h3>
+      <p style="font-size:0.55em; color:var(--dim); margin:0;">RecoverOrderService: <code>newFixedThreadPool(request.size())</code>. Malicious request with 10K items = 10K threads = JVM crash.</p>
+    </div>
+    <div class="glass glass-orange" style="padding: 16px;">
+      <h3 style="margin:0 0 8px; font-size: 0.85em; color: #FF9640;">Order Recon: Auto-Recovery OFF</h3>
+      <p style="font-size:0.55em; color:var(--dim); margin:0;">OrderStatusReconScheduler detects mismatches but <code>recoverOrders()</code> is <strong>commented out</strong>. Orders filled at exchange never appear in app.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================== -->
+<!-- SLIDE 11: COMPETITOR COMPARISON -->
+<!-- =========================================== -->
+<section>
+  <span class="badge badge-blue">INDUSTRY COMPARISON</span>
+  <h2 style="margin: 8px 0 4px;">PML vs <span class="glow-blue">Competition</span></h2>
+  <p class="dim" style="font-size: 0.62em; margin-bottom: 16px;">How Zerodha, Upstox, Groww, and Angel One handle what PML doesn't</p>
+
+  <table style="font-size: 0.6em;">
+    <tr>
+      <th style="width: 22%;">Capability</th>
+      <th style="width: 20%;">Zerodha</th>
+      <th style="width: 20%;">Angel One</th>
+      <th style="width: 18%;">Groww / Upstox</th>
+      <th style="width: 20%; color: #FF4D4D;">Paytm Money</th>
+    </tr>
+    <tr>
+      <td><strong>P&L Calculation</strong></td>
+      <td class="vs-good">Server-side (Kite API returns computed pnl)</td>
+      <td class="vs-good">Go server + parallel goroutines</td>
+      <td class="vs-good">Server-side pre-computed</td>
+      <td class="vs-bad">Frontend JS with double arithmetic</td>
+    </tr>
+    <tr>
+      <td><strong>Corp Action Processing</strong></td>
+      <td class="vs-good">Auto-adjust in 2 working days</td>
+      <td class="vs-good">Spark FIFO recalc (6 min)</td>
+      <td class="vs-partial">Partial / Manual</td>
+      <td class="vs-bad">Not implemented (badge only)</td>
+    </tr>
+    <tr>
+      <td><strong>Financial Precision</strong></td>
+      <td class="vs-good">Server-computed float64 (Kite API)</td>
+      <td class="vs-good">Server-computed</td>
+      <td class="vs-good">Server-computed</td>
+      <td class="vs-bad">java.lang.Double + Float</td>
+    </tr>
+    <tr>
+      <td><strong>Circuit Breakers</strong></td>
+      <td class="vs-good">Production-grade infra</td>
+      <td class="vs-good">Redis-backed per exchange</td>
+      <td class="vs-good">Cloud-native</td>
+      <td class="vs-bad">Zero (deprecated Hystrix in 1 svc)</td>
+    </tr>
+    <tr>
+      <td><strong>Message Processing</strong></td>
+      <td class="vs-good">At-least-once with DLQ</td>
+      <td class="vs-good">Reliable pipelines</td>
+      <td class="vs-good">Cloud-managed</td>
+      <td class="vs-bad">AUTO_ACKNOWLEDGE = fire-and-forget</td>
+    </tr>
+    <tr>
+      <td><strong>Active Users</strong></td>
+      <td><strong>9.5M</strong></td>
+      <td><strong>Large (17.38% NSE growth)</strong></td>
+      <td><strong>12.9M (#1)</strong></td>
+      <td style="color:#FF4D4D"><strong>724K (18x fewer)</strong></td>
+    </tr>
+  </table>
+
+  <div class="callout-blue" style="background: rgba(77,158,255,0.04); border-left: 3px solid var(--blue); border-radius: 0 12px 12px 0; padding: 12px 16px; margin-top: 16px; font-size: 0.6em;">
+    <strong>Industry standard:</strong> ALL competitors compute portfolio P&L server-side and return pre-calculated values. None relies on frontend JavaScript. This is the minimum bar.<br>
+    <span style="color:var(--dim);">Sources: NSE Report 1C (active clients), Zerodha Support, Angel One Engineering Blog, Groww Help Center, Upstox Help Center</span>
+  </div>
+</section>
+
+<!-- =========================================== -->
+<!-- SLIDE 12: REVENUE IMPACT SUMMARY -->
+<!-- =========================================== -->
+<section>
+  <span class="badge badge-red">FINANCIAL IMPACT</span>
+  <h2 style="margin: 8px 0 4px;">Estimated <span class="glow">Annual Risk</span></h2>
+  <p class="dim" style="font-size: 0.62em; margin-bottom: 16px;">Conservative estimates based on codebase analysis and industry benchmarks</p>
+
+  <table style="font-size: 0.6em;">
+    <tr>
+      <th>Category</th>
+      <th>Issue</th>
+      <th>Est. Annual Impact</th>
+      <th>Severity</th>
+    </tr>
+    <tr>
+      <td>Rounding (CEILING)</td>
+      <td>Systematic overcharge display across all trades</td>
+      <td><span style="color:#FF4D4D; font-weight:700;">INR 36 lakh</span></td>
+      <td><span class="severity-crit">CRIT</span></td>
+    </tr>
+    <tr>
+      <td>Orphaned payments</td>
+      <td>Pending transactions never reconciled (INR 2.5L/day at risk)</td>
+      <td><span style="color:#FF4D4D; font-weight:700;">INR 9+ crore exposure</span></td>
+      <td><span class="severity-crit">CRIT</span></td>
+    </tr>
+    <tr>
+      <td>Reconciliation noise</td>
+      <td><code>new BigDecimal(double)</code> across 50+ call sites</td>
+      <td><span style="color:#FF4D4D; font-weight:700;">INR 1.5 crore drift</span></td>
+      <td><span class="severity-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td>SEBI penalties</td>
+      <td>Rs 45.5L paid (PML) + potential new violations</td>
+      <td><span style="color:#FF4D4D; font-weight:700;">INR 45.5L paid + 1Cr+ exposure</span></td>
+      <td><span class="severity-crit">CRIT</span></td>
+    </tr>
+    <tr>
+      <td>Stuck refunds</td>
+      <td>Silently swallowed PG refund errors</td>
+      <td><span style="color:#FF9640; font-weight:700;">INR 60K</span></td>
+      <td><span class="severity-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td>Double-charge SIP</td>
+      <td>@Transactional commented out on bulk bill</td>
+      <td><span style="color:#FF9640; font-weight:700;">INR 60K+</span></td>
+      <td><span class="severity-crit">CRIT</span></td>
+    </tr>
+    <tr>
+      <td>Ledger drift</td>
+      <td>double arithmetic in ledger aggregation</td>
+      <td><span style="color:#FFC93C; font-weight:700;">INR 6 lakh (trust)</span></td>
+      <td><span class="severity-high">HIGH</span></td>
+    </tr>
+    <tr>
+      <td>Customer trust</td>
+      <td>Wrong P&L display &rarr; support tickets &rarr; churn</td>
+      <td><span style="color:#FF9640; font-weight:700;">Unquantifiable</span></td>
+      <td><span class="severity-crit">CRIT</span></td>
+    </tr>
+  </table>
+
+  <div class="grid-3" style="margin-top: 16px; gap: 12px;">
+    <div class="stat-card stat-card-red" style="padding: 20px;">
+      <div class="stat-num glow-red" style="font-size: 2em;">~4Cr+</div>
+      <div class="stat-label">Annual Financial Risk</div>
+    </div>
+    <div class="stat-card stat-card-red" style="padding: 20px;">
+      <div class="stat-num glow-red" style="font-size: 2em;">45.5L</div>
+      <div class="stat-label">Paid in SEBI Fines (PML directly)</div>
+    </div>
+    <div class="stat-card stat-card-orange" style="padding: 20px;">
+      <div class="stat-num" style="color:#FF9640; font-size: 2em;">1Cr+</div>
+      <div class="stat-label">Potential New SEBI Fines</div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================== -->
+<!-- SLIDE 13: PRIORITY ACTION ITEMS -->
+<!-- =========================================== -->
+<section>
+  <span class="badge badge-green">ACTION PLAN</span>
+  <h2 style="margin: 8px 0 4px;">Priority <span class="glow-green">Fixes</span></h2>
+  <p class="dim" style="font-size: 0.62em; margin-bottom: 16px;">Ordered by blast radius and financial impact</p>
+
+  <table style="font-size: 0.58em;">
+    <tr>
+      <th style="width:5%;">#</th>
+      <th style="width:8%;">Priority</th>
+      <th style="width:35%;">Fix</th>
+      <th style="width:20%;">Services</th>
+      <th style="width:16%;">Impact</th>
+      <th style="width:16%;">Effort</th>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td><span class="severity-crit">P0</span></td>
+      <td><strong>Rotate all hardcoded AWS credentials &amp; secrets NOW</strong></td>
+      <td>payments, bo-migration-recon, bo-statement-consumer</td>
+      <td>Security breach prevention</td>
+      <td>1 day</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><span class="severity-crit">P0</span></td>
+      <td><strong>Fix SQS AUTO_ACKNOWLEDGE &rarr; CLIENT_ACKNOWLEDGE + DLQs</strong></td>
+      <td>eq-fms-consumers (17 consumers)</td>
+      <td>Stop data loss in payments</td>
+      <td>2-3 days</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><span class="severity-crit">P0</span></td>
+      <td><strong>Re-enable health checks on payments service</strong></td>
+      <td>payments</td>
+      <td>Stop routing to dead service</td>
+      <td>1 hour</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><span class="severity-crit">P0</span></td>
+      <td><strong>Uncomment @Transactional on bulk bill creation</strong></td>
+      <td>payments (MandateRecurPayService)</td>
+      <td>Stop double-charging SIPs</td>
+      <td>1 hour</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><span class="severity-crit">P0</span></td>
+      <td><strong>Add @Positive validation on all amount fields</strong></td>
+      <td>eq-fms-app (PayIn, Withdrawal, Payment)</td>
+      <td>Block negative amount exploits</td>
+      <td>1 hour</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td><span class="severity-high">P1</span></td>
+      <td><strong>Make ChargesInfoServiceImpl thread-safe</strong> (local vars)</td>
+      <td>eq-fms-app</td>
+      <td>Fix wrong GST calculations</td>
+      <td>1 day</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td><span class="severity-high">P1</span></td>
+      <td><strong>Standardize rounding to HALF_UP across platform</strong></td>
+      <td>eq-fms-app, bo-*, payments</td>
+      <td>Reconcilable charges</td>
+      <td>1 week</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td><span class="severity-high">P1</span></td>
+      <td><strong>Replace <code>new BigDecimal(double)</code> with <code>BigDecimal.valueOf()</code></strong></td>
+      <td>bo-statements-api, bo-crm-api</td>
+      <td>Fix precision loss</td>
+      <td>2-3 days</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td><span class="severity-high">P1</span></td>
+      <td><strong>Add Resilience4j circuit breakers on all downstream calls</strong></td>
+      <td>ALL services</td>
+      <td>Prevent cascading failures</td>
+      <td>1-2 weeks</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td><span class="severity-high">P1</span></td>
+      <td><strong>Build corporate action processing pipeline</strong></td>
+      <td>New service or eq-fms module</td>
+      <td>Correct portfolio P&L</td>
+      <td>4-6 weeks</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td><span class="severity-high">P1</span></td>
+      <td><strong>Add optimistic locking (@Version) to FMS entities</strong></td>
+      <td>eq-fms-common, eq-fms-app</td>
+      <td>Prevent overdraft on concurrent ops</td>
+      <td>1 week</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td><span class="severity-high">P2</span></td>
+      <td><strong>Migrate financial entities from Double to BigDecimal</strong></td>
+      <td>ALL services</td>
+      <td>Regulatory-grade precision</td>
+      <td>4-8 weeks</td>
+    </tr>
+  </table>
+</section>
+
+<!-- =========================================== -->
+<!-- SLIDE 14: CLOSING -->
+<!-- =========================================== -->
+<section class="center" data-background-gradient="radial-gradient(ellipse 800px 600px at 50% 40%, rgba(255,77,77,0.08) 0%, rgba(0,212,170,0.04) 40%, transparent 70%)">
+  <h1 style="font-size: 3em; margin-bottom: 16px;">
+    <span class="glow">Bottom Line</span>
+  </h1>
+  <p style="font-size: 0.9em; color: var(--r-main-color); max-width: 800px; margin: 0 auto 32px; line-height: 1.8;">
+    PML handles <strong style="color: #FFC93C;">real money</strong> for <strong style="color: #FFC93C;">724K users</strong> but uses <strong style="color: #FF4D4D;">double</strong> for financial math,
+    <strong style="color: #FF4D4D;">deletes SQS messages before processing</strong>,
+    has <strong style="color: #FF4D4D;">zero corporate action handling</strong>,
+    <strong style="color: #FF4D4D;">hardcoded AWS keys</strong> in source,
+    and <strong style="color: #FF4D4D;">no SEBI compliance framework</strong>.
+  </p>
+
+  <div class="grid-3" style="max-width: 700px; margin: 0 auto 32px;">
+    <div class="glass glass-red" style="padding: 20px; text-align: center;">
+      <div style="font-size: 2em; font-weight: 700; color: #FF4D4D;">5</div>
+      <div class="stat-label">P0 fixes (1-3 days)</div>
+    </div>
+    <div class="glass glass-orange" style="padding: 20px; text-align: center;">
+      <div style="font-size: 2em; font-weight: 700; color: #FF9640;">7</div>
+      <div class="stat-label">P1 fixes (2-8 weeks)</div>
+    </div>
+    <div class="glass glass-green" style="padding: 20px; text-align: center;">
+      <div style="font-size: 2em; font-weight: 700; color: #00D4AA;">99</div>
+      <div class="stat-label">Total issues tracked</div>
+    </div>
+  </div>
+
+  <p style="font-size: 0.75em; color: var(--dim); margin-bottom: 0;">
+    The 5 P0 fixes can be done in <strong style="color: #00D4AA;">1-3 days</strong> and prevent the highest-impact failures.
+  </p>
+  <p class="tiny" style="margin-top: 36px; letter-spacing: 2px;">PAYTM MONEY LIMITED &middot; PML PLATFORM AUDIT &middot; MARCH 2026</p>
+</section>
+
+</div><!-- /slides -->
+</div><!-- /reveal -->
+
+<!-- Reveal.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  slideNumber: 'c/t',
+  width: 1280,
+  height: 720,
+  margin: 0.06,
+  transition: 'fade',
+  transitionSpeed: 'fast',
+  backgroundTransition: 'fade',
+  center: false,
+  controls: true,
+  controlsLayout: 'edges',
+  progress: true,
+});
+
+// ===== PARTICLES =====
+(function() {
+  const c = document.getElementById('particles');
+  const ctx = c.getContext('2d');
+  let w, h, particles = [];
+  function resize() { w = c.width = innerWidth; h = c.height = innerHeight; }
+  resize(); addEventListener('resize', resize);
+  for (let i = 0; i < 40; i++) {
+    particles.push({
+      x: Math.random() * w, y: Math.random() * h,
+      r: Math.random() * 1.5 + 0.3,
+      dx: (Math.random() - 0.5) * 0.3,
+      dy: (Math.random() - 0.5) * 0.3,
+      o: Math.random() * 0.15 + 0.03
+    });
+  }
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    particles.forEach(p => {
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,77,77,${p.o})`;
+      ctx.fill();
+      p.x += p.dx; p.y += p.dy;
+      if (p.x < 0 || p.x > w) p.dx *= -1;
+      if (p.y < 0 || p.y > h) p.dy *= -1;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
