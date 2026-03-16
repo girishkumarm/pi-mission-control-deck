@@ -573,7 +573,7 @@
 <!-- ============================================ -->
 <section data-background-gradient="radial-gradient(ellipse 600px 400px at 60% 40%, rgba(0,212,170,0.05) 0%, transparent 60%)">
   <h2><span class="glow-blue">Pi MCP</span> — Build Policies from Claude Code</h2>
-  <p class="dim" style="font-size: 0.68em; margin-bottom: 20px;">Tell Claude what fraud rules you want in natural language. Pi MCP creates them via REST APIs.</p>
+  <p class="dim" style="font-size: 0.68em; margin-bottom: 20px;">Fraud rules or agentic flows — describe what you want in natural language. Pi MCP creates it via REST APIs.</p>
 
   <div class="grid-2" style="gap: 28px;">
     <div>
@@ -601,16 +601,29 @@
     </div>
     <div>
       <div class="glass glass-accent" style="padding: 22px;">
-        <h3 style="font-size: 0.95em; color: #B794F6; margin-bottom: 14px;">End-to-End Lifecycle</h3>
-        <ol style="font-size: 0.58em; line-height: 2.2; padding-left: 18px;">
-          <li><strong style="color:var(--accent5);">Define data model</strong> — domain attributes (amount, merchant_id...)</li>
-          <li><strong style="color:var(--accent5);">Register events</strong> — VET pipeline for payment ingestion</li>
-          <li><strong style="color:var(--accent5);">Register actions</strong> — HTTP connectors for external APIs</li>
-          <li><strong style="color:#B794F6;">Create Decision Nodes</strong> — rules with DMN tables</li>
-          <li><strong style="color:#B794F6;">Create Decision Agents</strong> — LLM with KB + persona + tools</li>
-          <li><strong style="color:#B794F6;">Build Decision Flow</strong> — DAG: nodes → gateways → agents</li>
-          <li><strong style="color:var(--accent2);">Test</strong> with sample payloads</li>
-          <li><strong style="color:var(--accent2);">Deploy</strong> to production</li>
+        <h3 style="font-size: 0.95em; color: #B794F6; margin-bottom: 14px;">Works for Both Products</h3>
+        <div style="display:flex; gap: 14px; margin-bottom: 14px;">
+          <div style="flex:1; padding: 12px; border-radius: 10px; background: rgba(77,158,255,0.06); border: 1px solid rgba(77,158,255,0.15);">
+            <span class="badge badge-blue" style="font-size:0.45em; margin-bottom: 8px; display:inline-block;">RISK</span>
+            <ul style="font-size: 0.52em; line-height: 1.9; padding-left: 14px; margin: 0;">
+              <li><strong>Decision Nodes</strong> — DMN fraud rules</li>
+              <li><strong>Decision Flows</strong> — DAG evaluation</li>
+              <li><strong>Functions</strong> — GraalVM JS logic</li>
+              <li><strong>Lists</strong> — blacklist/whitelist</li>
+            </ul>
+          </div>
+          <div style="flex:1; padding: 12px; border-radius: 10px; background: rgba(124,92,252,0.06); border: 1px solid rgba(124,92,252,0.15);">
+            <span class="badge badge-accent" style="font-size:0.45em; margin-bottom: 8px; display:inline-block;">AGENTIC</span>
+            <ul style="font-size: 0.52em; line-height: 1.9; padding-left: 14px; margin: 0;">
+              <li><strong>Decision Agents</strong> — KB + persona + model</li>
+              <li><strong>Agent Flows</strong> — multi-agent handoff</li>
+              <li><strong>Connectors</strong> — HTTP, Slack, Gmail</li>
+              <li><strong>Actions</strong> — tool registration</li>
+            </ul>
+          </div>
+        </div>
+        <ol style="font-size: 0.52em; line-height: 1.9; padding-left: 18px; margin: 0;">
+          <li><strong style="color:var(--accent5);">Define data model</strong> → <strong style="color:#B794F6;">Create nodes/agents</strong> → <strong style="color:var(--accent2);">Build flow</strong> → <strong style="color:var(--accent2);">Deploy</strong></li>
         </ol>
       </div>
       <div class="callout callout-green" style="font-size: 0.58em; margin-top: 14px;">
@@ -618,7 +631,7 @@
       </div>
     </div>
   </div>
-  <aside class="notes">Pi MCP wraps our entire Rule Admin and Event Registry APIs. You describe what fraud policy you want in English, and Claude creates it through 16 MCP tools. From data model to deployed production rules — all from the terminal.</aside>
+  <aside class="notes">Pi MCP wraps our entire Rule Admin and Event Registry APIs. It works for both products — Risk for fraud rules with DMN tables and DAG flows, and Agentic for LLM-powered decision agents with KB, persona, tools, and multi-agent handoff. 16 tools covering the full lifecycle. Describe what you want in English, Claude builds it.</aside>
 </section>
 
 <!-- ============================================ -->
